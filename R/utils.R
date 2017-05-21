@@ -1,3 +1,4 @@
+
 # Internal function to test responses
 test_responses <- function(response1, response2){
 
@@ -32,8 +33,6 @@ clean_names <- function(name){
     tolower() %>%
     gsub("[^a-zA-Z]", "", .)
 }
-
-
 
 
 # Internal function to match state abbreviations and state codes

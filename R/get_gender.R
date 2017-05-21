@@ -22,6 +22,9 @@
 get_gender <- function(name, state = NULL, prob = FALSE, threshold = 0.9){
 
 
+  # Clean name
+  name <- clean_names(name)
+
   # API endpoint
   ibge <- "http://servicodados.ibge.gov.br/api/v1/censos/nomes/basica"
 
