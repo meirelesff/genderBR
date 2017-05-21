@@ -9,8 +9,8 @@
 #' Defaults to \code{FALSE}.
 #' @param threshold Numeric indicating the threshold used in predictions. Defaults to 0.9.
 #'
-#' @return \code{get_gender} returns three values only: \code{1}, if the name provided is from a female person;
-#' \code{0}, if the name provided is from a male person; \code{NA}, if the probability of the name
+#' @return \code{get_gender} returns three values only: \code{Female}, if the name provided is from a female person;
+#' \code{Male}, if the name provided is from a male person; \code{NA}, if the probability of the name
 #' provided be from a female or male person can not be infered given the chosen threshold.
 #'
 #'

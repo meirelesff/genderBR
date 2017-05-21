@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "---\noutput: github_document\n---\n\n<!-- README.md is generated from README.Rmd. Please edit that file -->\n\n```{r, echo = FALSE}\nknitr::opts_chunk$set(\n  collapse = TRUE,\n  comment = \"#>\",\n  fig.path = \"README-\"\n)\n```\n\n# genderBR\n\n[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/genderBR)](https://cran.r-project.org/package=genderBR)\n[![Package-License](https://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)\n\n`genderBR` predicts gender from Brazilian first names using data from the Instituto Brasileiro de Geografia e Estatistica's 2010 Census [API](http://censo2010.ibge.gov.br/nomes/).\n\n\n## How does it work?\n\n`genderBR` has only one function, `get_gender`, that takes a string with a Brazilian name and predicts its gender.\n\n```{r}\nlibrary(genderBR)\n\nget_gender(\"João\")\nget_gender(\"Lucas da Silva\")\nget_gender(\"ANA MARIA\")\n```\n\n## Installing\n\nTo install the package development version, use:\n\n```{r, eval = FALSE}\nif (!require(\"devtools\")) install.packages(\"devtools\")\ndevtools::install_github(\"meirelesff/genderBR\")\n```\n    \n    \n## Author\n\n[Fernando Meireles](http://fmeireles.com)\n    \n",
+    "created" : 1495333213542.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "40952525",
+    "id" : "9D5DB40C",
+    "lastKnownWriteTime" : 1495337739,
+    "last_content_update" : 1495337739790,
+    "path" : "C:/Users/User/Google Drive/R/Pacotes/genderBR/README.Rmd",
+    "project_path" : "README.Rmd",
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

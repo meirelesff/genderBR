@@ -19,9 +19,9 @@ round_guess <- function(prob, threshold){
 
   if(threshold < 0 | threshold > 1) stop("Threshold must be between 0 and 1.")
 
-  if(prob > threshold) return(1)
-  else if(prob < 1 - threshold) return(0)
-  else return(NA)
+  if(prob > threshold) return("Female")
+  else if(prob < 1 - threshold) return("Male")
+  else return(as.character(NA))
 }
 
 

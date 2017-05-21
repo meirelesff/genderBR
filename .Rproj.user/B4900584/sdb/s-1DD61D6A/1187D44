@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "# Internal function to test responses\ntest_responses <- function(response1, response2){\n\n  httr::stop_for_status(response1)\n  httr::stop_for_status(response2)\n\n  if(length(response1$content) == 2 & length(response2$content) == 2){\n\n    return(TRUE)\n  } else {\n\n    return(FALSE)\n  }\n}\n\n\n# Internal function to round numeric guess\nround_guess <- function(prob, threshold){\n\n  if(threshold < 0 | threshold > 1) stop(\"Threshold must be between 0 and 1.\")\n\n  if(prob > threshold) return(\"Female\")\n  else if(prob < 1 - threshold) return(\"Male\")\n  else return(as.character(NA))\n}\n\n\n# Internal function to clean first names\nclean_names <- function(name){\n\n  sub(\"(.*?) .*\", \"\\\\1\", name) %>%\n    tolower() %>%\n    gsub(\"[^a-zA-Z]\", \"\", .)\n}\n\n\n\n\n# Internal function to match state abbreviations and state codes\n\n#states <- mapa %>%\n#  select(nome, uf) %>%\n#  setNames(c(\"state\", \"state_code\")) %>%\n#  mutate(state = iconv(state, from = \"UTF-8\", to = \"ASCII//TRANSLIT\"),\n#         state = toupper(state)) %>%\n#  as.tbl() %>%\n#  arrange(state)\n\n\n# Avoid the R CMD check note about magrittr's dot\nutils::globalVariables(\".\")\n",
+    "created" : 1495334424229.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1128227913",
+    "id" : "1187D44",
+    "lastKnownWriteTime" : 1495337484,
+    "last_content_update" : 1495337484316,
+    "path" : "C:/Users/User/Google Drive/R/Pacotes/genderBR/R/utils.R",
+    "project_path" : "R/utils.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
