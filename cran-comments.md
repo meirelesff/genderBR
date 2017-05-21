@@ -1,13 +1,11 @@
 ## Test environments
-* local OS X install, R 3.3.2
-* ubuntu 12.04 (on travis-ci), R 3.3.2
-* win-builder (devel and release)
+* Windows 10 (personal computer), R 3.3.2 
+* Ubuntu 12.04.5 LTS (on travis-ci), R 3.3.2
+* Windows server 2012 R2 x64 (on appveyor), 3.3.3 Patched
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-* This is a new release.
+0 errors | 0 warnings | 0 note
 
 ## Reverse dependencies
 

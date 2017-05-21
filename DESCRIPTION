@@ -8,6 +8,7 @@ Description: A method for predicting gender from Brazilian first names
 License: GPL (>= 2)
 Depends: R (>= 3.1.2)
 Imports: dplyr (>= 0.5.0),
+    jsonlite,
     httr
 Encoding: UTF-8
 LazyData: true
