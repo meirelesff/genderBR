@@ -1,6 +1,6 @@
 Package: genderBR
 Type: Package
-Title: Gender Prediction For Brazilian First Names
+Title: Gender Predictions For Brazilian First Names
 Version: 1.0.0
 Authors@R: person("Fernando", "Meireles", , "fmeireles@ufmg.br", c("aut", "cre"))
 Description: A method for predicting gender from Brazilian first names
