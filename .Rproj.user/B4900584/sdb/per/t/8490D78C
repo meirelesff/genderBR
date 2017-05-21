@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#' Predicts gender from Brazilian first names using IBGE API\n#'\n#' \\code{get_gender} consults...\n#'\n#' @param name A string specifying a person's first name. The name can also be passed to the function\n#' as a full name (e.g., Ana Maria de Souza). \\code{get_gender} is case insensitive.\n#' @param state A string with the state of federation abbreviation (e.g., \\code{RJ} for Rio de Janeiro).\n#' @param prob Report the result as the probability of a given name be from a female person?\n#' Defaults to \\code{FALSE}.\n#' @param threshold Numeric indicating the threshold used in predictions. Defaults to 0.9.\n#'\n#' @return \\code{get_gender} returns three values only: \\code{1}, if the name provided is from a female person;\n#' \\code{0}, if the name provided is from a male person; \\code{NA}, if the probability of the name\n#' provided be from a female or male person can not be infered given the chosen threshold.\n#'\n#'\n#' @import dplyr\n#' @import httr\n#' @export\n\n\nget_gender <- function(name, state = NULL, prob = FALSE, threshold = 0.9){\n\n\n  # API endpoint\n  ibge <- \"http://servicodados.ibge.gov.br/api/v1/censos/nomes/basica\"\n\n  # GET\n  females <- httr::GET(ibge, query = list(nome = name, regiao = state, sexo = \"f\"))\n  total <- httr::GET(ibge, query = list(nome = name, regiao = state))\n\n  # Test responses\n  if(test_responses(females, total)) return(NA)\n\n  # Parse freq\n  total <- httr::content(total, as = \"parsed\")[[1]]$freq\n  females <- httr::content(females, as = \"parsed\")[[1]]$freq\n\n  # Return\n  fprob <- females / total\n  if(prob) return(fprob)\n  round_guess(fprob, threshold)\n}\n",
+    "created" : 1495334797381.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2614590066",
+    "id" : "8490D78C",
+    "lastKnownWriteTime" : 1495335668,
+    "last_content_update" : 1495335668375,
+    "path" : "C:/Users/User/Google Drive/R/Pacotes/genderBR/R/get_gender.R",
+    "project_path" : "R/get_gender.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
