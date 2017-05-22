@@ -65,11 +65,11 @@ states <- c("rj", "rs", "sp")
 get_gender(name, prob = T, state = states)
 ```
 
-This can be useful also to predict the gender of different people from different states:
+This can be useful also to predict the gender of different individuals living in different states:
 
 ```{r}
-df <- data.frame(name = c("Alberto da Silva", "Maria dos Santos", "Pedro Rocha"),
-                 uf = c("AC", "SP", "PE"),
+df <- data.frame(name = c("Alberto da Silva", "Maria dos Santos", "Pedro Rocha", "Paula Camargo"),
+                 uf = c("AC", "SP", "PE", "RS"),
                  stringsAsFactors = FALSE
                  )
 

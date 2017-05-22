@@ -3,7 +3,7 @@
 #' \code{get_gender} retrieves data on the number of male and female persons with a given first name
 #' in Brazil to predict the most likely gender
 #'
-#' @param name A string specifying a person's first name. The name can also be passed to the function
+#' @param names A string specifying a person's first name. The name can also be passed to the function
 #' as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive.
 #' @param state A string with the state of federation abbreviation (e.g., \code{RJ} for Rio de Janeiro).
 #' @param prob Report the result as the probability of a given name be from a female person?

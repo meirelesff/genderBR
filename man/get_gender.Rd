@@ -7,15 +7,15 @@
 get_gender(names, state = NULL, prob = FALSE, threshold = 0.9)
 }
 \arguments{
+\item{names}{A string specifying a person's first name. The name can also be passed to the function
+as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive.}
+
 \item{state}{A string with the state of federation abbreviation (e.g., \code{RJ} for Rio de Janeiro).}
 
 \item{prob}{Report the result as the probability of a given name be from a female person?
 Defaults to \code{FALSE}.}
 
 \item{threshold}{Numeric indicating the threshold used in predictions. Defaults to 0.9.}
-
-\item{name}{A string specifying a person's first name. The name can also be passed to the function
-as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive.}
 }
 \value{
 \code{get_gender} may returns three different values: \code{Female}, if the name provided is from a female person;
