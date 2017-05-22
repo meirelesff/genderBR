@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_gender.R
 \name{get_gender}
 \alias{get_gender}
-\title{Predicts gender from Brazilian first names using IBGE API}
+\title{Predict gender from Brazilian first names}
 \usage{
 get_gender(name, state = NULL, prob = FALSE, threshold = 0.9)
 }
@@ -18,10 +18,56 @@ Defaults to \code{FALSE}.}
 \item{threshold}{Numeric indicating the threshold used in predictions. Defaults to 0.9.}
 }
 \value{
-\code{get_gender} returns three values only: \code{Female}, if the name provided is from a female person;
-\code{Male}, if the name provided is from a male person; \code{NA}, if the probability of the name
+\code{get_gender} may returns three different values: \code{Female}, if the name provided is from a female person;
+\code{Male}, if the name provided is from a male person; or \code{NA}, if the probability of the name
 provided be from a female or male person can not be infered given the chosen threshold.
+
+If the \code{prob} argument is set to \code{TRUE}, then the function returns the proportion of females with
+the provided name.
 }
 \description{
-\code{get_gender} consults...
+\code{get_gender} retrieves data on the number of male and female persons with a given first name
+in Brazil to predict the most likely gender
+}
+\details{
+Information on the gender associated with Brazilian first names was collect in the 2010 Census
+(Censo Demografico de 2010, in Portuguese), in July of that year, by the Instituto Brasileiro de Demografia
+e Estatistica (IBGE). The surveyed population includes 190,8 million Brazilians living in all 27 states.
+According to the IBGE, there are more than 130,000 unique first names in this population.
+}
+\note{
+Names with different spell (e.g., Ana and Anna, or Marcos and Markos) are considered different names.
+Additionally, only names with more than 20 occurrences, or more than 15 occurrences in a given state,
+are considered.
+}
+\examples{
+\donttest{
+# Use get_gender to predict the gender
+# of a person based on her/his first name
+get_gender('mario')
+
+# The function accepts full names
+get_gender('Maria da Silva Santos')
+
+# Or names in uppercase
+get_gender('MARIA DA SILVA SANTOS')
+
+# It is possible to filter results by state
+get_gender('ana', state = 'sp')
+
+# To change the employed threshold
+get_gender('ariel', threshold = '0.8')
+
+# Or to get the proportion of females
+# with the name provided
+get_gender('iris', prob = TRUE)
+}
+
+}
+\references{
+For more information on the IBGE's data, please check (in Portuguese):
+\url{http://censo2010.ibge.gov.br/nomes/}
+}
+\seealso{
+\code{\link{map_gender}}
 }

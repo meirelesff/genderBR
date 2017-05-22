@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#' Predict gender from Brazilian first names\n#'\n#' \\code{get_gender} retrieves data on the number of male and female persons with a given first name\n#' in Brazil to predict the most likely gender\n#'\n#' @param name A string specifying a person's first name. The name can also be passed to the function\n#' as a full name (e.g., Ana Maria de Souza). \\code{get_gender} is case insensitive.\n#' @param state A string with the state of federation abbreviation (e.g., \\code{RJ} for Rio de Janeiro).\n#' @param prob Report the result as the probability of a given name be from a female person?\n#' Defaults to \\code{FALSE}.\n#' @param threshold Numeric indicating the threshold used in predictions. Defaults to 0.9.\n#'\n#' @details Information on the gender associated with Brazilian first names was collect in the 2010 Census\n#' (Censo Demografico de 2010, in Portuguese), in July of that year, by the Instituto Brasileiro de Demografia\n#' e Estatistica (IBGE). The surveyed population includes 190,8 million Brazilians living in all 27 states.\n#' According to the IBGE, there are more than 130,000 unique first names in this population.\n#'\n#' @note Names with different spell (e.g., Ana and Anna, or Marcos and Markos) are considered different names.\n#' Additionally, only names with more than 20 occurrences, or more than 15 occurrences in a given state,\n#' are considered.\n#'\n#' @references For more information on the IBGE's data, please check (in Portuguese):\n#' \\url{http://censo2010.ibge.gov.br/nomes/}\n#'\n#' @seealso \\code{\\link{map_gender}}\n#'\n#' @return \\code{get_gender} may returns three different values: \\code{Female}, if the name provided is from a female person;\n#' \\code{Male}, if the name provided is from a male person; or \\code{NA}, if the probability of the name\n#' provided be from a female or male person can not be infered given the chosen threshold.\n#'\n#' If the \\code{prob} argument is set to \\code{TRUE}, then the function returns the proportion of females with\n#' the provided name.\n#'\n#' @examples\n#' \\donttest{\n#' # Use get_gender to predict the gender\n#' # of a person based on her/his first name\n#' get_gender('mario')\n#'\n#' # The function accepts full names\n#' get_gender('Maria da Silva Santos')\n#'\n#' # Or names in uppercase\n#' get_gender('MARIA DA SILVA SANTOS')\n#'\n#' # It is possible to filter results by state\n#' get_gender('ana', state = 'sp')\n#'\n#' # To change the employed threshold\n#' get_gender('ariel', threshold = '0.8')\n#'\n#' # Or to get the proportion of females\n#' # with the name provided\n#' get_gender('iris', prob = TRUE)\n#' }\n#'\n#' @import dplyr\n#' @import httr\n#' @export\n\n\nget_gender <- function(name, state = NULL, prob = FALSE, threshold = 0.9){\n\n\n  # Clean name\n  name <- clean_names(name)\n\n  # Convert state\n  if(!is.null(state)) state <- state2code(state)\n\n  # Return\n  sapply(1:length(name), function(i) get_gender_api(name[i], state, prob = prob, threshold = threshold))\n}\n\n\n# Get individual results\nget_gender_api <- function(name, state, prob, threshold){\n\n\n  # API endpoint\n  ibge <- \"http://servicodados.ibge.gov.br/api/v1/censos/nomes/basica\"\n\n  # GET\n  females <- httr::GET(ibge, query = list(nome = name, regiao = state, sexo = \"f\"))\n  males <- httr::GET(ibge, query = list(nome = name, regiao = state, sexo = \"m\"))\n\n  # Test responses\n  res <- test_responses(females, males, prob)\n  if(!is.null(res)) return(res)\n\n  # Parse freq\n  females <- httr::content(females, as = \"parsed\")[[1]]$freq\n  males <- httr::content(males, as = \"parsed\")[[1]]$freq\n\n  # Return\n  fprob <- females / sum(females, males)\n  if(prob) return(fprob)\n  round_guess(fprob, threshold)\n}\n\n\n\n",
+    "created" : 1495375046562.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3647958975",
+    "id" : "14DE73A4",
+    "lastKnownWriteTime" : 1495474057,
+    "last_content_update" : 1495474057921,
+    "path" : "C:/Users/User/Google Drive/R/Pacotes/genderBR/R/get_gender.R",
+    "project_path" : "R/get_gender.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
