@@ -65,10 +65,7 @@ state2code <- function(uf){
   uf <- toupper(uf) %>%
     match.arg(ufs)
 
-  uf <- br_states()$code[match(uf, ufs)]
-
-  if(is.na(uf)) stop("Invalid uf. Please, check the documentation and try again.")
-  uf
+  br_states()$code[match(uf, ufs)]
 }
 
 

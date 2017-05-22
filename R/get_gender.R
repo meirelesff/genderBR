@@ -59,17 +59,28 @@
 #' @export
 
 
-get_gender <- function(name, state = NULL, prob = FALSE, threshold = 0.9){
+get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9){
 
 
-  # Clean name
-  name <- clean_names(name)
+  # Names
+  names <- clean_names(names)
+  ln <- length(names)
 
-  # Convert state
-  if(!is.null(state)) state <- state2code(state)
+  # States
+  if(!is.null(state)) {
+
+    state <- sapply(state, function(state) state2code(state))
+    if(ln > 1 & length(state) == 1) state <- rep(state, ln)
+
+
+  } else {
+
+    out <- sapply(1:ln, function(i) get_gender_api(names[i], state, prob = prob, threshold = threshold))
+    return(out)
+  }
 
   # Return
-  sapply(1:length(name), function(i) get_gender_api(name[i], state, prob = prob, threshold = threshold))
+  sapply(1:ln, function(i) get_gender_api(names[i], state[i], prob = prob, threshold = threshold))
 }
 
 

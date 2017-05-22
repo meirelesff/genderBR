@@ -45,7 +45,7 @@ get_gender("Mario da Silva")
 get_gender("ANA MARIA")
 ```
 
-Additionally, one can filter results by state with the argument `state` or get the probability that a given first name belongs to a female person by setting the `prob` argument to `TRUE` (defaults to `FALSE`).
+Additionally, one can filter results by state with the argument `state`; or get the probability that a given first name belongs to a female person by setting the `prob` argument to `TRUE` (defaults to `FALSE`).
 
 ```{r}
 # What is the probability that the name Ariel belongs to a female person in Brazil?
@@ -56,6 +56,28 @@ get_gender("Ariel", prob = TRUE, state = "RJ") # RJ, Rio de Janeiro
 get_gender("Ariel", prob = TRUE, state = "RS") # RS, Rio Grande do Sul
 get_gender("Ariel", prob = TRUE, state = "SP") # SP, Sao Paulo
 ```
+
+Note that a vector with states' abbreviations is a valid input for `get_gender` function, so this also works:
+
+```{r}
+name <- rep("Ariel", 3)
+states <- c("rj", "rs", "sp")
+get_gender(name, prob = T, state = states)
+```
+
+This can be useful also to predict the gender of different people from different states:
+
+```{r}
+df <- data.frame(name = c("Alberto da Silva", "Maria dos Santos", "Pedro Rocha"),
+                 uf = c("AC", "SP", "PE"),
+                 stringsAsFactors = FALSE
+                 )
+
+df$gender <- get_gender(df$name, df$uf)
+
+gender
+```
+
 
 ### Brazilian state abbreviations
 
