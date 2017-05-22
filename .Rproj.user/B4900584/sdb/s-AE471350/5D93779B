@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "---\noutput: github_document\n---\n\n<!-- README.md is generated from README.Rmd. Please edit that file -->\n\n```{r, echo = FALSE}\nknitr::opts_chunk$set(\n  collapse = TRUE,\n  comment = \"#>\",\n  fig.path = \"README-\"\n)\n```\n\n# genderBR\n\n[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/genderBR)](https://cran.r-project.org/package=genderBR)\n[![Travis-CI Build Status](https://travis-ci.org/meirelesff/genderBR.svg?branch=master)](https://travis-ci.org/meirelesff/genderBR)\n[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/meirelesff/genderBR?branch=master&svg=true)](https://ci.appveyor.com/project/meirelesff/genderBR)\n[![Package-License](https://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)\n\n`genderBR` predicts gender from Brazilian first names using data from the Instituto Brasileiro de Geografia e Estatistica's 2010 Census [API](http://censo2010.ibge.gov.br/nomes/).\n\n## How does it work?\n\n`genderBR`'s main function is `get_gender`, which takes a string with a Brazilian first name and predicts its gender using data from the IBGE's 2010 Census. More specifically, it extracts the number of female and male persons with a given first name and tries to predict the gender...\n\n```{r}\nlibrary(genderBR)\n\nget_gender(\"joão\")\nget_gender(\"ana\")\n```\n\nMultiple names can be passed at the same function call:\n\n```{r}\nget_gender(c(\"pedro\", \"maria\"))\n```\n\nAnd the function accepts both full names and names written in lower or upper case:\n\n```{r}\nget_gender(\"Mario da Silva\")\nget_gender(\"ANA MARIA\")\n```\n\nAdditionally, one can filter results by state with the argument `state` or get the probability that a given first name belongs to a female person by setting the `prob` argument to `TRUE` (defaults to `FALSE`).\n\n```{r}\n# Get probabilities\nget_gender(\"Ariel\", prob = TRUE)\n\n# And filter results by state\nget_gender(\"Ariel\", prob = TRUE, state = \"RJ\") # RJ, Rio de Janeiro\nget_gender(\"Ariel\", prob = TRUE, state = \"RS\") # RS, Rio Grande do Sul\nget_gender(\"Ariel\", prob = TRUE, state = \"SP\") # SP, Sao Paulo\n```\n\n\n## Installing\n\nTo install the package development version, use:\n\n```{r, eval = FALSE}\nif (!require(\"devtools\")) install.packages(\"devtools\")\ndevtools::install_github(\"meirelesff/genderBR\")\n```\n    \n## Data\n\nThe data used in this package come from the Instituto Brasileiro de Geografia e Estatistica's (IBGE) 2010 Census. The surveyed population includes 190,8 million Brazilians -- with more than 130,000 unique first names.\n\nTo extracts the numer of male and female persons with a given first name in Brazil, the package uses the [API](http://censo2010.ibge.gov.br/nomes/) provided by the IBGE. In this service, names with different spelling (e.g., Ana and Anna, or Marcos and Markos) are considered different names, and only names with more than 20 occurrences, or more than 15 occurrences in a given state, were included in the database.\n\nFor more information on the IBGE's data, please check (in Portuguese): \nhttp://censo2010.ibge.gov.br/nomes/\n\n## Author\n\n[Fernando Meireles](http://fmeireles.com)\n    \n",
+    "created" : 1495474101049.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1079780872",
+    "id" : "5D93779B",
+    "lastKnownWriteTime" : 1495475451,
+    "last_content_update" : 1495475451317,
+    "path" : "C:/Users/User/Google Drive/R/Pacotes/genderBR/README.Rmd",
+    "project_path" : "README.Rmd",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
