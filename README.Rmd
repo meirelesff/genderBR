@@ -75,7 +75,7 @@ df <- data.frame(name = c("Alberto da Silva", "Maria dos Santos", "Pedro Rocha")
 
 df$gender <- get_gender(df$name, df$uf)
 
-gender
+df
 ```
 
 
@@ -86,7 +86,6 @@ The `genderBR` package relies on Brazilian state abbreviations (acronyms) to fil
 ```{r}
 br_states()
 ```
-
 
 ## Geographic distribution of Brazilian first names
 
