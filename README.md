@@ -28,7 +28,7 @@ get_gender(c("pedro", "maria"))
 #> [1] "Male"   "Female"
 ```
 
-And the function accepts both full names and names written in lower or upper case:
+And both full names and names written in lower or upper case are accepted as inputs:
 
 ``` r
 get_gender("Mario da Silva")
@@ -40,11 +40,11 @@ get_gender("ANA MARIA")
 Additionally, one can filter results by state with the argument `state` or get the probability that a given first name belongs to a female person by setting the `prob` argument to `TRUE` (defaults to `FALSE`).
 
 ``` r
-# Get probabilities
+# What is the probability that the name Ariel belongs to a female person in Brazil?
 get_gender("Ariel", prob = TRUE)
 #> [1] 0.09219289
 
-# And filter results by state
+# What about differences between Brazilian states?
 get_gender("Ariel", prob = TRUE, state = "RJ") # RJ, Rio de Janeiro
 #> [1] 0.2627399
 get_gender("Ariel", prob = TRUE, state = "RS") # RS, Rio Grande do Sul
@@ -53,10 +53,75 @@ get_gender("Ariel", prob = TRUE, state = "SP") # SP, Sao Paulo
 #> [1] 0.1294782
 ```
 
+### Brazilian state abbreviations
+
+The `genderBR` package relies on Brazilian state abbreviations (acronyms) to filter results. To get a complete dataset with the full name, IBGE code, and abbreviations of all 27 Brazilian states, use the `br_states` functions:
+
+``` r
+br_states()
+#> # A tibble: 27 × 3
+#>               state   abb  code
+#>               <chr> <chr> <int>
+#> 1              ACRE    AC    12
+#> 2           ALAGOAS    AL    27
+#> 3             AMAPA    AP    16
+#> 4          AMAZONAS    AM    13
+#> 5             BAHIA    BA    29
+#> 6             CEARA    CE    23
+#> 7  DISTRITO FEDERAL    DF    53
+#> 8    ESPIRITO SANTO    ES    32
+#> 9             GOIAS    GO    52
+#> 10         MARANHAO    MA    21
+#> # ... with 17 more rows
+```
+
+Geographic distribution of Brazilian first names
+------------------------------------------------
+
+The `genderBR` package can also be used to get information on the relative and total number of persons with a given name by gender and by state in Brazil. To that end, use the `map_gender` function:
+
+``` r
+map_gender("maria")
+#> # A tibble: 27 × 6
+#>                   nome    uf    freq populacao  sexo     prop
+#> *                <chr> <int>   <int>     <int> <chr>    <dbl>
+#> 1                Piauí    22  363139   3118360       11645.19
+#> 2                Ceará    23  967042   8452381       11441.06
+#> 3              Paraíba    25  423026   3766528       11231.19
+#> 4  Rio Grande do Norte    24  341940   3168027       10793.47
+#> 5              Alagoas    27  321330   3120494       10297.41
+#> 6           Pernambuco    26  838534   8796448        9532.64
+#> 7              Sergipe    28  188619   2068017        9120.77
+#> 8             Maranhão    21  574689   6574789        8740.80
+#> 9                 Acre    12   63172    733559        8611.71
+#> 10        Minas Gerais    31 1307650  19597330        6672.59
+#> # ... with 17 more rows
+```
+
+To specify gender in the consultation, use the optional argument `gender` (valid inputs are `f`, for female; `m`, for male; or `NULL`, the default option).
+
+``` r
+map_gender("iris", gender = "m")
+#> # A tibble: 23 × 6
+#>                nome    uf  freq populacao  sexo  prop
+#> *             <chr> <int> <int>     <int> <chr> <dbl>
+#> 1             Goiás    52   840   6003788     m 13.99
+#> 2         Tocantins    17   156   1383445     m 11.28
+#> 3             Bahia    29   422  14016906     m  3.01
+#> 4       Mato Grosso    51    91   3035122     m  3.00
+#> 5      Minas Gerais    31   512  19597330     m  2.61
+#> 6  Distrito Federal    53    65   2570160     m  2.53
+#> 7    Espírito Santo    32    69   3514952     m  1.96
+#> 8          Rondônia    11    28   1562409     m  1.79
+#> 9              Pará    15   129   7581051     m  1.70
+#> 10   Rio de Janeiro    33   225  15989929     m  1.41
+#> # ... with 13 more rows
+```
+
 Installing
 ----------
 
-To install the package development version, use:
+`genderBR` is not yet available on CRAN. To install a development version, use:
 
 ``` r
 if (!require("devtools")) install.packages("devtools")

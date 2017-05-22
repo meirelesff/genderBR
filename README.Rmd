@@ -38,7 +38,7 @@ Multiple names can be passed at the same function call:
 get_gender(c("pedro", "maria"))
 ```
 
-And the function accepts both full names and names written in lower or upper case:
+And both full names and names written in lower or upper case are accepted as inputs:
 
 ```{r}
 get_gender("Mario da Silva")
@@ -48,19 +48,41 @@ get_gender("ANA MARIA")
 Additionally, one can filter results by state with the argument `state` or get the probability that a given first name belongs to a female person by setting the `prob` argument to `TRUE` (defaults to `FALSE`).
 
 ```{r}
-# Get probabilities
+# What is the probability that the name Ariel belongs to a female person in Brazil?
 get_gender("Ariel", prob = TRUE)
 
-# And filter results by state
+# What about differences between Brazilian states?
 get_gender("Ariel", prob = TRUE, state = "RJ") # RJ, Rio de Janeiro
 get_gender("Ariel", prob = TRUE, state = "RS") # RS, Rio Grande do Sul
 get_gender("Ariel", prob = TRUE, state = "SP") # SP, Sao Paulo
 ```
 
+### Brazilian state abbreviations
+
+The `genderBR` package relies on Brazilian state abbreviations (acronyms) to filter results. To get a complete dataset with the full name, IBGE code, and abbreviations of all 27 Brazilian states, use the `br_states` functions:
+
+```{r}
+br_states()
+```
+
+
+## Geographic distribution of Brazilian first names
+
+The `genderBR` package can also be used to get information on the relative and total number of persons with a given name by gender and by state in Brazil. To that end, use the `map_gender` function:
+
+```{r}
+map_gender("maria")
+```
+
+To specify gender in the consultation, use the optional argument `gender` (valid inputs are `f`, for female; `m`, for male; or `NULL`, the default option).
+
+```{r}
+map_gender("iris", gender = "m")
+```
 
 ## Installing
 
-To install the package development version, use:
+`genderBR` is not yet available on CRAN. To install a development version, use:
 
 ```{r, eval = FALSE}
 if (!require("devtools")) install.packages("devtools")

@@ -97,6 +97,3 @@ get_gender_api <- function(name, state, prob, threshold){
   if(prob) return(fprob)
   round_guess(fprob, threshold)
 }
-
-
-
