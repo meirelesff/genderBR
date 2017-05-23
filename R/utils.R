@@ -6,7 +6,7 @@
 #' @return A \code{tbl_df, tbl, data.frame} with two variables: \code{state}, \code{abb}, and \code{code}.
 #' @export
 
-br_states <- function(){
+get_states <- function(){
 
   dplyr::tibble(state = c("ACRE", "ALAGOAS", "AMAPA", "AMAZONAS", "BAHIA", "CEARA", "DISTRITO FEDERAL",
                        "ESPIRITO SANTO", "GOIAS", "MARANHAO", "MATO GROSSO DO SUL", "MATO GROSSO",
@@ -14,7 +14,7 @@ br_states <- function(){
                        "RIO DE JANEIRO", "RIO GRANDE DO NORTE", "RIO GRANDE DO SUL", "RONDONIA",
                        "RORAIMA", "SANTA CATARINA", "SAO PAULO", "SERGIPE", "TOCANTINS"),
              abb = c("AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA",
-                     "MS", "MT", "MG", "PA", "PA", "PR","PE", "PI", "RJ", "RN",
+                     "MS", "MT", "MG", "PA", "PB", "PR","PE", "PI", "RJ", "RN",
                      "RS", "RO", "RR", "SC", "SP", "SE", "TO"),
              code = c(12L, 27L, 16L, 13L, 29L, 23L, 53L, 32L, 52L, 21L, 51L, 50L,
                       31L, 15L, 25L, 41L, 26L, 22L, 33L, 24L, 43L, 11L, 14L, 42L, 35L,
@@ -57,15 +57,24 @@ clean_names <- function(name){
 }
 
 
+# Internal function to prepare vector with state abbreviations
+get_state <- function(state, ln){
+
+  state <- sapply(state, function(state) state2code(state))
+  if(ln > 1 & length(state) == 1) state <- rep(state, ln)
+  state
+}
+
+
 # Internal function to match state abbreviations and state codes
 state2code <- function(uf){
 
-  ufs <- br_states()$abb
+  ufs <- get_states()$abb
 
   uf <- toupper(uf) %>%
     match.arg(ufs)
 
-  br_states()$code[match(uf, ufs)]
+  get_states()$code[match(uf, ufs)]
 }
 
 

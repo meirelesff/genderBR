@@ -68,7 +68,7 @@ get_gender(name, prob = T, state = states)
 This can be useful also to predict the gender of different individuals living in different states:
 
 ```{r}
-df <- data.frame(name = c("Alberto da Silva", "Maria dos Santos", "Pedro Rocha", "Paula Camargo"),
+df <- data.frame(name = c("Alberto da Silva", "Maria dos Santos", "Thiago Rocha", "Paula Camargo"),
                  uf = c("AC", "SP", "PE", "RS"),
                  stringsAsFactors = FALSE
                  )
@@ -81,10 +81,10 @@ df
 
 ### Brazilian state abbreviations
 
-The `genderBR` package relies on Brazilian state abbreviations (acronyms) to filter results. To get a complete dataset with the full name, IBGE code, and abbreviations of all 27 Brazilian states, use the `br_states` functions:
+The `genderBR` package relies on Brazilian state abbreviations (acronyms) to filter results. To get a complete dataset with the full name, IBGE code, and abbreviations of all 27 Brazilian states, use the `get_states` functions:
 
 ```{r}
-br_states()
+get_states()
 ```
 
 ## Geographic distribution of Brazilian first names

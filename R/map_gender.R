@@ -1,6 +1,6 @@
 #' Map the use of Brazilian first names by gender and by state
 #'
-#' \code{map_gender} retrieves data on the number of male or female persons with a given first name
+#' \code{map_gender} retrieves data on the number of male or female uses of a given first name
 #' by state from the Instituto Brasileiro de Geografia e Estatistica's 2010 Census API.
 #'
 #' @param name A string with a Brazilian first name. The name can also be passed to the function
