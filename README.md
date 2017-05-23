@@ -10,7 +10,9 @@ genderBR
 How does it work?
 -----------------
 
-`genderBR`'s main function is `get_gender`, which takes a string with a Brazilian first name and predicts its gender using data from the IBGE's 2010 Census. More specifically, it extracts the number of female and male persons with a given first name and tries to predict the gender...
+`genderBR`'s main function is `get_gender`, which takes a string with a Brazilian first name and predicts its gender using data from the IBGE's 2010 Census.
+
+More specifically, it retrieves data on the number of females and males with the same name in Brazil, or in a given Brazilian state, and calculates the proportion of females using it. The function then classifies a name as male or female only when that proportion is higher than a given threshold (e.g., , or ); proportions below this threshold are classified as missing (). An example:
 
 ``` r
 library(genderBR)
@@ -62,11 +64,11 @@ get_gender(name, prob = T, state = states)
 #> [1] 0.26273991 0.05144695 0.12947819
 ```
 
-This can be useful also to predict the gender of different people from different states:
+This can be useful also to predict the gender of different individuals living in different states:
 
 ``` r
-df <- data.frame(name = c("Alberto da Silva", "Maria dos Santos", "Pedro Rocha"),
-                 uf = c("AC", "SP", "PE"),
+df <- data.frame(name = c("Alberto da Silva", "Maria dos Santos", "Thiago Rocha", "Paula Camargo"),
+                 uf = c("AC", "SP", "PE", "RS"),
                  stringsAsFactors = FALSE
                  )
 
@@ -76,15 +78,16 @@ df
 #>               name uf gender
 #> 1 Alberto da Silva AC   Male
 #> 2 Maria dos Santos SP Female
-#> 3      Pedro Rocha PE   Male
+#> 3     Thiago Rocha PE   Male
+#> 4    Paula Camargo RS Female
 ```
 
 ### Brazilian state abbreviations
 
-The `genderBR` package relies on Brazilian state abbreviations (acronyms) to filter results. To get a complete dataset with the full name, IBGE code, and abbreviations of all 27 Brazilian states, use the `br_states` functions:
+The `genderBR` package relies on Brazilian state abbreviations (acronyms) to filter results. To get a complete dataset with the full name, IBGE code, and abbreviations of all 27 Brazilian states, use the `get_states` functions:
 
 ``` r
-br_states()
+get_states()
 #> # A tibble: 27 × 3
 #>               state   abb  code
 #>               <chr> <chr> <int>
@@ -157,9 +160,9 @@ devtools::install_github("meirelesff/genderBR")
 Data
 ----
 
-The data used in this package come from the Instituto Brasileiro de Geografia e Estatistica's (IBGE) 2010 Census. The surveyed population includes 190,8 million Brazilians -- with more than 130,000 unique first names.
+The data used in this package comes from the Instituto Brasileiro de Geografia e Estatistica's (IBGE) 2010 Census. The surveyed population includes 190,8 million Brazilians -- with more than 130,000 unique first names.
 
-To extracts the numer of male and female persons with a given first name in Brazil, the package uses the [API](http://censo2010.ibge.gov.br/nomes/) provided by the IBGE. In this service, names with different spelling (e.g., Ana and Anna, or Marcos and Markos) are considered different names, and only names with more than 20 occurrences, or more than 15 occurrences in a given state, were included in the database.
+To extracts the numer of male and female uses of a given first name in Brazil, the package uses the IBGE's [API](http://censo2010.ibge.gov.br/nomes/). In this service, names with different spelling (e.g., Ana and Anna, or Marcos and Markos) are considered different occurrences, and only names with more than 20 occurrences, or more than 15 occurrences in a given state, are included in the database.
 
 For more information on the IBGE's data, please check (in Portuguese): <http://censo2010.ibge.gov.br/nomes/>
 

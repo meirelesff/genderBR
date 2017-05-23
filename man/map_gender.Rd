@@ -26,7 +26,7 @@ for females, and \code{NULL}, in which case the function returns results for all
 }
 }
 \description{
-\code{map_gender} retrieves data on the number of male or female persons with a given first name
+\code{map_gender} retrieves data on the number of male or female uses of a given first name
 by state from the Instituto Brasileiro de Geografia e Estatistica's 2010 Census API.
 }
 \details{
