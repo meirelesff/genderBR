@@ -3,7 +3,7 @@
 genderBR
 ========
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/genderBR)](https://cran.r-project.org/package=genderBR) [![Travis-CI Build Status](https://travis-ci.org/meirelesff/genderBR.svg?branch=master)](https://travis-ci.org/meirelesff/genderBR) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/meirelesff/genderBR?branch=master&svg=true)](https://ci.appveyor.com/project/meirelesff/genderBR) [![Package-License](https://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/genderBR)](https://cran.r-project.org/package=genderBR) [![Travis-CI Build Status](https://travis-ci.org/meirelesff/genderBR.svg?branch=master)](https://travis-ci.org/meirelesff/genderBR) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/meirelesff/genderBR?branch=master&svg=true)](https://ci.appveyor.com/project/meirelesff/genderBR) [![Package-License](https://img.shields.io/badge/License-GPL-brightgreen.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 
 `genderBR` predicts gender from Brazilian first names using data from the Instituto Brasileiro de Geografia e Estatistica's 2010 Census [API](http://censo2010.ibge.gov.br/nomes/).
 
@@ -12,7 +12,7 @@ How does it work?
 
 `genderBR`'s main function is `get_gender`, which takes a string with a Brazilian first name and predicts its gender using data from the IBGE's 2010 Census.
 
-More specifically, it retrieves data on the number of females and males with the same name in Brazil, or in a given Brazilian state, and calculates the proportion of females using it. The function then classifies a name as male or female only when that proportion is higher than a given threshold (e.g., , or ); proportions below this threshold are classified as missing (). An example:
+More specifically, it retrieves data on the number of females and males with the same name in Brazil, or in a given Brazilian state, and calculates the proportion of female's uses of it. The function then classifies a name as male or female only when that proportion is higher than a given threshold (e.g., `female if proportion > 0.9`, or `male if proportion <= 0.1`); proportions below those threshold are classified as missing (`NA`). An example:
 
 ``` r
 library(genderBR)
@@ -88,18 +88,18 @@ The `genderBR` package relies on Brazilian state abbreviations (acronyms) to fil
 
 ``` r
 get_states()
-#> # A tibble: 27 × 3
+#> # A tibble: 27 x 3
 #>               state   abb  code
 #>               <chr> <chr> <int>
-#> 1              ACRE    AC    12
-#> 2           ALAGOAS    AL    27
-#> 3             AMAPA    AP    16
-#> 4          AMAZONAS    AM    13
-#> 5             BAHIA    BA    29
-#> 6             CEARA    CE    23
-#> 7  DISTRITO FEDERAL    DF    53
-#> 8    ESPIRITO SANTO    ES    32
-#> 9             GOIAS    GO    52
+#>  1             ACRE    AC    12
+#>  2          ALAGOAS    AL    27
+#>  3            AMAPA    AP    16
+#>  4         AMAZONAS    AM    13
+#>  5            BAHIA    BA    29
+#>  6            CEARA    CE    23
+#>  7 DISTRITO FEDERAL    DF    53
+#>  8   ESPIRITO SANTO    ES    32
+#>  9            GOIAS    GO    52
 #> 10         MARANHAO    MA    21
 #> # ... with 17 more rows
 ```
@@ -111,18 +111,18 @@ The `genderBR` package can also be used to get information on the relative and t
 
 ``` r
 map_gender("maria")
-#> # A tibble: 27 × 6
+#> # A tibble: 27 x 6
 #>                   nome    uf    freq populacao  sexo     prop
-#> *                <chr> <int>   <int>     <int> <chr>    <dbl>
-#> 1                Piauí    22  363139   3118360       11645.19
-#> 2                Ceará    23  967042   8452381       11441.06
-#> 3              Paraíba    25  423026   3766528       11231.19
-#> 4  Rio Grande do Norte    24  341940   3168027       10793.47
-#> 5              Alagoas    27  321330   3120494       10297.41
-#> 6           Pernambuco    26  838534   8796448        9532.64
-#> 7              Sergipe    28  188619   2068017        9120.77
-#> 8             Maranhão    21  574689   6574789        8740.80
-#> 9                 Acre    12   63172    733559        8611.71
+#>  *               <chr> <int>   <int>     <int> <chr>    <dbl>
+#>  1               Piauí    22  363139   3118360       11645.19
+#>  2               Ceará    23  967042   8452381       11441.06
+#>  3             Paraíba    25  423026   3766528       11231.19
+#>  4 Rio Grande do Norte    24  341940   3168027       10793.47
+#>  5             Alagoas    27  321330   3120494       10297.41
+#>  6          Pernambuco    26  838534   8796448        9532.64
+#>  7             Sergipe    28  188619   2068017        9120.77
+#>  8            Maranhão    21  574689   6574789        8740.80
+#>  9                Acre    12   63172    733559        8611.71
 #> 10        Minas Gerais    31 1307650  19597330        6672.59
 #> # ... with 17 more rows
 ```
@@ -131,18 +131,18 @@ To specify gender in the consultation, use the optional argument `gender` (valid
 
 ``` r
 map_gender("iris", gender = "m")
-#> # A tibble: 23 × 6
+#> # A tibble: 23 x 6
 #>                nome    uf  freq populacao  sexo  prop
-#> *             <chr> <int> <int>     <int> <chr> <dbl>
-#> 1             Goiás    52   840   6003788     m 13.99
-#> 2         Tocantins    17   156   1383445     m 11.28
-#> 3             Bahia    29   422  14016906     m  3.01
-#> 4       Mato Grosso    51    91   3035122     m  3.00
-#> 5      Minas Gerais    31   512  19597330     m  2.61
-#> 6  Distrito Federal    53    65   2570160     m  2.53
-#> 7    Espírito Santo    32    69   3514952     m  1.96
-#> 8          Rondônia    11    28   1562409     m  1.79
-#> 9              Pará    15   129   7581051     m  1.70
+#>  *            <chr> <int> <int>     <int> <chr> <dbl>
+#>  1            Goiás    52   840   6003788     m 13.99
+#>  2        Tocantins    17   156   1383445     m 11.28
+#>  3            Bahia    29   422  14016906     m  3.01
+#>  4      Mato Grosso    51    91   3035122     m  3.00
+#>  5     Minas Gerais    31   512  19597330     m  2.61
+#>  6 Distrito Federal    53    65   2570160     m  2.53
+#>  7   Espírito Santo    32    69   3514952     m  1.96
+#>  8         Rondônia    11    28   1562409     m  1.79
+#>  9             Pará    15   129   7581051     m  1.70
 #> 10   Rio de Janeiro    33   225  15989929     m  1.41
 #> # ... with 13 more rows
 ```
@@ -150,7 +150,13 @@ map_gender("iris", gender = "m")
 Installing
 ----------
 
-`genderBR` is not yet available on CRAN. To install a development version, use:
+To install `genderBR`'s last stable version on CRAN, use:
+
+``` r
+install.packages("genderBR")
+```
+
+To install a development version, use:
 
 ``` r
 if (!require("devtools")) install.packages("devtools")

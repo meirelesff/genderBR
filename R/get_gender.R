@@ -74,11 +74,15 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9){
   ln_un <- length(un_names)
   ln <- length(names)
 
+  # Set pauses
+  if(ln > 4) pause <- TRUE
+  else pause <- FALSE
+
   # Whole country & unique names
   if(is.null(state) & ln == ln_un){
 
     # Return
-    out <- sapply(1:ln, function(i) get_gender_api(names[i], state, prob = prob, threshold = threshold))
+    out <- sapply(1:ln, function(i) get_gender_api(names[i], state, prob = prob, threshold = threshold, pause = pause))
     return(out)
   }
 
@@ -86,7 +90,7 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9){
   if(is.null(state)) {
 
     # Pick unique names
-    gender_pred <- sapply(1:ln_un, function(i) get_gender_api(un_names[i], state, prob = prob, threshold = threshold))
+    gender_pred <- sapply(1:ln_un, function(i) get_gender_api(un_names[i], state, prob = prob, threshold = threshold, pause = pause))
 
     # Join
     names <- dplyr::tibble(names = names)
@@ -102,7 +106,7 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9){
 
     # Return
     state <- get_state(state, ln)
-    out <- sapply(1:ln, function(i) get_gender_api(names[i], state[i], prob = prob, threshold = threshold))
+    out <- sapply(1:ln, function(i) get_gender_api(names[i], state[i], prob = prob, threshold = threshold, pause = pause))
     return(out)
   }
 
@@ -111,7 +115,7 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9){
   names <- dplyr::tibble(names = names, state = state)
   dis_names <- dplyr::distinct(names)
 
-  dis_names$prob <- sapply(1:length(dis_names$names), function(i) get_gender_api(dis_names$names[i], dis_names$state[i], prob = prob, threshold = threshold))
+  dis_names$prob <- sapply(1:length(dis_names$names), function(i) get_gender_api(dis_names$names[i], dis_names$state[i], prob = prob, threshold = threshold, pause = pause))
   out <- dplyr::left_join(names, dis_names, by = c("names", "state"))$prob
 
   return(out)
@@ -119,7 +123,7 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9){
 
 
 # Get individual results from API
-get_gender_api <- function(name, state, prob, threshold){
+get_gender_api <- function(name, state, prob, threshold, pause = pause){
 
 
   # API endpoint
@@ -127,6 +131,7 @@ get_gender_api <- function(name, state, prob, threshold){
 
   # GET
   females <- httr::GET(ibge, query = list(nome = name, regiao = state, sexo = "f"))
+  if(pause) Sys.sleep(sample(seq(1, 10, by = 0.1), 1))
   males <- httr::GET(ibge, query = list(nome = name, regiao = state, sexo = "m"))
 
   # Test responses

@@ -1,0 +1,4 @@
+"0","df$gender <- get_gender(df$name, df$uf)
+"
+"2","Error in test_responses(females, males, prob) : Bad Gateway (HTTP 502).
+"

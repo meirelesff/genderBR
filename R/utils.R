@@ -1,3 +1,11 @@
+# OnAttach message
+.onAttach <-
+  function(libname, pkgname) {
+    packageStartupMessage("\nTo cite genderBR in publications, use: citation('genderBR')")
+    packageStartupMessage("To learn more, visit: http://fmeireles.com/genderbr\n")
+  }
+
+
 #' State's abbreviations
 #'
 #' Use this function to get a \code{data.frame} with the full names, abbreviations
