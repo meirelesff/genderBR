@@ -8,8 +8,9 @@
 
 0 errors | 0 warnings | 0 note
 
-* There is one note on win-builder about a possibly mis-spelled word: API. That is not the case.
-* On win-builder devel there is one warning related to dplyr package version, "Rcpp (0.12.11) different from Rcpp used to build dplyr (0.12.10)".
+* There is just this usual note on win-builder that says "checking CRAN incoming feasibility ... NOTE
+Maintainer: ...".
+
 
 ## Reverse dependencies
 
