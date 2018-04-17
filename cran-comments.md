@@ -10,9 +10,6 @@ This is a minor update. In this version, I fixed some issues and included an int
 
 0 errors | 0 warnings | 0 note
 
-* There is just this usual note on win-builder that says "checking CRAN incoming feasibility ... NOTE
-Maintainer: ...".
-
 ## Reverse dependencies
 
 There are no reverse dependencies.
