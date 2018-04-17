@@ -41,11 +41,11 @@ Additionally, only names with more than 20 occurrences, or more than 15 occurren
 are considered.
 }
 \examples{
-\donttest{
 # Map the use of the name 'Joao' for
 # males in Brazil by state
 map_gender('Joao', gender = 'm')
 
+\donttest{
 # Map the use of the name 'Maria'
 map_gender('maria')
 
@@ -54,6 +54,11 @@ map_gender('Maria da Silva Santos')
 
 # Or names in uppercase
 map_gender('MARIA DA SILVA SANTOS')
+}
+
+\dontshow{
+map_gender('AUGUSTO ROBERTO', gender = 'm')
+map_gender('John da Silva', gender = 'm')
 }
 
 

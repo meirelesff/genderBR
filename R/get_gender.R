@@ -1,21 +1,23 @@
 #' Predict gender from Brazilian first names
 #'
 #' @description
-#' \code{get_gender} uses the IBGE's 2010 Census API to predict gender from Brazilian first names.
-#' More specifically, it retrieves data on the number of females and males with the same name
+#' \code{get_gender} uses the IBGE's 2010 Census data to predict gender from Brazilian first names.
+#' More specifically, it uses data on the number of females and males with the same name
 #' in Brazil, or in a given Brazilian state, and calculates the proportion of females using it.
 #' The function classifies a name as male or female only when that proportion is higher than
-#' a given threshold (e.g., \code{female if proportion > 0.9}, or \code{male if proportion < 0.1});
-#' proportions below this threshold are classified as missing (\code{NA}).
+#' a given threshold (e.g., \code{female if proportion > 0.9, the default}, or \code{male if proportion < 0.1});
+#' proportions below this threshold are classified as missing (\code{NA}). This method is based on the 'gender'
+#' package developed by Muellen (2016). gender: Predict Gender from Names Using Historical Data.
 #'
 #' Multiple names can be passed to the function call. To speed the calculation process,
-#' the package aggregates equal first names to make fewer requests to the IBGE's API.
+#' the package aggregates equal first names to make fewer requests to the IBGE's API. Also, the package contains an internal dataset with all the names reported by the IBGE to make faster classifications -- although this option does not support getting results by State.
 #'
 #' @param names A string specifying a person's first name. Names can also be passed to the function
 #' as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive.
-#' @param state A string with the state of federation abbreviation (e.g., \code{RJ} for Rio de Janeiro).
+#' @param state A string with the state of federation abbreviation (e.g., \code{RJ} for Rio de Janeiro). If state is set to a value different from \code{NULL}, the \code{internal} argument is ignored.
 #' @param prob Report the proportion of female uses of the name? Defaults to \code{FALSE}.
 #' @param threshold Numeric indicating the threshold used in predictions. Defaults to 0.9.
+#' @param internal Use internal data to predict gender? Allowing this option makes the function way faster, but it does not support getting results by State. Defaults to \code{TRUE}.
 #'
 #' @details Information on the Brazilian first names uses by gender was collect in the 2010 Census
 #' (Censo Demografico de 2010, in Portuguese), in July of that year, by the Instituto Brasileiro de Demografia
@@ -24,7 +26,7 @@
 #'
 #' @note Names with different spell (e.g., Ana and Anna, or Marcos and Markos) are considered different names.
 #' Additionally, only names with more than 20 occurrences, or more than 15 occurrences in a given state,
-#' are considered by the IBGE's API.
+#' are included in the IBGE's data.
 #'
 #' @references For more information on the IBGE's data, please check (in Portuguese):
 #' \url{http://censo2010.ibge.gov.br/nomes/}
@@ -37,13 +39,11 @@
 #' If the \code{prob} argument is set to \code{TRUE}, then the function returns the proportion of females uses of the provided name.
 #'
 #' @examples
-#' \donttest{
-#' # Use get_gender to predict the gender
-#' # of a person based on her/his first name
-#' get_gender('mario')
-#' get_gender('Maria da Silva Santos')
+#' # Use get_gender to predict the gender of a person based on her/his first name
 #' get_gender('MARIA DA SILVA SANTOS')
+#' get_gender('joao')
 #'
+#' \dontrun{
 #' # It is possible to filter results by state
 #' get_gender('ana', state = 'sp')
 #'
@@ -65,8 +65,13 @@
 #' @import httr
 #' @export
 
-get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9){
+get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9, internal = TRUE){
 
+
+  # Inputs
+  if(!prob & threshold < 0 | !prob & threshold > 1) stop("Threshold must be between 0 and 1.")
+  if(!is.logical(internal)) stop("Internal must be logical.")
+  if(!is.logical(prob)) stop("Prob must be logical.")
 
   # Names
   names <- clean_names(names)
@@ -75,9 +80,18 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9){
   ln <- length(names)
 
   # Set pauses
-  if(ln > 4) pause <- TRUE
+  if(ln > 100) pause <- TRUE
   else pause <- FALSE
 
+  # Ignore internal when state is declared
+  if(internal & !is.null(state)) internal <- FALSE
+
+
+  ### Internal data
+  if(internal) return(get_gender_internal(names, prob, threshold))
+
+
+  ### API data
   # Whole country & unique names
   if(is.null(state) & ln == ln_un){
 
@@ -131,7 +145,7 @@ get_gender_api <- function(name, state, prob, threshold, pause = pause){
 
   # GET
   females <- httr::GET(ibge, query = list(nome = name, regiao = state, sexo = "f"))
-  if(pause) Sys.sleep(sample(seq(1, 10, by = 0.1), 1))
+  if(pause) Sys.sleep(0.3)
   males <- httr::GET(ibge, query = list(nome = name, regiao = state, sexo = "m"))
 
   # Test responses
@@ -146,5 +160,19 @@ get_gender_api <- function(name, state, prob, threshold, pause = pause){
   fprob <- females / sum(females, males)
   if(prob) return(fprob)
   round_guess(fprob, threshold)
+}
+
+
+
+# Get results from internal data
+get_gender_internal <- function(names, prob, threshold){
+
+  # Join data
+  nms <- dplyr::tibble(nome = names) %>%
+    dplyr::left_join(nomes, by = "nome")
+
+  # Return
+  if(prob) return(nms$prob_fem)
+  round_guess(nms$prob_fem, threshold)
 }
 

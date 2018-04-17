@@ -4,17 +4,20 @@
 \alias{get_gender}
 \title{Predict gender from Brazilian first names}
 \usage{
-get_gender(names, state = NULL, prob = FALSE, threshold = 0.9)
+get_gender(names, state = NULL, prob = FALSE, threshold = 0.9,
+  internal = TRUE)
 }
 \arguments{
 \item{names}{A string specifying a person's first name. Names can also be passed to the function
 as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive.}
 
-\item{state}{A string with the state of federation abbreviation (e.g., \code{RJ} for Rio de Janeiro).}
+\item{state}{A string with the state of federation abbreviation (e.g., \code{RJ} for Rio de Janeiro). If state is set to a value different from \code{NULL}, the \code{internal} argument is ignored.}
 
 \item{prob}{Report the proportion of female uses of the name? Defaults to \code{FALSE}.}
 
 \item{threshold}{Numeric indicating the threshold used in predictions. Defaults to 0.9.}
+
+\item{internal}{Use internal data to predict gender? Allowing this option makes the function way faster, but it does not support getting results by State. Defaults to \code{TRUE}.}
 }
 \value{
 \code{get_gender} may returns three different values: \code{Female}, if the name provided is female;
@@ -23,15 +26,16 @@ as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive
 If the \code{prob} argument is set to \code{TRUE}, then the function returns the proportion of females uses of the provided name.
 }
 \description{
-\code{get_gender} uses the IBGE's 2010 Census API to predict gender from Brazilian first names.
-More specifically, it retrieves data on the number of females and males with the same name
+\code{get_gender} uses the IBGE's 2010 Census data to predict gender from Brazilian first names.
+More specifically, it uses data on the number of females and males with the same name
 in Brazil, or in a given Brazilian state, and calculates the proportion of females using it.
 The function classifies a name as male or female only when that proportion is higher than
-a given threshold (e.g., \code{female if proportion > 0.9}, or \code{male if proportion < 0.1});
-proportions below this threshold are classified as missing (\code{NA}).
+a given threshold (e.g., \code{female if proportion > 0.9, the default}, or \code{male if proportion < 0.1});
+proportions below this threshold are classified as missing (\code{NA}). This method is based on the 'gender'
+package developed by Muellen (2016). gender: Predict Gender from Names Using Historical Data.
 
 Multiple names can be passed to the function call. To speed the calculation process,
-the package aggregates equal first names to make fewer requests to the IBGE's API.
+the package aggregates equal first names to make fewer requests to the IBGE's API. Also, the package contains an internal dataset with all the names reported by the IBGE to make faster classifications -- although this option does not support getting results by State.
 }
 \details{
 Information on the Brazilian first names uses by gender was collect in the 2010 Census
@@ -42,16 +46,14 @@ According to the IBGE, there are more than 130,000 unique first names in this po
 \note{
 Names with different spell (e.g., Ana and Anna, or Marcos and Markos) are considered different names.
 Additionally, only names with more than 20 occurrences, or more than 15 occurrences in a given state,
-are considered by the IBGE's API.
+are included in the IBGE's data.
 }
 \examples{
-\donttest{
-# Use get_gender to predict the gender
-# of a person based on her/his first name
-get_gender('mario')
-get_gender('Maria da Silva Santos')
+# Use get_gender to predict the gender of a person based on her/his first name
 get_gender('MARIA DA SILVA SANTOS')
+get_gender('joao')
 
+\dontrun{
 # It is possible to filter results by state
 get_gender('ana', state = 'sp')
 

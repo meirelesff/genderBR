@@ -1,10 +1,10 @@
 Package: genderBR
 Type: Package
 Title: Predict Gender from Brazilian First Names
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: person("Fernando", "Meireles", , "fmeireles@ufmg.br", c("aut", "cre"))
-Description: A method for predicting gender from Brazilian first names
-    using the Brazilian Institute of Geography and Statistics' data. 
+Description: A method to predict and report gender from Brazilian first names
+    using the Brazilian Institute of Geography and Statistics' Census data.
 License: GPL (>= 2)
 Depends: R (>= 3.1.2)
 Imports: dplyr (>= 0.5.0),

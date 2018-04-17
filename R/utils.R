@@ -49,11 +49,10 @@ test_responses <- function(response1, response2, prob){
 # Internal function to round numeric guess
 round_guess <- function(prob, threshold){
 
-  if(threshold < 0 | threshold > 1) stop("Threshold must be between 0 and 1.")
-
-  if(prob > threshold) return("Female")
-  else if(prob < 1 - threshold) return("Male")
-  else return(as.character(NA))
+  dplyr::case_when(prob > threshold ~ "Female",
+                   prob < (1 - threshold) ~ "Male",
+                   TRUE ~ as.character(NA)
+                   )
 }
 
 
@@ -61,6 +60,7 @@ round_guess <- function(prob, threshold){
 clean_names <- function(name){
 
   sub("(.*?) .*", "\\1", name) %>%
+    iconv(to = "ASCII//TrANSLIT") %>%
     tolower()
 }
 
