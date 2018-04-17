@@ -1,14 +1,14 @@
 {
     "collab_server" : "",
-    "contents" : "This is a minor update. In this version, I fixed some issues and included an internal dataset that can be used to speed up the package's main function, get_gender.\n\n## Test environments\n* Windows 10 (personal computer), R 3.4.4 \n* Ubuntu 12.04.5 LTS (on travis-ci), R 3.3.2\n* Windows server 2012 R2 x64 (on appveyor), 3.3.3 Patched\n* Win-builder (release and devel)\n\n## R CMD check results\n\n0 errors | 0 warnings | 0 note\n\n* There is just this usual note on win-builder that says \"checking CRAN incoming feasibility ... NOTE\nMaintainer: ...\".\n\n## Reverse dependencies\n\nThere are no reverse dependencies.\n",
+    "contents" : "This is a minor update. In this version, I fixed some issues and included an internal dataset to speed up the package's main function, get_gender.\n\n## Test environments\n* Windows 10 (personal computer), R 3.4.4 \n* Ubuntu 12.04.5 LTS (on travis-ci), R 3.4.4\n* Windows server 2012 R2 x64 (on appveyor), 3.5.0 RC\n* Win-builder (release and devel)\n\n## R CMD check results\n\n0 errors | 0 warnings | 0 note\n\n* There is just this usual note on win-builder that says \"checking CRAN incoming feasibility ... NOTE\nMaintainer: ...\".\n\n## Reverse dependencies\n\nThere are no reverse dependencies.\n",
     "created" : 1504539011000.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "3908810282",
+    "hash" : "2701520248",
     "id" : "37B373CF",
-    "lastKnownWriteTime" : 1523988379,
-    "last_content_update" : 1523988379669,
+    "lastKnownWriteTime" : 1523989594,
+    "last_content_update" : 1523989594772,
     "path" : "C:/Users/User/Google Drive/R/Pacotes/genderBR/cran-comments.md",
     "project_path" : "cran-comments.md",
     "properties" : {
