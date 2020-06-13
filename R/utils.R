@@ -60,7 +60,7 @@ round_guess <- function(prob, threshold){
 clean_names <- function(name){
 
   sub("(.*?) .*", "\\1", name) %>%
-    iconv(to = "ASCII//TrANSLIT") %>%
+    iconv(to = "ASCII//TRANSLIT") %>%
     tolower()
 }
 
