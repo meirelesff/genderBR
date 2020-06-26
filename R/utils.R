@@ -55,13 +55,21 @@ round_guess <- function(prob, threshold){
                    )
 }
 
+# Internal function to remove accented characters
+convert_latin1_char <- function(x) {
+  lst_latin1_char <- readRDS('./R/latin_char.rda')
+  x <- tolower(x)
+  for (i in 1:length(lst_latin1_char)) {
+    x <- gsub(unlist(lst_latin1_char[i])[1], unlist(lst_latin1_char[i])[2], x)
+  }
+  x
+}
 
 # Internal function to clean first names
 clean_names <- function(name){
 
   sub("(.*?) .*", "\\1", name) %>%
-    iconv(to = "ASCII//TRANSLIT") %>%
-    tolower()
+    convert_latin1_char()
 }
 
 
