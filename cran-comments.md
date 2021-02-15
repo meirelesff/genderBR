@@ -1,7 +1,7 @@
-This is a minor update. In this version, I fixed some issues and included an internal dataset to speed up the package's main function, get_gender.
+This version mostly introduces minor bug fixes. In response to CRAN' checks, informative error messages are now returned in case of connection failures. Documentation was expanded.
 
 ## Test environments
-* Windows 10 (personal computer), R 3.4.4 
+* Windows 10 (personal computer), R 4.0.3 
 * Ubuntu 12.04.5 LTS (on travis-ci), R 3.4.4
 * Windows server 2012 R2 x64 (on appveyor), 3.5.0 RC
 * Win-builder (release and devel)

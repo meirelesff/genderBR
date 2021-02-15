@@ -60,7 +60,7 @@ round_guess <- function(prob, threshold){
 clean_names <- function(name){
 
   sub("(.*?) .*", "\\1", name) %>%
-    iconv(to = "ASCII//TrANSLIT") %>%
+    iconv(to = "ASCII//TRANSLIT") %>%
     tolower()
 }
 
@@ -86,5 +86,9 @@ state2code <- function(uf){
 }
 
 
-# Avoid the R CMD check note about magrittr's dot
-utils::globalVariables(".")
+# Safe GET (to avoid unninformative timeouts)
+get_safe <- purrr::possibly(httr::GET, otherwise = NULL)
+
+
+
+

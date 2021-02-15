@@ -25,8 +25,11 @@
 #' According to the IBGE, there are more than 130,000 unique first names in this population.
 #'
 #' @note Names with different spell (e.g., Ana and Anna, or Marcos and Markos) are considered different names.
-#' Additionally, only names with more than 20 occurrences, or more than 15 occurrences in a given state,
+#' In addition, only names with more than 20 occurrences, or more than 15 occurrences in a given state,
 #' are included in the IBGE's data.
+#'
+#' Also note that UTF-8 special characters, common in Portuguese words and names, are not supported by the IBGE's API.
+#' Users are encouraged to convert strings to ASCII.
 #'
 #' @references For more information on the IBGE's data, please check (in Portuguese):
 #' \url{http://censo2010.ibge.gov.br/nomes/}
@@ -82,6 +85,7 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9, inter
   # Set pauses
   if(ln > 100) pause <- TRUE
   else pause <- FALSE
+
 
   # Ignore internal when state is declared
   if(internal & !is.null(state)) internal <- FALSE
@@ -144,11 +148,13 @@ get_gender_api <- function(name, state, prob, threshold, pause = pause){
   ibge <- "http://servicodados.ibge.gov.br/api/v1/censos/nomes/basica"
 
   # GET
-  females <- httr::GET(ibge, query = list(nome = name, regiao = state, sexo = "f"))
+  females <- get_safe(ibge, query = list(nome = name, regiao = state, sexo = "f"))
   if(pause) Sys.sleep(0.3)
-  males <- httr::GET(ibge, query = list(nome = name, regiao = state, sexo = "m"))
+  males <- get_safe(ibge, query = list(nome = name, regiao = state, sexo = "m"))
 
   # Test responses
+  if(is.null(females)) stop("IBGE's API is not responding. Try again later.")
+  if(is.null(males)) stop("IBGE's API is not responding. Try again later.")
   res <- test_responses(females, males, prob)
   if(!is.null(res)) return(res)
 

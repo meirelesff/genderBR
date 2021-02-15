@@ -69,9 +69,10 @@ map_gender <- function(name, gender = NULL){
 
   # GET
   total <- "http://servicodados.ibge.gov.br/api/v1/censos/nomes/mapa" %>%
-    httr::GET(query = list(nome = name, sexo = gender))
+    get_safe(query = list(nome = name, sexo = gender))
 
   # Test response
+  if(is.null(total)) stop("IBGE's API is not responding. Try again later.")
   httr::stop_for_status(total)
 
   # Parse and return

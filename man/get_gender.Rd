@@ -4,8 +4,7 @@
 \alias{get_gender}
 \title{Predict gender from Brazilian first names}
 \usage{
-get_gender(names, state = NULL, prob = FALSE, threshold = 0.9,
-  internal = TRUE)
+get_gender(names, state = NULL, prob = FALSE, threshold = 0.9, internal = TRUE)
 }
 \arguments{
 \item{names}{A string specifying a person's first name. Names can also be passed to the function
@@ -45,8 +44,11 @@ According to the IBGE, there are more than 130,000 unique first names in this po
 }
 \note{
 Names with different spell (e.g., Ana and Anna, or Marcos and Markos) are considered different names.
-Additionally, only names with more than 20 occurrences, or more than 15 occurrences in a given state,
+In addition, only names with more than 20 occurrences, or more than 15 occurrences in a given state,
 are included in the IBGE's data.
+
+Also note that UTF-8 special characters, common in Portuguese words and names, are not supported by the IBGE's API.
+Users are encouraged to convert strings to ASCII.
 }
 \examples{
 # Use get_gender to predict the gender of a person based on her/his first name
