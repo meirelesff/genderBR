@@ -32,7 +32,7 @@
 #' Users are encouraged to convert strings to ASCII.
 #'
 #' @references For more information on the IBGE's data, please check (in Portuguese):
-#' \url{http://censo2010.ibge.gov.br/nomes/}
+#' \url{https://censo2010.ibge.gov.br/nomes/}
 #'
 #' @seealso \code{\link{map_gender}}
 #'
@@ -64,8 +64,6 @@
 #' get(rep('cris', 3), c('sp', 'am', 'rs'))
 #' }
 #'
-#' @import dplyr
-#' @import httr
 #' @export
 
 get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9, internal = TRUE){
@@ -145,7 +143,7 @@ get_gender_api <- function(name, state, prob, threshold, pause = pause){
 
 
   # API endpoint
-  ibge <- "http://servicodados.ibge.gov.br/api/v1/censos/nomes/basica"
+  ibge <- "https://servicodados.ibge.gov.br/api/v1/censos/nomes/basica"
 
   # GET
   females <- get_safe(ibge, query = list(nome = name, regiao = state, sexo = "f"))

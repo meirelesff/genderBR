@@ -65,7 +65,7 @@ map_gender('John da Silva', gender = 'm')
 }
 \references{
 For more information on the IBGE's data, please check (in Portuguese):
-\url{http://censo2010.ibge.gov.br/nomes/}
+\url{https://censo2010.ibge.gov.br/nomes/}
 }
 \seealso{
 \code{\link{get_gender}}

@@ -12,7 +12,8 @@ Imports:
     jsonlite,
     httr,
     magrittr,
-    purrr
+    purrr,
+    tibble
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/meirelesff/genderBR
