@@ -1,4 +1,5 @@
 /home/fernando/GitHub/genderBR/.Rbuildignore="284F8D2B"
+/home/fernando/GitHub/genderBR/.github/workflows/R-CMD-check.yaml="D4112614"
 /home/fernando/GitHub/genderBR/.gitignore="C63713FD"
 /home/fernando/GitHub/genderBR/CRAN-RELEASE="6C2F9278"
 /home/fernando/GitHub/genderBR/DESCRIPTION="5047EFA5"
@@ -9,6 +10,7 @@
 /home/fernando/GitHub/genderBR/R/utils.R="ED7E2EED"
 /home/fernando/GitHub/genderBR/README.Rmd="1A754355"
 /home/fernando/GitHub/genderBR/README.md="94765669"
+/home/fernando/GitHub/genderBR/codecov.yml="FF4B6AB3"
 /home/fernando/GitHub/genderBR/cran-comments.md="DB92D1CE"
 /home/fernando/GitHub/genderBR/tests/testthat.R="6E48821A"
 /home/fernando/GitHub/genderBR/tests/testthat/test_inputs.R="C55CD59A"

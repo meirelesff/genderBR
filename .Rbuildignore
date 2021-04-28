@@ -8,3 +8,4 @@
 ^CRAN-RELEASE$
 ^Makefile$
 ^\.github$
+^codecov\.yml$
