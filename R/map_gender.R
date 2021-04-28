@@ -36,7 +36,7 @@
 #' }
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Map the use of the name 'Maria'
 #' map_gender('maria')
 #'

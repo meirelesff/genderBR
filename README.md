@@ -7,6 +7,8 @@
 [![R-CMD-check](https://github.com/meirelesff/genderBR/workflows/R-CMD-check/badge.svg)](https://github.com/meirelesff/genderBR/actions)
 [![AppVeyor Build
 Status](https://ci.appveyor.com/api/projects/status/github/meirelesff/genderBR?branch=master&svg=true)](https://ci.appveyor.com/project/meirelesff/genderBR)
+[![Codecov test
+coverage](https://codecov.io/gh/meirelesff/genderBR/branch/master/graph/badge.svg)](https://codecov.io/gh/meirelesff/genderBR?branch=master)
 [![Package-License](https://img.shields.io/badge/License-GPL-brightgreen.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 
 `genderBR` predicts gender from Brazilian first names using data from

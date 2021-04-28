@@ -44,7 +44,7 @@ Additionally, only names with more than 20 occurrences, or more than 15 occurren
 are considered.
 }
 \examples{
-\donttest{
+\dontrun{
 # Map the use of the name 'Maria'
 map_gender('maria')
 
