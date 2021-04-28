@@ -7,6 +7,8 @@
 #' as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive.
 #' @param gender A string with the gender to look for. Valid inputs are \code{m}, for males, \code{f},
 #' for females, and \code{NULL}, in which case the function returns results for all persons with a given name.
+#' @param encoding Encoding used to read Brazilian names and stip accents.
+#' Defaults to \code{ASCII//TRANSLIT}.
 #'
 #' @details Information on the gender associated with Brazilian first names was collect in the 2010 Census
 #' (Censo Demografico de 2010, in Portuguese), in July of that year, by the Instituto Brasileiro de Demografia
@@ -51,11 +53,11 @@
 #' @export
 
 
-map_gender <- function(name, gender = NULL){
+map_gender <- function(name, gender = NULL, encoding = "ASCII//TRANSLIT"){
 
 
   # Clean name
-  name <- clean_names(name)
+  name <- clean_names(name, encoding = encoding)
 
   # GET
   total <- "https://servicodados.ibge.gov.br/api/v1/censos/nomes/mapa" %>%

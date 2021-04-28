@@ -4,7 +4,7 @@
 \alias{map_gender}
 \title{Map the use of Brazilian first names by gender and by state}
 \usage{
-map_gender(name, gender = NULL)
+map_gender(name, gender = NULL, encoding = "ASCII//TRANSLIT")
 }
 \arguments{
 \item{name}{A string with a Brazilian first name. The name can also be passed to the function
@@ -12,6 +12,9 @@ as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive
 
 \item{gender}{A string with the gender to look for. Valid inputs are \code{m}, for males, \code{f},
 for females, and \code{NULL}, in which case the function returns results for all persons with a given name.}
+
+\item{encoding}{Encoding used to read Brazilian names and stip accents.
+Defaults to \code{ASCII//TRANSLIT}.}
 }
 \value{
 \code{get_gender} returns a \code{tbl_df, tbl, data.frame} with the following variables:

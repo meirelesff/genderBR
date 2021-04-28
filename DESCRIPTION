@@ -19,3 +19,6 @@ LazyData: true
 URL: https://github.com/meirelesff/genderBR
 BugReports: https://github.com/meirelesff/genderBR/issues
 RoxygenNote: 7.1.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

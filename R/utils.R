@@ -57,11 +57,15 @@ round_guess <- function(prob, threshold){
 
 
 # Internal function to clean first names
-clean_names <- function(name, encoding = "ASCII//TRANSLIT"){
+clean_names <- function(name, encoding){
 
-  sub("(.*?) .*", "\\1", name) %>%
-    iconv(to = encoding) %>%
-    tolower()
+  name <- sub("^\\s+", "", name) # Remove leading white
+  name <- sub("\\s+$", "", name) # Remove trailing white
+  name <- sub("(.*?) .*", "\\1", name) # First name only
+  name <- iconv(name, to = encoding) # Remove accents
+  name <- tolower(name)
+
+  return(name)
 }
 
 
@@ -70,7 +74,8 @@ get_state <- function(state, ln){
 
   state <- sapply(state, function(state) state2code(state))
   if(ln > 1 & length(state) == 1) state <- rep(state, ln)
-  state
+
+  return(state)
 }
 
 
@@ -82,11 +87,10 @@ state2code <- function(uf){
   uf <- toupper(uf) %>%
     match.arg(ufs)
 
-  get_states()$code[match(uf, ufs)]
+  return(get_states()$code[match(uf, ufs)])
 }
 
 
-# Safe GET (to avoid unninformative timeouts)
+# Safe GET (avoid unninformative timeouts)
 get_safe <- purrr::possibly(httr::GET, otherwise = NULL)
-
 

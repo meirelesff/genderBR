@@ -14,8 +14,9 @@ get_gender(
 )
 }
 \arguments{
-\item{names}{A string specifying a person's first name. Names can also be passed to the function
-as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive.}
+\item{names}{A character vector specifying a person's first name. Names can also be passed to the function
+as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive.
+In addition, multiple names can be passed in the same function call.}
 
 \item{state}{A string with the state of federation abbreviation
 (e.g., \code{RJ} for Rio de Janeiro). If state is set to a value different

@@ -16,8 +16,9 @@
 #' Also, the package contains an internal dataset with all the names reported by the
 #' IBGE to make faster classifications -- although this option does not support getting results by State.
 #'
-#' @param names A string specifying a person's first name. Names can also be passed to the function
+#' @param names A character vector specifying a person's first name. Names can also be passed to the function
 #' as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive.
+#' In addition, multiple names can be passed in the same function call.
 #' @param state A string with the state of federation abbreviation
 #' (e.g., \code{RJ} for Rio de Janeiro). If state is set to a value different
 #' from \code{NULL}, the \code{internal} argument is ignored.
@@ -83,9 +84,13 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
 
 
   # Inputs
-  if(!prob & threshold < 0 | !prob & threshold > 1) stop("Threshold must be between 0 and 1.")
-  if(!is.logical(internal)) stop("Internal must be logical.")
-  if(!is.logical(prob)) stop("Prob must be logical.")
+  if(!is.character(encoding)) stop("'encoding' must be a character representing a valid encoding.")
+  if(!is.numeric(threshold)) stop("'threshold' must be numeric, between 0 and 1.")
+  if(threshold < 0 | threshold > 1) stop("'threshold' must be between 0 and 1.")
+  if(!is.logical(internal)) stop("'internal' must be logical.")
+  if(!is.character(names)) stop("'names' must be character.")
+  if(!is.logical(prob)) stop("'Prob' must be logical.")
+
 
   # Names
   names <- clean_names(name = names, encoding = encoding)
@@ -111,7 +116,10 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
   if(is.null(state) & ln == ln_un){
 
     # Return
-    out <- sapply(1:ln, function(i) get_gender_api(names[i], state, prob = prob, threshold = threshold, pause = pause))
+    out <- sapply(1:ln, function(i) get_gender_api(names[i], state,
+                                                   prob = prob,
+                                                   threshold = threshold,
+                                                   pause = pause))
     return(out)
   }
 
@@ -119,7 +127,10 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
   if(is.null(state)) {
 
     # Pick unique names
-    gender_pred <- sapply(1:ln_un, function(i) get_gender_api(un_names[i], state, prob = prob, threshold = threshold, pause = pause))
+    gender_pred <- sapply(1:ln_un, function(i) get_gender_api(un_names[i], state,
+                                                              prob = prob,
+                                                              threshold = threshold,
+                                                              pause = pause))
 
     # Join
     names <- dplyr::tibble(names = names)
@@ -135,7 +146,10 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
 
     # Return
     state <- get_state(state, ln)
-    out <- sapply(1:ln, function(i) get_gender_api(names[i], state[i], prob = prob, threshold = threshold, pause = pause))
+    out <- sapply(1:ln, function(i) get_gender_api(names[i], state[i],
+                                                   prob = prob,
+                                                   threshold = threshold,
+                                                   pause = pause))
     return(out)
   }
 
@@ -144,7 +158,12 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
   names <- dplyr::tibble(names = names, state = state)
   dis_names <- dplyr::distinct(names)
 
-  dis_names$prob <- sapply(1:length(dis_names$names), function(i) get_gender_api(dis_names$names[i], dis_names$state[i], prob = prob, threshold = threshold, pause = pause))
+  dis_names$prob <- sapply(1:length(dis_names$names),
+                           function(i) get_gender_api(dis_names$names[i],
+                                                      dis_names$state[i],
+                                                      prob = prob,
+                                                      threshold = threshold,
+                                                      pause = pause))
   out <- dplyr::left_join(names, dis_names, by = c("names", "state"))$prob
 
   return(out)
