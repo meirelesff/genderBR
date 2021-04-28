@@ -33,8 +33,8 @@ get_states <- function(){
 # Internal function to test void names
 test_responses <- function(response1, response2, prob){
 
-  httr::stop_for_status(response1)
-  httr::stop_for_status(response2)
+  httr::stop_for_status(response1, task = "retrieve IBGE's API data.")
+  httr::stop_for_status(response2, task = "retrieve IBGE's API data.")
 
   if(length(response1$content) == 2 & length(response2$content) == 2) return(NA)
   if(length(response1$content) == 2 & length(response2$content) > 2 & prob == TRUE) return(0)
@@ -57,11 +57,15 @@ round_guess <- function(prob, threshold){
 
 
 # Internal function to clean first names
-clean_names <- function(name){
+clean_names <- function(name, encoding){
 
-  sub("(.*?) .*", "\\1", name) %>%
-    iconv(to = "ASCII//TRANSLIT") %>%
-    tolower()
+  name <- sub("^\\s+", "", name) # Remove leading white
+  name <- sub("\\s+$", "", name) # Remove trailing white
+  name <- sub("(.*?) .*", "\\1", name) # First name only
+  name <- iconv(name, to = encoding) # Remove accents
+  name <- tolower(name)
+
+  return(name)
 }
 
 
@@ -70,7 +74,8 @@ get_state <- function(state, ln){
 
   state <- sapply(state, function(state) state2code(state))
   if(ln > 1 & length(state) == 1) state <- rep(state, ln)
-  state
+
+  return(state)
 }
 
 
@@ -82,13 +87,10 @@ state2code <- function(uf){
   uf <- toupper(uf) %>%
     match.arg(ufs)
 
-  get_states()$code[match(uf, ufs)]
+  return(get_states()$code[match(uf, ufs)])
 }
 
 
-# Safe GET (to avoid unninformative timeouts)
+# Safe GET (avoid unninformative timeouts)
 get_safe <- purrr::possibly(httr::GET, otherwise = NULL)
-
-
-
 

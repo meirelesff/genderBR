@@ -1,12 +1,17 @@
-This time, all HTTP were replaced by HTTPS
+This submission replaces a previous version removed from CRAN. It fixes the error found in CRAN routine checks -- because of an @example that used external data from an API that is now under \dontrun. Moreover, this version improves by implementing:
 
-This version mostly introduces minor bug fixes. In response to CRAN' checks, informative error messages are now returned in case of connection failures. Documentation was expanded.
+- A few minor bug fixes that make the packages' functions more robust;
+- Several new internal input tests;
+- New unit tests.
+
+All these improvements aim to make the package more stable. Moreover, I plan to work on new features and commit myself to continue releasing bug fixes and minor updates.
 
 ## Test environments
-* Windows 10 (personal computer), R 4.0.3 
-* Ubuntu 16.04.6 LTS (on travis-ci), R 4.0.2
-* Windows server 2012 R2 x64 (on appveyor), 4.0.3 Patched
-* Win-builder (release and devel)
+* Ubuntu 20.04 (personal computer), R 4.0.5
+* Windows server 2012 R2 x64 (on Appveyor), 4.0.3 Patched
+* GitHub Actions - (ubuntu-20.04): release, devel
+* GitHub Actions - (windows-latest): release
+* GitHub Actions - (macOS-latest): release
 
 ## R CMD check results
 

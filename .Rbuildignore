@@ -6,3 +6,6 @@
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^CRAN-RELEASE$
+^Makefile$
+^\.github$
+^codecov\.yml$

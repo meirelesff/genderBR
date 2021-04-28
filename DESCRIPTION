@@ -1,7 +1,7 @@
 Package: genderBR
 Type: Package
 Title: Predict Gender from Brazilian First Names
-Version: 1.1.1
+Version: 1.1.2
 Authors@R: person("Fernando", "Meireles", , "fmeireles@ufmg.br", c("aut", "cre"))
 Description: A method to predict and report gender from Brazilian first names
     using the Brazilian Institute of Geography and Statistics' Census data.
@@ -19,3 +19,7 @@ LazyData: true
 URL: https://github.com/meirelesff/genderBR
 BugReports: https://github.com/meirelesff/genderBR/issues
 RoxygenNote: 7.1.1
+Suggests: 
+    testthat (>= 3.0.0),
+    covr
+Config/testthat/edition: 3

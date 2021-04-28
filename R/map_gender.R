@@ -7,6 +7,8 @@
 #' as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive.
 #' @param gender A string with the gender to look for. Valid inputs are \code{m}, for males, \code{f},
 #' for females, and \code{NULL}, in which case the function returns results for all persons with a given name.
+#' @param encoding Encoding used to read Brazilian names and stip accents.
+#' Defaults to \code{ASCII//TRANSLIT}.
 #'
 #' @details Information on the gender associated with Brazilian first names was collect in the 2010 Census
 #' (Censo Demografico de 2010, in Portuguese), in July of that year, by the Instituto Brasileiro de Demografia
@@ -34,11 +36,7 @@
 #' }
 #'
 #' @examples
-#' # Map the use of the name 'Joao' for
-#' # males in Brazil by state
-#' map_gender('Joao', gender = 'm')
-#'
-#' \donttest{
+#' \dontrun{
 #' # Map the use of the name 'Maria'
 #' map_gender('maria')
 #'
@@ -47,22 +45,19 @@
 #'
 #' # Or names in uppercase
 #' map_gender('MARIA DA SILVA SANTOS')
-#' }
 #'
-#' \dontshow{
+#' # Select desired gender
 #' map_gender('AUGUSTO ROBERTO', gender = 'm')
 #' map_gender('John da Silva', gender = 'm')
 #' }
-#'
-#'
 #' @export
 
 
-map_gender <- function(name, gender = NULL){
+map_gender <- function(name, gender = NULL, encoding = "ASCII//TRANSLIT"){
 
 
   # Clean name
-  name <- clean_names(name)
+  name <- clean_names(name, encoding = encoding)
 
   # GET
   total <- "https://servicodados.ibge.gov.br/api/v1/censos/nomes/mapa" %>%
@@ -70,7 +65,7 @@ map_gender <- function(name, gender = NULL){
 
   # Test response
   if(is.null(total)) stop("IBGE's API is not responding. Try again later.")
-  httr::stop_for_status(total)
+  httr::stop_for_status(total, task = "retrieve IBGE's API data.")
 
   # Parse and return
   httr::content(total, as = "text") %>%
