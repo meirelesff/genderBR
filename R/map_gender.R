@@ -34,10 +34,6 @@
 #' }
 #'
 #' @examples
-#' # Map the use of the name 'Joao' for
-#' # males in Brazil by state
-#' map_gender('Joao', gender = 'm')
-#'
 #' \donttest{
 #' # Map the use of the name 'Maria'
 #' map_gender('maria')
@@ -47,14 +43,11 @@
 #'
 #' # Or names in uppercase
 #' map_gender('MARIA DA SILVA SANTOS')
-#' }
 #'
-#' \dontshow{
+#' # Select desired gender
 #' map_gender('AUGUSTO ROBERTO', gender = 'm')
 #' map_gender('John da Silva', gender = 'm')
 #' }
-#'
-#'
 #' @export
 
 
@@ -70,7 +63,7 @@ map_gender <- function(name, gender = NULL){
 
   # Test response
   if(is.null(total)) stop("IBGE's API is not responding. Try again later.")
-  httr::stop_for_status(total)
+  httr::stop_for_status(total, task = "retrieve IBGE's API data.")
 
   # Parse and return
   httr::content(total, as = "text") %>%
