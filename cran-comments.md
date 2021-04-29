@@ -17,6 +17,9 @@ All these improvements aim to make the package more stable. Moreover, I plan to 
 
 0 errors | 0 warnings | 0 note
 
+* There was one NOTE on win-builder: X-CRAN-Comment: Archived on 2021-02-21 for policy violation.
+This is a new resubmission that replaces the previous archived version.
+
 ## Reverse dependencies
 
 There are no reverse dependencies.

@@ -15,7 +15,6 @@ Imports:
     purrr,
     tibble
 Encoding: UTF-8
-LazyData: true
 URL: https://github.com/meirelesff/genderBR
 BugReports: https://github.com/meirelesff/genderBR/issues
 RoxygenNote: 7.1.1
