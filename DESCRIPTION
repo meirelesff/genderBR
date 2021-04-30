@@ -4,7 +4,7 @@ Title: Predict Gender from Brazilian First Names
 Version: 1.1.2
 Authors@R: person("Fernando", "Meireles", , "fmeireles@ufmg.br", c("aut", "cre"))
 Description: A method to predict and report gender from Brazilian first names
-    using the Brazilian Institute of Geography and Statistics' Census data.
+    using the Brazilian Institute of Geography and Statistics' Census data (<https://censo2010.ibge.gov.br/nomes/>).
 License: GPL (>= 2)
 Depends: R (>= 3.1.2)
 Imports: 

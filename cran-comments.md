@@ -1,3 +1,5 @@
+* This time, the DESCRIPTION contains a reference to the API from where the package retrives data (<https://censo2010.ibge.gov.br/nomes/>)
+
 This submission replaces a previous version removed from CRAN. It fixes the error found in CRAN routine checks -- because of an @example that used external data from an API that is now under \dontrun. Moreover, this version improves by implementing:
 
 - A few minor bug fixes that make the packages' functions more robust;
