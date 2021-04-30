@@ -9,3 +9,4 @@
 ^Makefile$
 ^\.github$
 ^codecov\.yml$
+^LICENSE\.md$
