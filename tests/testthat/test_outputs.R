@@ -19,4 +19,8 @@ test_that("Main function returns what is expected", {
   # Test names that return NA
   expect_equal(get_gender("Champions League"), as.character(NA))
   expect_equal(get_gender("Cicrano"), as.character(NA))
+
+  # Test internal data with 2022 probabilities
+  expect_equal(get_gender("Ana", year = 2022), "Female")
+  expect_gt(get_gender("Ana", prob = TRUE, year = 2022), 0.9)
 })

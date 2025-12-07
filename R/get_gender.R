@@ -15,7 +15,7 @@
 #' Multiple names can be passed to the function call. To speed the calculations,
 #' the package aggregates equal first names to make fewer requests to the IBGE's API.
 #' Also, the package contains an internal dataset with all the names reported by the
-#' IBGE to make faster classifications -- although this option does not support getting results by State.
+#' IBGE to make faster classifications (2010 and 2022), although this option does not support getting results by State.
 #'
 #' @param names A character vector specifying a person's first name. Names can also be passed to the function
 #' as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive.
@@ -40,7 +40,8 @@
 #' e Estatistica (IBGE). The surveyed population includes 190,8 million Brazilians living in all 27 states.
 #' According to the IBGE, there are more than 130,000 unique first names in this population.
 #'
-#' When \code{year = 2022}, the function queries the IBGE names API with 2022 data.
+#' When \code{year = 2022}, the function queries the IBGE names API with 2022 data or uses the 2022
+#' internal dataset when \code{internal = TRUE} and \code{state} is \code{NULL}.
 #'
 #' @note Names with different spell (e.g., Ana and Anna, or Marcos and Markos) are considered different names.
 #' In addition, only names with more than 20 occurrences, or more than 15 occurrences in a given state,
@@ -112,16 +113,12 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
   else pause <- FALSE
 
 
-  # Ignore internal data with 2022 API
-  if(year == 2022) internal <- FALSE
-
-
   # Ignore internal when state is declared
   if(internal && !is.null(state)) internal <- FALSE
 
 
   ### Internal data
-  if(internal) return(get_gender_internal(names, prob, threshold))
+  if(internal) return(get_gender_internal(names, prob, threshold, year))
 
 
   ### API data
@@ -254,14 +251,19 @@ get_gender_api <- function(name, state, prob, threshold, pause = FALSE, year = 2
 
 
 # Get results from internal data
-get_gender_internal <- function(names, prob, threshold){
+get_gender_internal <- function(names, prob, threshold, year){
 
   # Join data
   nms <- dplyr::tibble(nome = names) |>
     dplyr::left_join(nomes, by = "nome")
 
+  probs <- dplyr::case_when(
+    year == 2022 & "prob_fem22" %in% names(nms) ~ nms$prob_fem22,
+    year == 2010 & "prob_fem10" %in% names(nms) ~ nms$prob_fem10
+  )
+
   # Return
-  if(prob) return(nms$prob_fem)
-  round_guess(nms$prob_fem, threshold)
+  if(prob) return(probs)
+  round_guess(probs, threshold)
 }
 

@@ -92,5 +92,6 @@ state2code <- function(uf){
 
 
 # Safe GET (avoid unninformative timeouts)
+#' @importFrom purrr possibly
 get_safe <- purrr::possibly(httr::GET, otherwise = NULL)
 
