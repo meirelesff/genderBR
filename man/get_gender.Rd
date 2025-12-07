@@ -10,7 +10,8 @@ get_gender(
   prob = FALSE,
   threshold = 0.9,
   internal = TRUE,
-  encoding = "ASCII//TRANSLIT"
+  encoding = "ASCII//TRANSLIT",
+  year = 2010
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ Defaults to \code{TRUE}.}
 
 \item{encoding}{Encoding used to read Brazilian names and stip accents.
 Defaults to \code{ASCII//TRANSLIT}.}
+
+\item{year}{Census year used in the prediction. Supported values are \code{2010}
+(default) and \code{2022}.}
 }
 \value{
 \code{get_gender} may returns three different values: \code{Female},
@@ -42,7 +46,8 @@ If the \code{prob} argument is set to \code{TRUE}, then the function returns
 the proportion of females uses of the provided name.
 }
 \description{
-\code{get_gender} uses the IBGE's 2010 Census data to predict gender from Brazilian first names.
+\code{get_gender} uses the IBGE's Census data to predict gender from Brazilian first names (2010 by default,
+optionally 2022).
 In particular, the function exploits data on the number of females and males with the same name
 in Brazil, or in a given Brazilian state, to calculate the proportion of females using it.
 
@@ -73,6 +78,8 @@ Information on the Brazilian first names uses by gender was collect in the 2010 
 (Censo Demografico de 2010, in Portuguese), in July of that year, by the Instituto Brasileiro de Demografia
 e Estatistica (IBGE). The surveyed population includes 190,8 million Brazilians living in all 27 states.
 According to the IBGE, there are more than 130,000 unique first names in this population.
+
+When \code{year = 2022}, the function queries the IBGE names API with 2022 data.
 }
 
 \examples{
