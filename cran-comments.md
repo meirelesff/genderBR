@@ -9,6 +9,7 @@ This submission replaces a previous version removed from CRAN. It fixes the erro
 All these improvements aim to make the package more stable. Moreover, I plan to work on new features and commit myself to continue releasing bug fixes and minor updates.
 
 ## Test environments
+
 * Ubuntu 20.04 (personal computer), R 4.0.5
 * Windows server 2012 R2 x64 (on Appveyor), 4.0.3 Patched
 * GitHub Actions - (ubuntu-20.04): release, devel
