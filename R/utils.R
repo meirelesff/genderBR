@@ -84,7 +84,7 @@ state2code <- function(uf){
 
   ufs <- get_states()$abb
 
-  uf <- toupper(uf) %>%
+  uf <- toupper(uf) |>
     match.arg(ufs)
 
   return(get_states()$code[match(uf, ufs)])

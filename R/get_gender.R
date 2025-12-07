@@ -204,7 +204,7 @@ get_gender_api <- function(name, state, prob, threshold, pause = pause){
 get_gender_internal <- function(names, prob, threshold){
 
   # Join data
-  nms <- dplyr::tibble(nome = names) %>%
+  nms <- dplyr::tibble(nome = names) |>
     dplyr::left_join(nomes, by = "nome")
 
   # Return

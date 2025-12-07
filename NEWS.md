@@ -1,3 +1,11 @@
+# genderBR 1.2.0
+
+In this release the package drops the `magrittr` dependency by adopting R's native pipe.
+
+- Replaced all uses of `%>%` with the base `|>` operator.
+- Removed the exported pipe helper and `magrittr` import.
+
+
 # genderBR 1.1.1
 
 In this version, a few improvements and bug fixed were introduced. Most important, connection errors now return informative messages to users.

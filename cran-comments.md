@@ -5,6 +5,7 @@ This submission replaces a previous version removed from CRAN. It fixes the erro
 - A few minor bug fixes that make the packages' functions more robust;
 - Several new internal input tests;
 - New unit tests.
+- Removed the `magrittr` dependency by switching to R's native pipe.
 
 All these improvements aim to make the package more stable. Moreover, I plan to work on new features and commit myself to continue releasing bug fixes and minor updates.
 

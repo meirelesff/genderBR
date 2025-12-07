@@ -6,12 +6,11 @@ Authors@R: person("Fernando", "Meireles", , "fernando.meireles@iesp.uerj.br", c(
 Description: A method to predict and report gender from Brazilian first names
     using the Brazilian Institute of Geography and Statistics' Census data.
 License: GPL (>= 2)
-Depends: R (>= 3.1.2)
+Depends: R (>= 4.1.0)
 Imports: 
     dplyr (>= 0.5.0),
     jsonlite,
     httr,
-    magrittr,
     purrr,
     tibble
 Encoding: UTF-8
