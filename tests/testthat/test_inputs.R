@@ -20,5 +20,9 @@ test_that("Inputs have valid types", {
   # Test invalid input 'encoding'
   expect_error(get_gender("Ana", encoding = 1))
   expect_error(get_gender("Ana", encoding = TRUE))
+
+  # Test invalid input 'year'
+  expect_error(get_gender("Ana", year = "2022"))
+  expect_error(get_gender("Ana", year = 1990))
 })
 

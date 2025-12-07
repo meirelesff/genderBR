@@ -1,7 +1,8 @@
 #' Predict gender from Brazilian first names
 #'
 #' @description
-#' \code{get_gender} uses the IBGE's 2010 Census data to predict gender from Brazilian first names.
+#' \code{get_gender} uses the IBGE's Census data to predict gender from Brazilian first names (2010 by default,
+#' optionally 2022).
 #' In particular, the function exploits data on the number of females and males with the same name
 #' in Brazil, or in a given Brazilian state, to calculate the proportion of females using it.
 #'
@@ -29,6 +30,8 @@
 #' Defaults to \code{TRUE}.
 #' @param encoding Encoding used to read Brazilian names and stip accents.
 #' Defaults to \code{ASCII//TRANSLIT}.
+#' @param year Census year used in the prediction. Supported values are \code{2010}
+#' (default) and \code{2022}.
 #'
 #' @section Data:
 #'
@@ -36,6 +39,8 @@
 #' (Censo Demografico de 2010, in Portuguese), in July of that year, by the Instituto Brasileiro de Demografia
 #' e Estatistica (IBGE). The surveyed population includes 190,8 million Brazilians living in all 27 states.
 #' According to the IBGE, there are more than 130,000 unique first names in this population.
+#'
+#' When \code{year = 2022}, the function queries the IBGE names API with 2022 data.
 #'
 #' @note Names with different spell (e.g., Ana and Anna, or Marcos and Markos) are considered different names.
 #' In addition, only names with more than 20 occurrences, or more than 15 occurrences in a given state,
@@ -80,16 +85,20 @@
 #' @export
 
 get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
-                       internal = TRUE, encoding = "ASCII//TRANSLIT"){
+                       internal = TRUE, encoding = "ASCII//TRANSLIT",
+                       year = 2010){
 
 
   # Inputs
   if(!is.character(encoding)) stop("'encoding' must be a character representing a valid encoding.")
   if(!is.numeric(threshold)) stop("'threshold' must be numeric, between 0 and 1.")
-  if(threshold < 0 | threshold > 1) stop("'threshold' must be between 0 and 1.")
+  if(threshold < 0 || threshold > 1) stop("'threshold' must be between 0 and 1.")
   if(!is.logical(internal)) stop("'internal' must be logical.")
   if(!is.character(names)) stop("'names' must be character.")
   if(!is.logical(prob)) stop("'Prob' must be logical.")
+  if(!is.numeric(year)) stop("'year' must be numeric, either 2010 or 2022.")
+  year <- as.integer(year)
+  if(!year %in% c(2010, 2022)) stop("'year' must be either 2010 or 2022.")
 
 
   # Names
@@ -103,8 +112,12 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
   else pause <- FALSE
 
 
+  # Ignore internal data with 2022 API
+  if(year == 2022) internal <- FALSE
+
+
   # Ignore internal when state is declared
-  if(internal & !is.null(state)) internal <- FALSE
+  if(internal && !is.null(state)) internal <- FALSE
 
 
   ### Internal data
@@ -113,13 +126,14 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
 
   ### API data
   # Whole country & unique names
-  if(is.null(state) & ln == ln_un){
+  if(is.null(state) && ln == ln_un){
 
     # Return
     out <- sapply(1:ln, function(i) get_gender_api(names[i], state,
                                                    prob = prob,
                                                    threshold = threshold,
-                                                   pause = pause))
+                                                   pause = pause,
+                                                   year = year))
     return(out)
   }
 
@@ -130,7 +144,8 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
     gender_pred <- sapply(1:ln_un, function(i) get_gender_api(un_names[i], state,
                                                               prob = prob,
                                                               threshold = threshold,
-                                                              pause = pause))
+                                                              pause = pause,
+                                                              year = year))
 
     # Join
     names <- dplyr::tibble(names = names)
@@ -149,7 +164,8 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
     out <- sapply(1:ln, function(i) get_gender_api(names[i], state[i],
                                                    prob = prob,
                                                    threshold = threshold,
-                                                   pause = pause))
+                                                   pause = pause,
+                                                   year = year))
     return(out)
   }
 
@@ -158,12 +174,13 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
   names <- dplyr::tibble(names = names, state = state)
   dis_names <- dplyr::distinct(names)
 
-  dis_names$prob <- sapply(1:length(dis_names$names),
+  dis_names$prob <- sapply(seq_along(dis_names$names),
                            function(i) get_gender_api(dis_names$names[i],
                                                       dis_names$state[i],
                                                       prob = prob,
                                                       threshold = threshold,
-                                                      pause = pause))
+                                                      pause = pause,
+                                                      year = year))
   out <- dplyr::left_join(names, dis_names, by = c("names", "state"))$prob
 
   return(out)
@@ -171,10 +188,46 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
 
 
 # Get individual results from API
-get_gender_api <- function(name, state, prob, threshold, pause = pause){
+get_gender_api <- function(name, state, prob, threshold, pause = FALSE, year = 2010){
 
 
-  # API endpoint
+  if(year == 2022){
+
+    endpoint <- sprintf("https://servicodados.ibge.gov.br/api/v3/nomes/2022/nome/%s", name)
+    localidade <- if(is.null(state)) 0 else state
+
+    response <- get_safe(endpoint, query = list(tipo = "nome", localidade = localidade))
+    if(pause) Sys.sleep(0.3)
+
+    if(is.null(response)) stop("IBGE's API is not responding. Try again later.")
+    httr::stop_for_status(response, task = "retrieve IBGE's API data.")
+
+    content <- httr::content(response, as = "parsed")
+    if(is.list(content) && !is.null(content[[1]]) && is.null(content$homens)) content <- content[[1]]
+
+    homens <- content$homens
+    mulheres <- content$mulheres
+
+    if(is.null(homens) || is.null(mulheres)){
+      if(prob) return(NA_real_)
+      return(as.character(NA))
+    }
+
+    total <- homens + mulheres
+    if(is.na(total) || total == 0){
+      if(prob) return(NA_real_)
+      return(as.character(NA))
+    }
+
+    fprob <- mulheres / total
+    if(prob) return(fprob)
+    return(round_guess(fprob, threshold))
+  }
+
+
+  if(year != 2010) stop("'year' must be either 2010 or 2022.")
+
+  # API endpoint (2010)
   ibge <- "https://servicodados.ibge.gov.br/api/v1/censos/nomes/basica"
 
   # GET

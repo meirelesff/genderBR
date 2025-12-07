@@ -6,6 +6,7 @@ This submission replaces a previous version removed from CRAN. It fixes the erro
 - Several new internal input tests;
 - New unit tests.
 - Removed the `magrittr` dependency by switching to R's native pipe.
+- Added support for the 2022 IBGE names API through a new `year` argument in `get_gender`.
 
 All these improvements aim to make the package more stable. Moreover, I plan to work on new features and commit myself to continue releasing bug fixes and minor updates.
 

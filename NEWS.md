@@ -1,3 +1,7 @@
+# genderBR (development version)
+
+- Added support for IBGE's 2022 names API via a new `year` argument in `get_gender`.
+
 # genderBR 1.2.0
 
 In this release the package drops the `magrittr` dependency by adopting R's native pipe.
