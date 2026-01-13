@@ -4,11 +4,9 @@
 # genderBR
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/genderBR)](https://cran.r-project.org/package=genderBR)
-[![R-CMD-check](https://github.com/meirelesff/genderBR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/meirelesff/genderBR/actions/workflows/R-CMD-check.yaml)[![AppVeyor
-Build
-Status](https://ci.appveyor.com/api/projects/status/github/meirelesff/genderBR?branch=master&svg=true)](https://ci.appveyor.com/project/meirelesff/genderBR)
-[![Codecov test
-coverage](https://codecov.io/gh/meirelesff/genderBR/branch/master/graph/badge.svg)](https://codecov.io/gh/meirelesff/genderBR?branch=master)
+[![R-CMD-check](https://github.com/meirelesff/genderBR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/meirelesff/genderBR/actions/workflows/R-CMD-check.yaml)[![Codecov
+test
+coverage](https://codecov.io/gh/meirelesff/genderBR/graph/badge.svg)](https://app.codecov.io/gh/meirelesff/genderBR)
 [![Package-License](https://img.shields.io/badge/License-GPL-brightgreen.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 
 `genderBR` predicts gender from Brazilian first names using data from
@@ -177,7 +175,6 @@ the default option).
 
 ``` r
 map_gender("iris", gender = "m")
-#> No encoding supplied: defaulting to UTF-8.
 #> # A tibble: 23 × 6
 #>    nome                uf  freq populacao sexo   prop
 #>    <chr>            <int> <int>     <int> <chr> <dbl>
