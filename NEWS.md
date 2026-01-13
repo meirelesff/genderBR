@@ -4,6 +4,7 @@
 - Internal dataset `nomes` now includes probabilities for 2010 and 2022 (`prob_fem10`, `prob_fem22`) and is used when `internal = TRUE`.
 - Replaced all uses of `%>%` with the base `|>` operator.
 - Removed the exported pipe helper and `magrittr` import.
+- Updated tests to cover new features and changes.
 
 
 # genderBR 1.1.1

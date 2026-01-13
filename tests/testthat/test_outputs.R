@@ -23,4 +23,11 @@ test_that("Main function returns what is expected", {
   # Test internal data with 2022 probabilities
   expect_equal(get_gender("Ana", year = 2022), "Female")
   expect_gt(get_gender("Ana", prob = TRUE, year = 2022), 0.9)
+
+  # Test explicit year selection matches default 2010 behavior
+  expect_equal(get_gender("Ana", year = 2010), get_gender("Ana"))
+  expect_gt(get_gender("Ana", prob = TRUE, year = 2010), 0.9)
+
+  # Test vectorized calls with 2022 internal data
+  expect_equal(get_gender(c("mario", "ana"), year = 2022), c("Male", "Female"))
 })

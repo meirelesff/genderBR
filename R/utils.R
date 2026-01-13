@@ -75,7 +75,7 @@ get_state <- function(state, ln){
   state <- sapply(state, function(state) state2code(state))
   if(ln > 1 & length(state) == 1) state <- rep(state, ln)
 
-  return(state)
+  return(unname(state))
 }
 
 
