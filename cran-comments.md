@@ -3,6 +3,7 @@ This is a new version of the genderBR package that includes several improvements
 - Added support for the 2022 IBGE names API through a new `year` argument in `get_gender`, which allows users to access the most recent data for gender prediction in Brazil
 - Internal dataset `nomes` now provides probabilities for both 2010 and 2022, enabling offline predictions for either year when `internal = TRUE`.
 - Removed the `magrittr` dependency by switching to R's native pipe.
+- Replaced `dplyr`/`tibble` joins with a `data.table` backend to speed up internal merges.
 
 
 ## Test environments

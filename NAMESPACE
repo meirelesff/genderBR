@@ -3,4 +3,5 @@
 export(get_gender)
 export(get_states)
 export(map_gender)
+import(data.table)
 importFrom(purrr,possibly)

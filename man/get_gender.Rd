@@ -103,6 +103,7 @@ get_gender(c('joao', 'ana', 'benedita', 'rafael'))
 # In different states (using API data, must have internet connection)
 get_gender(rep('Ana', 3), c('sp', 'am', 'rs'))
  }
+
 }
 \references{
 For more information on the IBGE's data, please check (in Portuguese):

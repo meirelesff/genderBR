@@ -5,6 +5,7 @@
 - Replaced all uses of `%>%` with the base `|>` operator.
 - Removed the exported pipe helper and `magrittr` import.
 - Updated tests to cover new features and changes.
+- Switched data manipulation backend to `data.table` for faster joins and removed `dplyr`/`tibble` dependencies.
 
 
 # genderBR 1.1.1

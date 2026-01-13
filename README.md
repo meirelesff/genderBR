@@ -4,10 +4,10 @@
 # genderBR
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/genderBR)](https://cran.r-project.org/package=genderBR)
-[![R-CMD-check](https://github.com/meirelesff/genderBR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/meirelesff/genderBR/actions/workflows/R-CMD-check.yaml)[![Codecov
-test
+[![Codecov test
 coverage](https://codecov.io/gh/meirelesff/genderBR/graph/badge.svg)](https://app.codecov.io/gh/meirelesff/genderBR)
 [![Package-License](https://img.shields.io/badge/License-GPL-brightgreen.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
+[![R-CMD-check](https://github.com/meirelesff/genderBR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/meirelesff/genderBR/actions/workflows/R-CMD-check.yaml)
 
 `genderBR` predicts gender from Brazilian first names using data from
 the Instituto Brasileiro de Geografia e Estatistica’s Census (2010 and
@@ -129,20 +129,34 @@ name, IBGE code, and abbreviations of all 27 Brazilian states, use the
 
 ``` r
 get_states()
-#> # A tibble: 27 × 3
-#>    state            abb    code
-#>    <chr>            <chr> <int>
-#>  1 ACRE             AC       12
-#>  2 ALAGOAS          AL       27
-#>  3 AMAPA            AP       16
-#>  4 AMAZONAS         AM       13
-#>  5 BAHIA            BA       29
-#>  6 CEARA            CE       23
-#>  7 DISTRITO FEDERAL DF       53
-#>  8 ESPIRITO SANTO   ES       32
-#>  9 GOIAS            GO       52
-#> 10 MARANHAO         MA       21
-#> # ℹ 17 more rows
+#>                  state abb code
+#> 1                 ACRE  AC   12
+#> 2              ALAGOAS  AL   27
+#> 3                AMAPA  AP   16
+#> 4             AMAZONAS  AM   13
+#> 5                BAHIA  BA   29
+#> 6                CEARA  CE   23
+#> 7     DISTRITO FEDERAL  DF   53
+#> 8       ESPIRITO SANTO  ES   32
+#> 9                GOIAS  GO   52
+#> 10            MARANHAO  MA   21
+#> 11  MATO GROSSO DO SUL  MS   51
+#> 12         MATO GROSSO  MT   50
+#> 13        MINAS GERAIS  MG   31
+#> 14                PARA  PA   15
+#> 15             PARAIBA  PB   25
+#> 16              PARANA  PR   41
+#> 17          PERNAMBUCO  PE   26
+#> 18               PIAUI  PI   22
+#> 19      RIO DE JANEIRO  RJ   33
+#> 20 RIO GRANDE DO NORTE  RN   24
+#> 21   RIO GRANDE DO SUL  RS   43
+#> 22            RONDONIA  RO   11
+#> 23             RORAIMA  RR   14
+#> 24      SANTA CATARINA  SC   42
+#> 25           SAO PAULO  SP   35
+#> 26             SERGIPE  SE   28
+#> 27           TOCANTINS  TO   17
 ```
 
 ## Geographic distribution of Brazilian first names
@@ -153,20 +167,34 @@ state in Brazil. To that end, use the `map_gender` function:
 
 ``` r
 map_gender("maria")
-#> # A tibble: 27 × 6
-#>    nome                   uf    freq populacao sexo    prop
-#>    <chr>               <int>   <int>     <int> <chr>  <dbl>
-#>  1 Piauí                  22  363139   3118360 ""    11645.
-#>  2 Ceará                  23  967042   8452381 ""    11441.
-#>  3 Paraíba                25  423026   3766528 ""    11231.
-#>  4 Rio Grande do Norte    24  341940   3168027 ""    10793.
-#>  5 Alagoas                27  321330   3120494 ""    10297.
-#>  6 Pernambuco             26  838534   8796448 ""     9533.
-#>  7 Sergipe                28  188619   2068017 ""     9121.
-#>  8 Maranhão               21  574689   6574789 ""     8741.
-#>  9 Acre                   12   63172    733559 ""     8612.
-#> 10 Minas Gerais           31 1307650  19597330 ""     6673.
-#> # ℹ 17 more rows
+#>                   nome uf    freq populacao sexo     prop
+#> 1                Piauí 22  363139   3118360      11645.19
+#> 2                Ceará 23  967042   8452381      11441.06
+#> 3              Paraíba 25  423026   3766528      11231.19
+#> 4  Rio Grande do Norte 24  341940   3168027      10793.47
+#> 5              Alagoas 27  321330   3120494      10297.41
+#> 6           Pernambuco 26  838534   8796448       9532.64
+#> 7              Sergipe 28  188619   2068017       9120.77
+#> 8             Maranhão 21  574689   6574789       8740.80
+#> 9                 Acre 12   63172    733559       8611.71
+#> 10        Minas Gerais 31 1307650  19597330       6672.59
+#> 11           Tocantins 17   87040   1383445       6291.54
+#> 12                Pará 15  472891   7581051       6237.80
+#> 13    Distrito Federal 53  146770   2570160       5710.54
+#> 14               Bahia 29  766238  14016906       5466.53
+#> 15               Amapá 16   35298    669526       5272.09
+#> 16               Goiás 52  314352   6003788       5235.89
+#> 17           São Paulo 35 2143232  41262199       5194.18
+#> 18            Amazonas 13  173034   3483985       4966.55
+#> 19      Espírito Santo 32  169081   3514952       4810.34
+#> 20      Rio de Janeiro 33  752021  15989929       4703.09
+#> 21            Rondônia 11   72579   1562409       4645.33
+#> 22             Roraima 14   20848    450479       4627.96
+#> 23         Mato Grosso 51  125984   3035122       4150.87
+#> 24              Paraná 41  432175  10444526       4137.81
+#> 25  Mato Grosso do Sul 50  100649   2449024       4109.76
+#> 26      Santa Catarina 42  210558   6248436       3369.77
+#> 27   Rio Grande do Sul 43  322238  10693929       3013.28
 ```
 
 To specify gender in the consultation, use the optional argument
@@ -175,21 +203,39 @@ the default option).
 
 ``` r
 map_gender("iris", gender = "m")
-#> # A tibble: 23 × 6
-#>    nome                uf  freq populacao sexo   prop
-#>    <chr>            <int> <int>     <int> <chr> <dbl>
-#>  1 Goiás               52   840   6003788 m     14.0 
-#>  2 Tocantins           17   156   1383445 m     11.3 
-#>  3 Bahia               29   422  14016906 m      3.01
-#>  4 Mato Grosso         51    91   3035122 m      3   
-#>  5 Minas Gerais        31   512  19597330 m      2.61
-#>  6 Distrito Federal    53    65   2570160 m      2.53
-#>  7 Espírito Santo      32    69   3514952 m      1.96
-#>  8 Rondônia            11    28   1562409 m      1.79
-#>  9 Pará                15   129   7581051 m      1.7 
-#> 10 Rio de Janeiro      33   225  15989929 m      1.41
-#> # ℹ 13 more rows
+#>                   nome uf freq populacao sexo  prop
+#> 1                Goiás 52  840   6003788    m 13.99
+#> 2            Tocantins 17  156   1383445    m 11.28
+#> 3                Bahia 29  422  14016906    m  3.01
+#> 4          Mato Grosso 51   91   3035122    m  3.00
+#> 5         Minas Gerais 31  512  19597330    m  2.61
+#> 6     Distrito Federal 53   65   2570160    m  2.53
+#> 7       Espírito Santo 32   69   3514952    m  1.96
+#> 8             Rondônia 11   28   1562409    m  1.79
+#> 9                 Pará 15  129   7581051    m  1.70
+#> 10      Rio de Janeiro 33  225  15989929    m  1.41
+#> 11  Mato Grosso do Sul 50   32   2449024    m  1.31
+#> 12      Santa Catarina 42   77   6248436    m  1.23
+#> 13           São Paulo 35  485  41262199    m  1.18
+#> 14              Paraná 41  122  10444526    m  1.17
+#> 15            Maranhão 21   59   6574789    m  0.90
+#> 16             Alagoas 27   27   3120494    m  0.87
+#> 17               Piauí 22   27   3118360    m  0.87
+#> 18            Amazonas 13   28   3483985    m  0.80
+#> 19   Rio Grande do Sul 43   79  10693929    m  0.74
+#> 20             Paraíba 25   24   3766528    m  0.64
+#> 21          Pernambuco 26   53   8796448    m  0.60
+#> 22               Ceará 23   45   8452381    m  0.53
+#> 23 Rio Grande do Norte 24   16   3168027    m  0.51
 ```
+
+## Backend and performance
+
+Internally, `genderBR` now uses the `data.table` backend for joins and
+merges. This keeps user-facing outputs as base data.frames while
+speeding up repeated lookups for large vectors of names (mainly when
+aggregating duplicates before querying the IBGE API or matching against
+the internal dataset).
 
 ## Installing
 
