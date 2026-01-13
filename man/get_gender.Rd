@@ -10,7 +10,8 @@ get_gender(
   prob = FALSE,
   threshold = 0.9,
   internal = TRUE,
-  encoding = "ASCII//TRANSLIT"
+  encoding = "ASCII//TRANSLIT",
+  year = 2010
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ Defaults to \code{TRUE}.}
 
 \item{encoding}{Encoding used to read Brazilian names and stip accents.
 Defaults to \code{ASCII//TRANSLIT}.}
+
+\item{year}{Census year used in the prediction. Supported values are \code{2010}
+(default) and \code{2022}.}
 }
 \value{
 \code{get_gender} may returns three different values: \code{Female},
@@ -42,7 +46,8 @@ If the \code{prob} argument is set to \code{TRUE}, then the function returns
 the proportion of females uses of the provided name.
 }
 \description{
-\code{get_gender} uses the IBGE's 2010 Census data to predict gender from Brazilian first names.
+\code{get_gender} uses the IBGE's Census data to predict gender from Brazilian first names (2010 by default,
+optionally 2022).
 In particular, the function exploits data on the number of females and males with the same name
 in Brazil, or in a given Brazilian state, to calculate the proportion of females using it.
 
@@ -55,7 +60,7 @@ Mullen (2016). gender: Predict Gender from Names Using Historical Data.
 Multiple names can be passed to the function call. To speed the calculations,
 the package aggregates equal first names to make fewer requests to the IBGE's API.
 Also, the package contains an internal dataset with all the names reported by the
-IBGE to make faster classifications -- although this option does not support getting results by State.
+IBGE to make faster classifications (2010 and 2022), although this option does not support getting results by State.
 }
 \note{
 Names with different spell (e.g., Ana and Anna, or Marcos and Markos) are considered different names.
@@ -73,6 +78,9 @@ Information on the Brazilian first names uses by gender was collect in the 2010 
 (Censo Demografico de 2010, in Portuguese), in July of that year, by the Instituto Brasileiro de Demografia
 e Estatistica (IBGE). The surveyed population includes 190,8 million Brazilians living in all 27 states.
 According to the IBGE, there are more than 130,000 unique first names in this population.
+
+When \code{year = 2022}, the function queries the IBGE names API with 2022 data or uses the 2022
+internal dataset when \code{internal = TRUE} and \code{state} is \code{NULL}.
 }
 
 \examples{

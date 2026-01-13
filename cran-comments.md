@@ -1,14 +1,12 @@
-* This time, the DESCRIPTION contains a reference to the API from where the package retrives data (<https://censo2010.ibge.gov.br/nomes/>)
+This is a new version of the genderBR package that includes several improvements and new features. The most notable changes in this release are:
 
-This submission replaces a previous version removed from CRAN. It fixes the error found in CRAN routine checks -- because of an @example that used external data from an API that is now under \dontrun. Moreover, this version improves by implementing:
+- Added support for the 2022 IBGE names API through a new `year` argument in `get_gender`, which allows users to access the most recent data for gender prediction in Brazil
+- Internal dataset `nomes` now provides probabilities for both 2010 and 2022, enabling offline predictions for either year when `internal = TRUE`.
+- Removed the `magrittr` dependency by switching to R's native pipe.
 
-- A few minor bug fixes that make the packages' functions more robust;
-- Several new internal input tests;
-- New unit tests.
-
-All these improvements aim to make the package more stable. Moreover, I plan to work on new features and commit myself to continue releasing bug fixes and minor updates.
 
 ## Test environments
+
 * Ubuntu 20.04 (personal computer), R 4.0.5
 * Windows server 2012 R2 x64 (on Appveyor), 4.0.3 Patched
 * GitHub Actions - (ubuntu-20.04): release, devel

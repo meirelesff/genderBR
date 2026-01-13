@@ -60,7 +60,7 @@ map_gender <- function(name, gender = NULL, encoding = "ASCII//TRANSLIT"){
   name <- clean_names(name, encoding = encoding)
 
   # GET
-  total <- "https://servicodados.ibge.gov.br/api/v1/censos/nomes/mapa" %>%
+  total <- "https://servicodados.ibge.gov.br/api/v1/censos/nomes/mapa" |>
     get_safe(query = list(nome = name, sexo = gender))
 
   # Test response
@@ -68,7 +68,7 @@ map_gender <- function(name, gender = NULL, encoding = "ASCII//TRANSLIT"){
   httr::stop_for_status(total, task = "retrieve IBGE's API data.")
 
   # Parse and return
-  httr::content(total, as = "text") %>%
-    jsonlite::fromJSON() %>%
+  httr::content(total, as = "text") |>
+    jsonlite::fromJSON() |>
     tibble::as_tibble()
 }
