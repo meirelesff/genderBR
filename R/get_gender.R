@@ -83,6 +83,8 @@
 #' # In different states (using API data, must have internet connection)
 #' get_gender(rep('Ana', 3), c('sp', 'am', 'rs'))
 #'  }
+#' 
+#' @import data.table
 #' @export
 
 get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
@@ -144,12 +146,8 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
                                                               pause = pause,
                                                               year = year))
 
-    # Join
-    names <- dplyr::tibble(names = names)
-    un_names <- dplyr::tibble(names = un_names, prob = gender_pred)
-
-    # Return
-    out <- dplyr::left_join(names, un_names, by = c("names"))$prob
+    # Join with data.table backend
+    out <- gender_pred[match(names, un_names)]
     return(out)
   }
 
@@ -168,17 +166,22 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
 
   # By state & non-unique names
   state <- get_state(state, ln)
-  names <- dplyr::tibble(names = names, state = state)
-  dis_names <- dplyr::distinct(names)
+  dt_names <- data.table::data.table(names = names, state = state)
+  dis_names <- unique(dt_names, by = c("names", "state"))
 
-  dis_names$prob <- sapply(seq_along(dis_names$names),
-                           function(i) get_gender_api(dis_names$names[i],
-                                                      dis_names$state[i],
-                                                      prob = prob,
-                                                      threshold = threshold,
-                                                      pause = pause,
-                                                      year = year))
-  out <- dplyr::left_join(names, dis_names, by = c("names", "state"))$prob
+  preds <- sapply(seq_len(nrow(dis_names)),
+                  function(i) get_gender_api(dis_names$names[i],
+                                             dis_names$state[i],
+                                             prob = prob,
+                                             threshold = threshold,
+                                             pause = pause,
+                                             year = year))
+
+  dis_names <- data.table::data.table(names = dis_names$names,
+                                      state = dis_names$state,
+                                      prob = preds)
+
+  out <- dis_names[dt_names, on = c("names", "state"), prob]
 
   return(out)
 }
@@ -253,17 +256,17 @@ get_gender_api <- function(name, state, prob, threshold, pause = FALSE, year = 2
 # Get results from internal data
 get_gender_internal <- function(names, prob, threshold, year){
 
-  # Join data
-  nms <- dplyr::tibble(nome = names) |>
-    dplyr::left_join(nomes, by = "nome")
-
-  probs <- dplyr::case_when(
-    year == 2022 & "prob_fem22" %in% names(nms) ~ nms$prob_fem22,
-    year == 2010 & "prob_fem10" %in% names(nms) ~ nms$prob_fem10
-  )
+  # Match probabilities by name without changing return type
+  if(year == 2022 && "prob_fem22" %in% names(nomes)) {
+    probs <- nomes$prob_fem22[match(names, nomes$nome)]
+  } else if(year == 2010 && "prob_fem10" %in% names(nomes)) {
+    probs <- nomes$prob_fem10[match(names, nomes$nome)]
+  } else {
+    probs <- rep(NA_real_, length(names))
+  }
 
   # Return
   if(prob) return(probs)
-  round_guess(probs, threshold)
+  as.character(round_guess(probs, threshold))
 }
 

@@ -70,5 +70,5 @@ map_gender <- function(name, gender = NULL, encoding = "ASCII//TRANSLIT"){
   # Parse and return
   httr::content(total, as = "text") |>
     jsonlite::fromJSON() |>
-    tibble::as_tibble()
+    as.data.frame(stringsAsFactors = FALSE)
 }

@@ -16,17 +16,20 @@
 
 get_states <- function(){
 
-  tibble::tibble(state = c("ACRE", "ALAGOAS", "AMAPA", "AMAZONAS", "BAHIA", "CEARA", "DISTRITO FEDERAL",
-                       "ESPIRITO SANTO", "GOIAS", "MARANHAO", "MATO GROSSO DO SUL", "MATO GROSSO",
-                       "MINAS GERAIS", "PARA", "PARAIBA", "PARANA", "PERNAMBUCO", "PIAUI",
-                       "RIO DE JANEIRO", "RIO GRANDE DO NORTE", "RIO GRANDE DO SUL", "RONDONIA",
-                       "RORAIMA", "SANTA CATARINA", "SAO PAULO", "SERGIPE", "TOCANTINS"),
-             abb = c("AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA",
-                     "MS", "MT", "MG", "PA", "PB", "PR","PE", "PI", "RJ", "RN",
-                     "RS", "RO", "RR", "SC", "SP", "SE", "TO"),
-             code = c(12L, 27L, 16L, 13L, 29L, 23L, 53L, 32L, 52L, 21L, 51L, 50L,
-                      31L, 15L, 25L, 41L, 26L, 22L, 33L, 24L, 43L, 11L, 14L, 42L, 35L,
-                      28L, 17L))
+  data.frame(
+    state = c("ACRE", "ALAGOAS", "AMAPA", "AMAZONAS", "BAHIA", "CEARA", "DISTRITO FEDERAL",
+              "ESPIRITO SANTO", "GOIAS", "MARANHAO", "MATO GROSSO DO SUL", "MATO GROSSO",
+              "MINAS GERAIS", "PARA", "PARAIBA", "PARANA", "PERNAMBUCO", "PIAUI",
+              "RIO DE JANEIRO", "RIO GRANDE DO NORTE", "RIO GRANDE DO SUL", "RONDONIA",
+              "RORAIMA", "SANTA CATARINA", "SAO PAULO", "SERGIPE", "TOCANTINS"),
+    abb = c("AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA",
+            "MS", "MT", "MG", "PA", "PB", "PR","PE", "PI", "RJ", "RN",
+            "RS", "RO", "RR", "SC", "SP", "SE", "TO"),
+    code = c(12L, 27L, 16L, 13L, 29L, 23L, 53L, 32L, 52L, 21L, 51L, 50L,
+             31L, 15L, 25L, 41L, 26L, 22L, 33L, 24L, 43L, 11L, 14L, 42L, 35L,
+             28L, 17L),
+    stringsAsFactors = FALSE
+  )
 }
 
 
@@ -49,10 +52,9 @@ test_responses <- function(response1, response2, prob){
 # Internal function to round numeric guess
 round_guess <- function(prob, threshold){
 
-  dplyr::case_when(prob > threshold ~ "Female",
-                   prob < (1 - threshold) ~ "Male",
-                   TRUE ~ as.character(NA)
-                   )
+  res <- ifelse(prob > threshold, "Female",
+                ifelse(prob < (1 - threshold), "Male", NA_character_))
+  as.character(res)
 }
 
 

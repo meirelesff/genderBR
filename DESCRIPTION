@@ -8,11 +8,10 @@ Description: A method to predict and report gender from Brazilian first names
 License: GPL (>= 2)
 Depends: R (>= 4.1.0)
 Imports: 
-    dplyr (>= 0.5.0),
+    data.table,
     jsonlite,
     httr,
-    purrr,
-    tibble
+    purrr
 Encoding: UTF-8
 URL: https://github.com/meirelesff/genderBR
 BugReports: https://github.com/meirelesff/genderBR/issues
