@@ -10,6 +10,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "README-"
 )
+options(max.print = 20)
 ```
 
 # genderBR
@@ -136,10 +137,25 @@ devtools::install_github("meirelesff/genderBR")
     
 ## Data
 
-The surveyed population in the Instituto Brasileiro de Geografia e Estatistica's (IBGE) 2010 Census includes 190,8 million Brazilians -- with more than 130,000 unique first names.
+The surveyed population in the Instituto Brasileiro de Geografia e Estatistica's (IBGE) 2010 and 2022 Census included over 190 million individuals.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# Access package's internal dataset and calculates total number of individuals surveyed
+nomes <- genderBR:::nomes
+nomes2010 <- sum(!is.na(nomes$prob_fem10))
+nomes2022 <- sum(!is.na(nomes$prob_fem22))
+total_unique <- nomes2010 + nomes2022 - sum(!is.na(nomes$prob_fem10) & !is.na(nomes$prob_fem22))
+
+```
+
+Year | Unique names
+---:|:------------
+2010 | `r nomes2010`
+2022 | `r nomes2022`
+Unique (2010 & 2022) | `r total_unique`
 
 
-To extract the number of male or female uses of a given first name in Brazil, the package employs the IBGE's [API](https://censo2022.ibge.gov.br/nomes/) and, since version 1.1.0, also an internal dataset containing all the names recorded in the IBGE's Census. As of version 1.2.0, this internal dataset includes probabilities for both 2010 and 2022, allowing fast offline predictions for either year. In this service, different spellings (e.g., Ana and Anna, or Marcos and Markos) imply different occurrences, and only names with more than 20 occurrences, or more than 15 occurrences in a given state, are included in the database.
+The Census recorded the first names of all individuals, along with their self-declared biological gender (male or female) and their state of residence. To extract the number of male or female uses of a given first name in Brazil, the package employs the IBGE's [API](https://censo2022.ibge.gov.br/nomes/) and, since version 1.1.0, also an internal dataset containing all the names recorded in the IBGE's Census. As of version 1.2.0, this internal dataset includes probabilities for both 2010 and 2022, allowing fast offline predictions for either year. In this service, different spellings (e.g., Ana and Anna, or Marcos and Markos) imply different occurrences, and only names with more than 20 occurrences, or more than 15 occurrences in a given state, are included in the database.
 
 For more information on the IBGE's data, please check (in Portuguese): 
 https://censo2022.ibge.gov.br/nomes/
