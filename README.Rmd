@@ -22,8 +22,24 @@ options(max.print = 20)
 
 `genderBR` predicts gender from Brazilian first names using data from the Instituto Brasileiro de Geografia e Estatistica's Census (2010 and 2022).
 
-## How does it work?
+## Installing
 
+To install `genderBR`'s last stable version on CRAN, use:
+
+```{r, eval = FALSE}
+install.packages("genderBR")
+```
+
+
+To install a development version, use:
+
+```{r, eval = FALSE}
+if (!require("devtools")) install.packages("devtools")
+devtools::install_github("meirelesff/genderBR")
+```
+
+
+## How does it work?
 
 `genderBR`'s main function is `get_gender`, which takes a string with a Brazilian first name and predicts its gender using data from the IBGE's Census (2010 or 2022) -- specifically, from its API and from an internal dataset. 
 
@@ -119,21 +135,6 @@ map_gender("iris", gender = "m")
 
 Internally, `genderBR` now uses the `data.table` backend for joins and merges. This keeps user-facing outputs as base data.frames while speeding up repeated lookups for large vectors of names (mainly when aggregating duplicates before querying the IBGE API or matching against the internal dataset).
 
-## Installing
-
-To install `genderBR`'s last stable version on CRAN, use:
-
-```{r, eval = FALSE}
-install.packages("genderBR")
-```
-
-
-To install a development version, use:
-
-```{r, eval = FALSE}
-if (!require("devtools")) install.packages("devtools")
-devtools::install_github("meirelesff/genderBR")
-```
     
 ## Data
 
@@ -159,6 +160,11 @@ The Census recorded the first names of all individuals, along with their self-de
 
 For more information on the IBGE's data, please check (in Portuguese): 
 https://censo2022.ibge.gov.br/nomes/
+
+
+## Ethical considerations
+
+As the description of the package states, `genderBR` infers gender from Brazilian first names based on data from the IBGE's Census. In this sense, the package uses a binary classification derived from state imposed naming conventions recorded at birth. The packages' functionality, therefore, is unable to differentiate between non-binary gender identities or changes in gender identity over time. Because of that, and in line with recommendations from similar packages (e.g., [`gender`](and threshold tuning)), users should avoid using `genderBR` to impose binary classifications to individuals or in contexts where misclassification may lead to harm or discrimination against groups. Instead, the package works better as an estimator for aggregate, large populations -- such the proportion of female partisan affiliates in the whole country. Even then, `genderBR` should be considered a last resort tool to be used only when self-identified gender data is lacking and infering it from first names does not pose risks to groups under study.
 
 ## Author
 

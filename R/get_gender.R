@@ -31,7 +31,7 @@
 #' @param encoding Encoding used to read Brazilian names and stip accents.
 #' Defaults to \code{ASCII//TRANSLIT}.
 #' @param year Census year used in the prediction. Supported values are \code{2010}
-#' (default) and \code{2022}.
+#' and \code{2022} (default).
 #'
 #' @section Data:
 #'
@@ -89,7 +89,7 @@
 
 get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
                        internal = TRUE, encoding = "ASCII//TRANSLIT",
-                       year = 2010){
+                       year = 2022){
 
 
   # Inputs

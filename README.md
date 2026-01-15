@@ -13,6 +13,21 @@ coverage](https://codecov.io/gh/meirelesff/genderBR/graph/badge.svg)](https://ap
 the Instituto Brasileiro de Geografia e Estatistica’s Census (2010 and
 2022).
 
+## Installing
+
+To install `genderBR`’s last stable version on CRAN, use:
+
+``` r
+install.packages("genderBR")
+```
+
+To install a development version, use:
+
+``` r
+if (!require("devtools")) install.packages("devtools")
+devtools::install_github("meirelesff/genderBR")
+```
+
 ## How does it work?
 
 `genderBR`’s main function is `get_gender`, which takes a string with a
@@ -80,15 +95,15 @@ the IBGE API for the selected year.
 ``` r
 # What is the probability that the name Ariel belongs to a female person in Brazil?
 get_gender("Ariel", prob = TRUE)
-#> [1] 0.09219289
+#> [1] 0.09887588
 
 # What about differences between Brazilian states?
 get_gender("Ariel", prob = TRUE, state = "RJ") # RJ, Rio de Janeiro
-#> [1] 0.2627399
+#> [1] 0.3423689
 get_gender("Ariel", prob = TRUE, state = "RS") # RS, Rio Grande do Sul
-#> [1] 0.05144695
+#> [1] 0.05841056
 get_gender("Ariel", prob = TRUE, state = "SP") # SP, Sao Paulo
-#> [1] 0.1294782
+#> [1] 0.1399795
 ```
 
 Note that a vector with states’ abbreviations is a valid input for
@@ -98,7 +113,7 @@ Note that a vector with states’ abbreviations is a valid input for
 name <- rep("Ariel", 3)
 states <- c("rj", "rs", "sp")
 get_gender(name, prob = T, state = states)
-#> [1] 0.26273991 0.05144695 0.12947819
+#> [1] 0.34236889 0.05841056 0.13997952
 ```
 
 This can be useful also to predict the gender of different individuals
@@ -114,7 +129,7 @@ df$gender <- get_gender(df$name, df$uf)
 
 df
 #>               name uf gender
-#> 1 Alberto da Silva AC   Male
+#> 1 Alberto da Silva AC   <NA>
 #> 2 Maria dos Santos SP Female
 #> 3     Thiago Rocha PE   Male
 #> 4    Paula Camargo RS Female
@@ -175,21 +190,6 @@ speeding up repeated lookups for large vectors of names (mainly when
 aggregating duplicates before querying the IBGE API or matching against
 the internal dataset).
 
-## Installing
-
-To install `genderBR`’s last stable version on CRAN, use:
-
-``` r
-install.packages("genderBR")
-```
-
-To install a development version, use:
-
-``` r
-if (!require("devtools")) install.packages("devtools")
-devtools::install_github("meirelesff/genderBR")
-```
-
 ## Data
 
 The surveyed population in the Instituto Brasileiro de Geografia e
@@ -217,6 +217,25 @@ state, are included in the database.
 
 For more information on the IBGE’s data, please check (in Portuguese):
 <https://censo2022.ibge.gov.br/nomes/>
+
+## Ethical considerations
+
+As the description of the package states, `genderBR` infers gender from
+Brazilian first names based on data from the IBGE’s Census. In this
+sense, the package uses a binary classification derived from state
+imposed naming conventions recorded at birth. The packages’
+functionality, therefore, is unable to differentiate between non-binary
+gender identities or changes in gender identity over time. Because of
+that, and in line with recommendations from similar packages (e.g.,
+[`gender`](and%20threshold%20tuning)), users should avoid using
+`genderBR` to impose binary classifications to individuals or in
+contexts where misclassification may lead to harm or discrimination
+against groups. Instead, the package works better as an estimator for
+aggregate, large populations – such the proportion of female partisan
+affiliates in the whole country. Even then, `genderBR` should be
+considered a last resort tool to be used only when self-identified
+gender data is lacking and infering it from first names does not pose
+risks to groups under study.
 
 ## Author
 
