@@ -11,7 +11,7 @@ get_gender(
   threshold = 0.9,
   internal = TRUE,
   encoding = "ASCII//TRANSLIT",
-  year = 2010
+  year = 2022
 )
 }
 \arguments{
@@ -31,11 +31,11 @@ from \code{NULL}, the \code{internal} argument is ignored.}
 the function faster, but it does not support getting results by State.
 Defaults to \code{TRUE}.}
 
-\item{encoding}{Encoding used to read Brazilian names and stip accents.
+\item{encoding}{Encoding used to read Brazilian names and strip accents.
 Defaults to \code{ASCII//TRANSLIT}.}
 
 \item{year}{Census year used in the prediction. Supported values are \code{2010}
-(default) and \code{2022}.}
+and \code{2022} (default).}
 }
 \value{
 \code{get_gender} may returns three different values: \code{Female},

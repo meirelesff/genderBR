@@ -28,7 +28,7 @@
 #' @param internal Use internal data to predict gender? Allowing this option makes
 #' the function faster, but it does not support getting results by State.
 #' Defaults to \code{TRUE}.
-#' @param encoding Encoding used to read Brazilian names and stip accents.
+#' @param encoding Encoding used to read Brazilian names and strip accents.
 #' Defaults to \code{ASCII//TRANSLIT}.
 #' @param year Census year used in the prediction. Supported values are \code{2010}
 #' and \code{2022} (default).

@@ -13,7 +13,7 @@ as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive
 \item{gender}{A string with the gender to look for. Valid inputs are \code{m}, for males, \code{f},
 for females, and \code{NULL}, in which case the function returns results for all persons with a given name.}
 
-\item{encoding}{Encoding used to read Brazilian names and stip accents.
+\item{encoding}{Encoding used to read Brazilian names and strip accents.
 Defaults to \code{ASCII//TRANSLIT}.}
 }
 \value{

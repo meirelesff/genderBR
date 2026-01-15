@@ -5,7 +5,7 @@ This is a minor update of the genderBR package that includes several improvement
 - Internal dataset `nomes` now provides probabilities for both 2010 and 2022, enabling offline predictions and threshold tuning for either year when `internal = TRUE`.
 - Removed the `magrittr` dependency by switching to R's native pipe (requiring R 4.1.0 or higher).
 - Replaced `dplyr`/`tibble` joins with a `data.table` backend to speed up internal merges and reduce dependencies.
-- Updated and added new tests to cover the new functionality and ensure no errors when using 2022 data.
+- Updated and added new tests to ensure no errors when using 2022 data.
 - Improved documentation and examples to reflect the new functionality and changes.
 - Added a new section in the README discussing ethical considerations.
 
@@ -20,8 +20,7 @@ This is a minor update of the genderBR package that includes several improvement
 
 0 errors | 0 warnings | 0 note
 
-* There was one NOTE on win-builder: X-CRAN-Comment: Archived on 2021-02-21 for policy violation.
-This is a new resubmission that replaces the previous archived version.
+* There is one NOTE on CRAN Package Check Results online for version 1.1.2: r-devel-linux-x86_64-fedora-gcc: "Namespace in Imports field not imported from: ‘purrr’". This is a false positive, as the package does import and use functions from purrr in 'r/utils.R'.
 
 ## Reverse dependencies
 

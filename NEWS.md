@@ -1,11 +1,11 @@
-# genderBR (development version)
+# genderBR 1.2.0
 
-- Added support for IBGE's 2022 names API via a new `year` argument in `get_gender`.
-- Internal dataset `nomes` now includes probabilities for 2010 and 2022 (`prob_fem10`, `prob_fem22`) and is used when `internal = TRUE`.
-- Replaced all uses of `%>%` with the base `|>` operator.
-- Removed the exported pipe helper and `magrittr` import.
-- Updated tests to cover new features and changes.
+- Added support for IBGE's 2022 census data API, updating the default year to 2022 in `get_gender`.
+- Internal dataset `nomes` now includes probabilities for 2010 and 2022 (`prob_fem10`, `prob_fem22`) and is used when `internal = TRUE`. This data covers 141,742 unique Brazilian first names.
+- Replaced all uses of `%>%` with the base `|>` operator, thus removing the `magrittr` dependency (requires R 4.1.0 or higher).
 - Switched data manipulation backend to `data.table` for faster joins and removed `dplyr`/`tibble` dependencies.
+- Updated tests to cover new features and changes.
+- Added a section on ethical considerations in the README.
 
 
 # genderBR 1.1.1
