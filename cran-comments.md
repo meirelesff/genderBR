@@ -1,3 +1,5 @@
+* Now fixed the URI: and%20threshold%20tuning From: README.md
+
 This is a minor update of the genderBR package that includes several improvements and, more importantly, support for Brazilian 2022 Census data. Changes in this version include:
 
 - Added support for the 2022 IBGE names API through a new `year` argument in `get_gender`, which allows users to access the most recent data for gender prediction in Brazil for both the national and state levels. Code changes do not break backward compatibility.

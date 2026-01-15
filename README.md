@@ -227,7 +227,7 @@ imposed naming conventions recorded at birth. The packages’
 functionality, therefore, is unable to differentiate between non-binary
 gender identities or changes in gender identity over time. Because of
 that, and in line with recommendations from similar packages (e.g.,
-[`gender`](and%20threshold%20tuning)), users should avoid using
+[`gender`](https://github.com/lmullen/gender)), users should avoid using
 `genderBR` to impose binary classifications to individuals or in
 contexts where misclassification may lead to harm or discrimination
 against groups. Instead, the package works better as an estimator for
