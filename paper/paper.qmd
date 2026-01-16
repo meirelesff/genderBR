@@ -64,7 +64,13 @@ states$prob_fem22 <- get_gender(name, prob = TRUE, state = states$abb, year = 20
 head(states)
 ```
 
-Internally, `genderBR` computes $p_\text{female} = \frac{f}{f + m}$ for each name (and state, when provided), where $f$ and $m$ are IBGE female and male counts. The returned label applies the rule: female if $p_\text{female} > \tau$, male if $p_\text{female} < 1 - \tau$, and unknown otherwise, with the default $\tau = 0.9$. This decision treshold is deterministic, but users can tune $\tau$ to trade off precision and coverage for their applications.
+Internally, `genderBR` computes $p_\text{female} = \frac{f}{f + m}$ for each name (and state, when provided), where $f$ and $m$ are IBGE female and male counts. The returned label applies the rule: female if $p_\text{female} > \tau$, male if $p_\text{female} < 1 - \tau$, and unknown otherwise, with the default $\tau = 0.9$. This decision treshold is deterministic, but users can tune $\tau$ to trade off precision and coverage for their applications. For example:
+
+```{r}
+# Different thresholds
+get_gender("Darcy", threshold = 0.5)
+get_gender("Darcy", threshold = 0.7)
+```
 
 # Ethical Considerations
 

@@ -52,7 +52,7 @@ test_responses <- function(response1, response2, prob){
 round_guess <- function(prob, threshold){
 
   res <- ifelse(prob > threshold, "Female",
-                ifelse(prob < (1 - threshold), "Male", NA_character_))
+                ifelse(prob < (1 - threshold), "Male", "Unknown"))
   as.character(res)
 }
 
