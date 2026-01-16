@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.16)  16 JAN 2026 17:27
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.16)  16 JAN 2026 20:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1043,7 +1043,7 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <8> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 372.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 370.
 [1
 
 ]
@@ -1059,6 +1059,16 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 [2]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `TU/lmtt/b/n' tried instead on input line 444.
+
+Overfull \hbox (15.46202pt too wide) in paragraph at lines 514--515
+ []\TU/lmr/m/n/10 Threshold
+ []
+
+
+Overfull \hbox (15.46202pt too wide) in paragraph at lines 532--533
+ []\TU/lmr/m/n/10 Threshold
+ []
+
 File: /home/fmeireles/R/x86_64-redhat-linux-gnu-library/4.5/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 </home/fmeireles/R/x86_64-redhat-linux-gnu-library/4.5/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1069,15 +1079,6 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [3]
-Overfull \hbox (15.46202pt too wide) in paragraph at lines 568--569
- []\TU/lmr/m/n/10 Threshold
- []
-
-
-Overfull \hbox (15.46202pt too wide) in paragraph at lines 586--587
- []\TU/lmr/m/n/10 Threshold
- []
-
 File: /home/fmeireles/R/x86_64-redhat-linux-gnu-library/4.5/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 </home/fmeireles/R/x86_64-redhat-linux-gnu-library/4.5/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1113,16 +1114,16 @@ LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-29>
  ***********
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: 451679AAA6D518B9A1AEA7DEFEAD0690;1108.
+(rerunfilecheck)             Checksum: B7B4B3D9F43EC1C854D882962756FF69;1266.
 Package logreq Info: Writing requests to 'paper.run.xml'.
 \openout1 = `paper.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 37326 strings out of 470179
- 760708 string characters out of 5477874
- 1658258 words of memory out of 5000000
- 65371 multiletter control sequences out of 15000+600000
+ 37329 strings out of 470179
+ 760788 string characters out of 5477874
+ 1657575 words of memory out of 5000000
+ 65374 multiletter control sequences out of 15000+600000
  634617 words of font info for 91 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
  84i,12n,94p,1002b,850s stack positions out of 10000i,1000n,20000p,200000b,200000s

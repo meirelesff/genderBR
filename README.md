@@ -4,6 +4,7 @@
 # genderBR
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/genderBR)](https://cran.r-project.org/package=genderBR)
+[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/genderBR)](https://cran.r-project.org/package=genderBR)
 [![Codecov test
 coverage](https://codecov.io/gh/meirelesff/genderBR/graph/badge.svg)](https://app.codecov.io/gh/meirelesff/genderBR)
 [![Package-License](https://img.shields.io/badge/License-GPL-brightgreen.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
@@ -41,8 +42,8 @@ By default, `get_gender` uses 2010 data, but you can now specify the
 ``` r
 library(genderBR)
 #> 
-#> To cite genderBR in publications, use: citation('genderBR')
-#> To learn more, visit: fmeireles.com/genderbr
+#> If you find this package useful, please consider acknowledging it.
+#> Use: citation('genderBR')
 
 get_gender("joão", year = 2022)
 #> [1] "Male"
@@ -129,7 +130,7 @@ df$gender <- get_gender(df$name, df$uf)
 
 df
 #>               name uf gender
-#> 1 Alberto da Silva AC   <NA>
+#> 1 Alberto da Silva AC   Male
 #> 2 Maria dos Santos SP Female
 #> 3     Thiago Rocha PE   Male
 #> 4    Paula Camargo RS Female
