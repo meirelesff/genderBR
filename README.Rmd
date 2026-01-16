@@ -16,6 +16,7 @@ options(max.print = 20)
 # genderBR
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/genderBR)](https://cran.r-project.org/package=genderBR)
+[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/genderBR)](https://cran.r-project.org/package=genderBR)
 [![Codecov test coverage](https://codecov.io/gh/meirelesff/genderBR/graph/badge.svg)](https://app.codecov.io/gh/meirelesff/genderBR)
 [![Package-License](https://img.shields.io/badge/License-GPL-brightgreen.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![R-CMD-check](https://github.com/meirelesff/genderBR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/meirelesff/genderBR/actions/workflows/R-CMD-check.yaml)
