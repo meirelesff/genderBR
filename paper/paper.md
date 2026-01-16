@@ -6,7 +6,6 @@ tags:
   - gender inference
   - Brazil
   - census data
-  - names
 authors:
   - name: Fernando Meireles
     orcid: 0000-0002-7027-2058
@@ -21,30 +20,60 @@ bibliography: paper.bib
 
 # Summary
 
-`genderBR` is an R package that predicts gender from Brazilian first names using official data from the Instituto Brasileiro de Geografia e Estatistica (IBGE) for both the 2010 and 2022 Censuses [@IBGE2022]. The package offers a fast offline mode via an internal dataset and an online mode that queries IBGE's API, supports state-level filters, and exposes a simple interface through `get_gender`, `map_gender`, and `get_states`. By combining reproducible census data with vectorized lookups and data.table joins, `genderBR` enables social science, public health, and survey researchers to add gender labels or probabilities to large Brazilian name lists with minimal effort [@genderBR].
+Quantitative social science research frequently relies on large-scale administrative or scraped datasets that lack demographic indicators -- including gender. While methods exist to impute gender from first names, existing tools predominantly depend on Anglocentric populations or commercial datasets. `genderBR` is an R package designed as an alternative to infer gender from Brazilian first names using official data from the Brazilian Institute of Geography and Statistics (IBGE) for both the 2010 and 2022 Censuses [@IBGE2022]. The package offers a fast offline mode via an internal dataset and an online mode that queries IBGE's API and supports state-level filters, allowing predictions to be calibrated to reflect both temporal and regional variations in naming-gender associations. Using large scale census microdata, `genderBR` thus enables academics, journalists, and practitioners to obtain binary gender predictions or probabilities to study aggregate demographic groups in a reproducible manner. 
 
 # Statement of need
 
-Research on Brazilian populations frequently requires gender labels to audit representation, balance survey samples, or study demographic trends. Existing gender inference tools such as `gender` [@Mullen2016] rely on historical datasets from the United States or Europe and perform poorly for Portuguese names and diacritics. Commercial APIs provide limited transparency, inconsistent coverage of Brazilian data, and no state-level detail. `genderBR` addresses this gap by delivering a free, open-source solution grounded in IBGE census microdata, offering both national and state-level predictions for 2010 and 2022, and exposing probabilities alongside hard labels. The package is aimed at researchers, journalists, and practitioners working with Brazilian administrative or survey data who need a documented, reproducible, and locally accurate approach to gender inference.
+A common challenge in quantitative social science is the absence of demographic information in large-scale datasets. For instance, researchers frequently utilize administrative records such as electoral rolls, or scraped web data to study representation, labor market discrimination, or political behavior that lack self-reported gender indicators, which are essential for understanding topics as important as social inequalities or descriptive representation. Therefore, scholars often resort to imputing gender based on first names, exploiting naming conventions that correlate with a binary gender classification.
 
-# State of the field
+Despite the limitations of this approach, deriving gender labels from first names remains a popular method in the absence of direct measures. For example, solutions such as @genderAPI, @Namsor, and @genderize offer commercial APIs that allows users to query first names and obtain gender predictions based on large proprietary datasets. In the open-source domain, packages such as `gender` [@Mullen2016] rely on historical datasets from the United States or Europe, using counts of names by gender from sources like the US Social Security Administration to predict gender for English names. Yet, while useful for Anglophone contexts, these tools are not well-suited for the study of Latin American populations due to cultural and linguistic differences in naming conventions. In a comparative assessment, @vanhelene2024inferring show that these tools are highly accurate for Western populations, with both @genderAPI and @genderize achieving accuracies exceeding 98% and aggregate accuracy around 96% to a global dataset of mostly Western names. However, their performances dropped below 82% for names from South Korea, China, Singapore, and Taiwan. The open-source alternative, the `gender` package [@Mullen2016], achieved an even lower overall accuracy, of only 79.8% using the IPUMS method and 85.7% using US Social Security Administration data.
 
-The `gender` package [@Mullen2016] and other general-purpose services estimate gender using historical Anglo-centric datasets or crowd-sourced corpora. These tools underperform for Brazilian names because they lack contemporary Portuguese spellings, handle accents inconsistently, and provide no federative breakdowns. `genderBR` builds directly on IBGE's official census series [@IBGE2022], adds an internal probability table for offline use, and supplies a state filter that re-queries the API when regional variation matters. This fills a distinct niche where existing packages either cannot ingest the IBGE endpoints or do not expose Brazilian-specific probabilities, making `genderBR` the appropriate choice when working with Brazilian populations.
+`genderBR` addresses theses gaps by offering an open-source solution to tackle this problem specifically for Brazil, whose population exceeds 200 million people and represents the largest Portuguese-speaking country in the world. The package is grounded in IBGE census microdata, which provides and standardizes Brazilian first names occurrence counts by gender -- a binary classification based on self-reported data collected in the census. The package supports both national and state-level predictions for 2010 and 2022, and exposing probabilities alongside hard labels. Unlike API-based solutions that rely on opaque or non-representative web data, `genderBR` leverages official census data to ensure accurate and reproducible gender inference for Brazilian populations.
 
-# Software design
+# Method and Usage
 
-`genderBR` centers on three user-facing functions. `get_gender` cleans input strings, normalizes encodings, aggregates duplicates, and returns either gender labels or female-use probabilities based on a configurable threshold. When `internal = TRUE` and no state is provided, it reads from the bundled `nomes` dataset (2010 and 2022 probabilities); otherwise it calls IBGE's API with robust error handling and optional pauses to respect rate limits. `map_gender` retrieves state-level counts and per-capita rates, while `get_states` returns canonical abbreviations and IBGE codes for validation and convenience. Internally, the package uses `data.table` for fast joins, `httr` and `jsonlite` for HTTP and parsing, and `purrr::possibly` to guard against transient API failures. Input validation and deterministic rounding are centralized in helper utilities (e.g., `clean_names`, `round_guess`, `state2code`), and automated tests in `tests/testthat` cover API plumbing, input handling, and offline predictions. Continuous integration (R CMD check) and coverage reporting (Codecov) keep the CRAN and GitHub releases aligned with current R tooling.
+`get_gender` is the package's core function: it cleans names (lowercases, strips accents using `ASCII//TRANSLIT`, keeps only the first token), aggregates duplicates to reduce API calls, and returns either binary labels or female-use probabilities. Users can switch between census years (`year = 2010` or `2022`), request probabilities (`prob = TRUE`), tune decision thresholds (`threshold`, default is 0.9), and choose the data source. When `internal = TRUE` and no state is provided, results come from the bundled IBGE-derived probability table (`nomes`), enabling fully offline and reproducible analyses. When a state is supplied or `internal = FALSE`, the function queries IBGE's API and, if the input vector is large, inserts small pauses to respect rate limits.
 
-# Research impact statement
+## Examples
 
-`genderBR` makes recent IBGE gender distributions immediately usable for reproducible research pipelines. The inclusion of the 2022 census probabilities enables up-to-date audits of gender balance in administrative datasets, while the state-level API path supports regional analyses not feasible with global tools. Open distribution on CRAN and GitHub, GPL (>= 2) licensing, and maintained automated checks lower the barrier for adoption in survey operations and academic workflows. Because the package bundles the offline probability table, analyses remain reproducible even when API access is intermittent, and test coverage provides assurance when integrating into larger R projects. Collectively these design choices position `genderBR` as a sustainable research asset for Brazilian demographic and social science studies [@genderBR].
+To obtain national predictions with binary labels for a vector of names, use the following code:
 
-# AI usage disclosure
+```{r}
+library(genderBR)
 
-No generative AI tools were used in developing the software or its documentation. This manuscript text was drafted with assistance from GitHub Copilot/ChatGPT and will be reviewed and verified by the authors.
+# Return labels
+get_gender(c("João", "Ana"))
+
+# Return probabilities of given names being female
+get_gender(c("João", "Ana"), prob = TRUE)
+```
+
+To obtain the probabilities calibrated to specific period and Brazilian states, the main function can be used as follows:
+
+```{r}
+# Probabilities for two "Darcy" in different states in 2010
+name <- rep("Ariel", 3)
+states <- c("RJ", "RS", "SP")
+get_gender(name, prob = TRUE, state = states, year = 2010)
+
+# Using the `get_states` helper to get all state codes
+states <- get_states()
+name <- rep("Darcy", nrow(states))
+
+# Get probabilities for "Darcy" in all states for 2010 and 2022
+states$prob_10 <- get_gender(name, prob = TRUE, state = states$abb, year = 2010)
+states$prob_22 <- get_gender(name, prob = TRUE, state = states$abb, year = 2022)
+head(states)
+```
+
+Internally, `genderBR` computes $p_\text{female} = \frac{f}{f + m}$ for each name (and state, when provided), where $f$ and $m$ are IBGE female and male counts. The returned label applies the rule: female if $p_\text{female} > \tau$, male if $p_\text{female} < 1 - \tau$, and unknown otherwise, with the default $\tau = 0.9$. This decision treshold is deterministic, but users can tune $\tau$ to trade off precision and coverage for their applications.
+
+# Ethical Considerations
+
+While `genderBR` provides a practical solution for imputing gender from first names, it is crucial to acknowledge the implications of using this approach. By relying on a binary gender classification derived from naming conventions recorded at birth, the provided method is unable to differentiate between non-binary gender identities or changes in gender identity over time. In line with recommendations from similar packages [@Mullen2016], users should avoid using `genderBR` to impose binary classifications to individuals or in contexts where misclassification may lead to harm or discrimination against groups. Instead, the package should be regarded as an estimator for aggregate, large populations -- to approximate the proportion of female partisan affiliates in the whole country, for example. In sum, `genderBR` should be viewed as a last resort tool when self-identified gender data is lacking and infering it from first names does not pose risks to groups under study.
 
 # Acknowledgements
 
-We thank the Instituto Brasileiro de Geografia e Estatistica for providing the public census name data and API that make this work possible, and the R community for packages that simplify HTTP, parsing, and testing workflows.
+I thank the Brazilian Institute of Geography and Statistics for providing the public census name data and API that make this work possible, and the `R` and academic community that contributed to the development of the package with feedback and suggestions.
 
 # References
