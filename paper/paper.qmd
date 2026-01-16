@@ -37,6 +37,7 @@ Despite the limitations of this approach, obtaining gender labels from first nam
 ## Examples
 
 ```{r, message=FALSE, include=FALSE}
+options(digits = 4)
 library(genderBR)
 ```
 
@@ -53,16 +54,14 @@ get_gender(name_vec, prob = TRUE)
 
 To obtain the probabilities calibrated to specific period and Brazilian states, users can provide a `state` vector with the corresponding two-letter state abbreviations (e.g., "RJ" for Rio de Janeiro), in which case will query IBGE's API directly instead of using the internal data to calculate name-by-gender-state probabilities. Important note: the length of the `state` vector must match that of the `name` vector. 
 
-```{r, eval=FALSE}
-# Probabilities for "Darcy"
-name <- rep("Darcy", 3)
-states <- c("RJ", "RS", "SP")
-get_gender(name, prob = TRUE, state = states)
-
-# Using the `get_states` helper to get all state codes
+```{r}
+# Probabilities for "Ariel"
 states <- get_states()
-name <- rep("Darcy", nrow(states))
-get_gender(name, prob = TRUE, state = states$abb)
+name <- rep("Ariel", nrow(states))
+states$prob_fem10 <- get_gender(name, prob = TRUE, state = states$abb, year = 2010)
+states$prob_fem22 <- get_gender(name, prob = TRUE, state = states$abb, year = 2022)
+
+head(states)
 ```
 
 Internally, `genderBR` computes $p_\text{female} = \frac{f}{f + m}$ for each name (and state, when provided), where $f$ and $m$ are IBGE female and male counts. The returned label applies the rule: female if $p_\text{female} > \tau$, male if $p_\text{female} < 1 - \tau$, and unknown otherwise, with the default $\tau = 0.9$. This decision treshold is deterministic, but users can tune $\tau$ to trade off precision and coverage for their applications.

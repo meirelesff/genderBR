@@ -114,14 +114,11 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
   if(ln > 100) pause <- TRUE
   else pause <- FALSE
 
-
   # Ignore internal when state is declared
   if(internal && !is.null(state)) internal <- FALSE
 
-
   ### Internal data
   if(internal) return(get_gender_internal(names, prob, threshold, year))
-
 
   ### API data
   # Whole country & unique names
@@ -188,7 +185,7 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
 
 
 # Get individual results from API
-get_gender_api <- function(name, state, prob, threshold, pause = FALSE, year = 2010){
+get_gender_api <- function(name, state, prob, threshold, pause, year){
 
 
   if(year == 2022){
@@ -203,22 +200,24 @@ get_gender_api <- function(name, state, prob, threshold, pause = FALSE, year = 2
     httr::stop_for_status(response, task = "retrieve IBGE's API data.")
 
     content <- httr::content(response, as = "parsed")
-    if(is.list(content) && !is.null(content[[1]]) && is.null(content$homens)) content <- content[[1]]
 
-    homens <- content$homens
-    mulheres <- content$mulheres
-
-    if(is.null(homens) || is.null(mulheres)){
+    # All null results
+    if(is.null(content$homens) && is.null(content$mulheres)){
       if(prob) return(NA_real_)
       return(as.character(NA))
     }
 
+    if(is.na(content$frequencia)){
+      if(prob) return(NA_real_)
+      return(as.character(NA))
+    }
+
+    # Null counts just for a gender
+    homens <- ifelse(is.null(content$homens), content$frequencia - content$mulheres, content$homens)
+    mulheres <- ifelse(is.null(content$mulheres), content$frequencia - content$homens, content$mulheres)
     total <- homens + mulheres
-    if(is.na(total) || total == 0){
-      if(prob) return(NA_real_)
-      return(as.character(NA))
-    }
 
+    # Return
     fprob <- mulheres / total
     if(prob) return(fprob)
     return(round_guess(fprob, threshold))
