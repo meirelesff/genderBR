@@ -1,7 +1,7 @@
 Package: genderBR
 Type: Package
 Title: Predict Gender from Brazilian First Names
-Version: 1.2.0
+Version: 1.2.1
 Authors@R: person("Fernando", "Meireles", , "fernando.meireles@iesp.uerj.br", c("aut", "cre"), c(ORCID = "0000-0002-7027-2058"))
 Description: A method to predict and report gender from Brazilian first names
     using the Brazilian Institute of Geography and Statistics' Census data.

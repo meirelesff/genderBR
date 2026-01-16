@@ -1,8 +1,7 @@
 # OnAttach message
 .onAttach <-
   function(libname, pkgname) {
-    packageStartupMessage("\nTo cite genderBR in publications, use: citation('genderBR')")
-    packageStartupMessage("To learn more, visit: fmeireles.com/genderbr\n")
+    packageStartupMessage("\nIf you find this package useful, please consider acknowledging it.\nUse: citation('genderBR')\n")
   }
 
 

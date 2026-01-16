@@ -1,3 +1,6 @@
+# genderBR 1.2.1
+
+
 # genderBR 1.2.0
 
 - Added support for IBGE's 2022 census data API, updating the default year to 2022 in `get_gender`.
