@@ -165,7 +165,7 @@ function (defaults to `FALSE`):
 get_gender("Zusjane", nn = TRUE)
 #> [1] "Female"
 get_gender(c("Lusjane", "Joao"), nn = TRUE, prob = TRUE)
-#> [1] 0.98506862 0.01076727
+#> [1] 0.9991980195 0.0007058178
 ```
 
 Or use the `get_gender_nn` function directly:
@@ -174,7 +174,7 @@ Or use the `get_gender_nn` function directly:
 get_gender_nn("Zusjane")
 #> [1] "Female"
 get_gender_nn(c("Maria", "Joao"), prob = TRUE)
-#> [1] 0.99720311 0.01076727
+#> [1] 0.9993317723 0.0007058178
 ```
 
 ### Brazilian state abbreviations
@@ -196,7 +196,7 @@ get_states()
 #>  [ reached 'max' / getOption("max.print") -- omitted 21 rows ]
 ```
 
-## Geographic distribution of Brazilian first names
+### Geographic distribution of Brazilian first names
 
 The `genderBR` package can also be used to get information on the
 relative and total number of persons with a given name by gender and by
@@ -233,6 +233,43 @@ data.frames while speeding up repeated lookups for large vectors of
 names (mainly when aggregating duplicates before querying the IBGE API
 or matching against the internal dataset).
 
+### Benchmarks
+
+The three backends (internal dataset, IBGE API, and neural network)
+differ ostly in speed. Here is a comparison using 20 common names:
+
+``` r
+nomes <- c(
+  "João", "Maria", "Pedro", "Ana", "Lucas",
+  "Juliana", "Gabriel", "Fernanda", "Rafael", "Camila",
+  "Bruno", "Patrícia", "Carlos", "Larissa", "Felipe",
+  "Beatriz", "Gustavo", "Aline", "Rodrigo", "Mariana"
+)
+
+bench <- data.frame(
+  Method = c("Internal dataset", "IBGE API", "Neural network"),
+  Time = c(
+    format(system.time(get_gender(nomes))["elapsed"], digits = 3),
+    format(system.time(get_gender_nn(nomes))["elapsed"], digits = 3),
+    format(system.time(get_gender(nomes, internal = FALSE))["elapsed"], digits = 3)
+  )
+)
+
+names(bench)[2] <- "Time (seconds)"
+knitr::kable(bench, align = "lr")
+```
+
+| Method           | Time (seconds) |
+|:-----------------|---------------:|
+| Internal dataset |          0.002 |
+| IBGE API         |          0.009 |
+| Neural network   |           1.24 |
+
+For classification tasks with a large number of names, the internal
+dataset is the fastest option, followed by the neural network model –
+that could be used to classify only the names that are not present in
+the internal dataset.
+
 ## Data
 
 The surveyed population in the Instituto Brasileiro de Geografia e
@@ -264,14 +301,14 @@ For more information on the IBGE’s data, please check (in Portuguese):
 ## Neural network model
 
 The neural network model used to predict gender from Brazilian first
-names is a bidirectional GRU (embedding dim = 32, hidden dim = 128,
-single layer) that operates at the character level. It was trained on
-all 141742 names from the IBGE dataset with targets defined as the
-probability of a name being female in the 2022 Census (or 2010 when the
-name is absent from the 2022 Census). The model was trained using the
-`luz` framework with an 80/10/10 train/validation/test split and early
-stopping. On the held-out test set, it achieves 95.1% accuracy and 0.141
-BCE loss. Model weights and vocabulary are hosted on [Hugging
+names is a 2-layer bidirectional GRU with attention pooling (embedding
+dim = 64, hidden dim = 192) that operates at the character level. It was
+trained on all 141742 names from the IBGE dataset with targets defined
+as the probability of a name being female in the 2022 Census (or 2010
+when the name is absent from the 2022 Census). The model was trained
+using the `luz` framework with an 80/10/10 train/validation/test split
+and early stopping. On the held-out test set, it achieves 96.5% accuracy
+and 0.110 BCE loss. Model weights and vocabulary are hosted on [Hugging
 Face](https://huggingface.co/fmeireles/genderBR) and downloaded on first
 use via `download_gender_model()`.
 
