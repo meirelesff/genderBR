@@ -22,8 +22,9 @@
 #'   \code{FALSE}.
 #' @param threshold Numeric indicating the threshold used in predictions.
 #'   Defaults to 0.9.
-#' @param encoding Encoding used to read Brazilian names and strip accents.
-#'   Defaults to \code{ASCII//TRANSLIT}.
+#' @param encoding \lifecycle{deprecated} Previously used to strip accents via
+#'   \code{iconv}. Accents are now removed with a platform-independent method and
+#'   this argument is ignored. It will be removed in a future version.
 #'
 #' @return \code{get_gender_nn} may return three different values:
 #'   \code{Female}, if the name provided is female; \code{Male}, if the name

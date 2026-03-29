@@ -1,6 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # genderBR
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/genderBR)](https://cran.r-project.org/package=genderBR)
@@ -49,7 +47,7 @@ library(genderBR)
 #> Use: citation('genderBR')
 
 get_gender("joão", year = 2022)
-#> [1] NA
+#> [1] "Male"
 get_gender("ana", year = 2022)
 #> [1] "Female"
 ```
@@ -64,7 +62,7 @@ classified as missing (`NA`). An example:
 
 ``` r
 get_gender("joão")
-#> [1] NA
+#> [1] "Male"
 get_gender("ana")
 #> [1] "Female"
 ```
@@ -156,14 +154,18 @@ function (defaults to `FALSE`):
 
 ``` r
 get_gender("Zusjane", nn = TRUE)
+#> [1] "Female"
 get_gender(c("Lusjane", "Joao"), nn = TRUE, prob = TRUE)
+#> [1] 0.98506862 0.01076727
 ```
 
 Or use the `get_gender_nn` function directly:
 
 ``` r
 get_gender_nn("Zusjane")
+#> [1] "Female"
 get_gender_nn(c("Maria", "Joao"), prob = TRUE)
+#> [1] 0.99720311 0.01076727
 ```
 
 ### Brazilian state abbreviations
@@ -193,7 +195,6 @@ state in Brazil. To that end, use the `map_gender` function:
 
 ``` r
 map_gender("maria")
-#> No encoding supplied: defaulting to UTF-8.
 #>      nome uf   freq populacao sexo     prop
 #> 1   Piauí 22 363139   3118360      11645.19
 #> 2   Ceará 23 967042   8452381      11441.06
@@ -207,7 +208,6 @@ the default option).
 
 ``` r
 map_gender("iris", gender = "m")
-#> No encoding supplied: defaulting to UTF-8.
 #>        nome uf freq populacao sexo  prop
 #> 1     Goiás 52  840   6003788    m 13.99
 #> 2 Tocantins 17  156   1383445    m 11.28

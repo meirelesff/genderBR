@@ -1,10 +1,18 @@
-test_that("name_gru_model instantiates without error", {
+skip_if_no_torch <- function() {
   skip_if_not_installed("torch")
+  tryCatch(
+    torch::torch_tensor(1),
+    error = function(e) skip("torch backend (Lantern) not available")
+  )
+}
+
+test_that("name_gru_model instantiates without error", {
+  skip_if_no_torch()
   expect_no_error(name_gru_model(40L, 32L, 64L))
 })
 
 test_that("forward pass returns correct output shape", {
-  skip_if_not_installed("torch")
+  skip_if_no_torch()
   model <- name_gru_model(40L, 32L, 64L)
   x <- torch::torch_randint(1, 40, c(4L, 20L), dtype = torch::torch_long())
   out <- model(x)
@@ -12,7 +20,7 @@ test_that("forward pass returns correct output shape", {
 })
 
 test_that("output values are finite", {
-  skip_if_not_installed("torch")
+  skip_if_no_torch()
   model <- name_gru_model(40L, 32L, 64L)
   x <- torch::torch_randint(1, 40, c(4L, 20L), dtype = torch::torch_long())
   out <- model(x)
@@ -20,7 +28,7 @@ test_that("output values are finite", {
 })
 
 test_that("model has no gradient after eval() + with_no_grad()", {
-  skip_if_not_installed("torch")
+  skip_if_no_torch()
   model <- name_gru_model(40L, 32L, 64L)
   model$eval()
   x <- torch::torch_randint(1, 40, c(4L, 20L), dtype = torch::torch_long())

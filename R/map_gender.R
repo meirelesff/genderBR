@@ -7,8 +7,9 @@
 #' as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive.
 #' @param gender A string with the gender to look for. Valid inputs are \code{m}, for males, \code{f},
 #' for females, and \code{NULL}, in which case the function returns results for all persons with a given name.
-#' @param encoding Encoding used to read Brazilian names and strip accents.
-#' Defaults to \code{ASCII//TRANSLIT}.
+#' @param encoding \lifecycle{deprecated} Previously used to strip accents via
+#'   \code{iconv}. Accents are now removed with a platform-independent method and
+#'   this argument is ignored. It will be removed in a future version.
 #'
 #' @details Information on the gender associated with Brazilian first names was collect in the 2010 Census
 #' (Censo Demografico de 2010, in Portuguese), in July of that year, by the Instituto Brasileiro de Demografia

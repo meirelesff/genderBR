@@ -4,6 +4,7 @@
 - The model is a bidirectional GRU (embedding dim = 32, hidden dim = 128, single layer) trained on 107k names from the IBGE dataset using the `luz` framework. On a held-out test set (10% of data), it achieves 95.1% accuracy and 0.141 BCE loss.
 - Added `clear_nn_cache()` to manage the in-memory model cache.
 - Model weights and vocabulary are hosted on Hugging Face and downloaded on first use; subsequent calls within the same session are served from an in-memory cache.
+- Replaced `iconv()` with `chartr()` for stripping accents in name cleaning. The previous approach relied on `iconv(name, to = "ASCII//TRANSLIT")`, which is platform-dependent and returns `NA` on macOS for accented names (e.g., "joão"). The `encoding` argument in `get_gender`, `get_gender_nn`, and `map_gender` is now deprecated and will be removed in a future version.
 - Added `torch` to `Imports`; `luz` and `httr2` to `Suggests`.
 
 

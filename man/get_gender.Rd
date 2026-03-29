@@ -32,8 +32,9 @@ from \code{NULL}, the \code{internal} argument is ignored.}
 the function faster, but it does not support getting results by State.
 Defaults to \code{TRUE}.}
 
-\item{encoding}{Encoding used to read Brazilian names and strip accents.
-Defaults to \code{ASCII//TRANSLIT}.}
+\item{encoding}{\lifecycle{deprecated} Previously used to strip accents via
+\code{iconv}. Accents are now removed with a platform-independent method and
+this argument is ignored. It will be removed in a future version.}
 
 \item{year}{Census year used in the prediction. Supported values are \code{2010}
 and \code{2022} (default).}

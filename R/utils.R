@@ -63,8 +63,12 @@ clean_names <- function(name, encoding){
   name <- sub("^\\s+", "", name) # Remove leading white
   name <- sub("\\s+$", "", name) # Remove trailing white
   name <- sub("(.*?) .*", "\\1", name) # First name only
-  name <- iconv(name, to = encoding) # Remove accents
   name <- tolower(name)
+  name <- chartr(
+    "\u00e0\u00e1\u00e2\u00e3\u00e4\u00e5\u00e8\u00e9\u00ea\u00eb\u00ec\u00ed\u00ee\u00ef\u00f2\u00f3\u00f4\u00f5\u00f6\u00f9\u00fa\u00fb\u00fc\u00fd\u00f1\u00e7",
+    "aaaaaaeeeeiiiioooooouuuuync",
+    name
+  )
 
   return(name)
 }
