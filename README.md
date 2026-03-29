@@ -12,7 +12,10 @@ coverage](https://codecov.io/gh/meirelesff/genderBR/graph/badge.svg)](https://ap
 
 `genderBR` predicts gender from Brazilian first names using data from
 the Instituto Brasileiro de Geografia e Estatistica’s Census (2010 and
-2022).
+2022), covering over 100 thousand unique names. For names that are not
+present in the IBGE’s Census, the package now also allows users to
+predict gender with a character-level neural network model that
+generalise to unseen names.
 
 ## Installing
 
@@ -46,7 +49,7 @@ library(genderBR)
 #> Use: citation('genderBR')
 
 get_gender("joão", year = 2022)
-#> [1] "Male"
+#> [1] NA
 get_gender("ana", year = 2022)
 #> [1] "Female"
 ```
@@ -61,7 +64,7 @@ classified as missing (`NA`). An example:
 
 ``` r
 get_gender("joão")
-#> [1] "Male"
+#> [1] NA
 get_gender("ana")
 #> [1] "Female"
 ```
@@ -136,6 +139,33 @@ df
 #> 4    Paula Camargo RS Female
 ```
 
+### Classifying uncommon Brazilian first names
+
+For names that are not present in the IBGE’s Census, the package now
+also allows users to predict gender with a character-level neural
+network model that generalises to unseen names. This model was trained
+on the IBGE’s Census data and is available on [Hugging
+Face](https://huggingface.co/fmeireles/genderBR). Download it with:
+
+``` r
+download_gender_model()
+```
+
+To use this feature, set the `nn` argument to `TRUE` in the `get_gender`
+function (defaults to `FALSE`):
+
+``` r
+get_gender("Zusjane", nn = TRUE)
+get_gender(c("Lusjane", "Joao"), nn = TRUE, prob = TRUE)
+```
+
+Or use the `get_gender_nn` function directly:
+
+``` r
+get_gender_nn("Zusjane")
+get_gender_nn(c("Maria", "Joao"), prob = TRUE)
+```
+
 ### Brazilian state abbreviations
 
 The `genderBR` package relies on Brazilian state abbreviations
@@ -163,6 +193,7 @@ state in Brazil. To that end, use the `map_gender` function:
 
 ``` r
 map_gender("maria")
+#> No encoding supplied: defaulting to UTF-8.
 #>      nome uf   freq populacao sexo     prop
 #> 1   Piauí 22 363139   3118360      11645.19
 #> 2   Ceará 23 967042   8452381      11441.06
@@ -176,6 +207,7 @@ the default option).
 
 ``` r
 map_gender("iris", gender = "m")
+#> No encoding supplied: defaulting to UTF-8.
 #>        nome uf freq populacao sexo  prop
 #> 1     Goiás 52  840   6003788    m 13.99
 #> 2 Tocantins 17  156   1383445    m 11.28
@@ -218,6 +250,18 @@ state, are included in the database.
 
 For more information on the IBGE’s data, please check (in Portuguese):
 <https://censo2022.ibge.gov.br/nomes/>
+
+## Neural network model
+
+The neural network model used to predict gender from Brazilian first
+names is a bidirectional GRU (embedding dim = 32, hidden dim = 128,
+single layer) that operates at the character level. It was trained on
+107k names from the IBGE dataset using the `luz` framework with an
+80/10/10 train/validation/test split and early stopping. On the held-out
+test set, it achieves 95.1% accuracy and 0.141 BCE loss. Model weights
+and vocabulary are hosted on [Hugging
+Face](https://huggingface.co/fmeireles/genderBR) and downloaded on first
+use via `download_gender_model()`.
 
 ## Ethical considerations
 

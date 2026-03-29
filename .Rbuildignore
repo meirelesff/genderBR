@@ -12,3 +12,4 @@
 ^LICENSE\.md$
 paper/
 ^CRAN-SUBMISSION$
+^data-raw$
