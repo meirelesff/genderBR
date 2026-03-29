@@ -10,23 +10,27 @@ library(luz)
 set.seed(42)
 torch_manual_seed(42)
 
+# --- Device ------------------------------------------------------------------
+device <- if (cuda_is_available()) torch_device("cuda") else torch_device("cpu")
+device <- if (backends_mps_is_available()) torch_device("mps") else device
+
 # --- Config ------------------------------------------------------------------
-EMBED_DIM  <- 32L
-HIDDEN_DIM <- 128L
-MAX_LEN    <- 20L
-BATCH_SIZE <- 2048L
-EPOCHS     <- 40L
+EMBED_DIM <- 64L
+HIDDEN_DIM <- 192L
+MAX_LEN <- 20L
+BATCH_SIZE <- 1024L
+EPOCHS <- 60L
 
 # --- Vocabulary (1-based for R torch) ----------------------------------------
-vocab    <- c("<PAD>", "<UNK>", letters, as.character(0:9), "-", " ")
+vocab <- c("<PAD>", "<UNK>", letters, as.character(0:9), "-", " ")
 char2idx <- setNames(seq_along(vocab), vocab)
-PAD      <- char2idx[["<PAD>"]]
-UNK      <- char2idx[["<UNK>"]]
+PAD <- char2idx[["<PAD>"]]
+UNK <- char2idx[["<UNK>"]]
 
 # --- Pre-tokenize everything into a matrix -----------------------------------
 dat <- genderBR:::nomes
-dat <- dat[!is.na(dat$prob_fem10) & !is.na(dat$prob_fem22), ]
 dat$label <- ifelse(!is.na(dat$prob_fem22), dat$prob_fem22, dat$prob_fem10)
+dat <- dat[!is.na(dat$label), c("nome", "label")]
 
 encode <- function(nm) {
   chars <- strsplit(sub("\\s.*", "", tolower(trimws(nm))), "")[[1]]
@@ -41,30 +45,30 @@ x_mat <- t(vapply(dat$nome, encode, integer(MAX_LEN), USE.NAMES = FALSE))
 y_vec <- dat$label
 
 # --- 80 / 10 / 10 split -----------------------------------------------------
-n   <- nrow(x_mat)
+n <- nrow(x_mat)
 ids <- sample(n)
 i_train <- ids[1:round(0.8 * n)]
-i_val   <- ids[(round(0.8 * n) + 1):round(0.9 * n)]
-i_test  <- ids[(round(0.9 * n) + 1):n]
+i_val <- ids[(round(0.8 * n) + 1):round(0.9 * n)]
+i_test <- ids[(round(0.9 * n) + 1):n]
 
 make_ds <- function(idx) {
   tensor_dataset(
-    x = torch_tensor(x_mat[idx, , drop = FALSE], dtype = torch_long()),
-    y = torch_tensor(y_vec[idx], dtype = torch_float())$unsqueeze(2)
+    x = torch_tensor(x_mat[idx, , drop = FALSE], dtype = torch_long(), device = device),
+    y = torch_tensor(y_vec[idx], dtype = torch_float(), device = device)$unsqueeze(2)
   )
 }
 
 train_ds <- make_ds(i_train)
-val_ds   <- make_ds(i_val)
-test_ds  <- make_ds(i_test)
+val_ds <- make_ds(i_val)
+test_ds <- make_ds(i_test)
 
 # --- Custom accuracy metric --------------------------------------------------
 metric_acc <- luz_metric(
   abbrev = "Acc",
   initialize = function() { self$correct <- 0; self$total <- 0 },
   update = function(preds, targets) {
-    p <- (torch_sigmoid(preds) > 0.5)$to(dtype = torch_float())
-    t <- (targets > 0.5)$to(dtype = torch_float())
+    p <- (torch_sigmoid(preds) > 0.5)$to(dtype = torch_float(), device = device)
+    t <- (targets > 0.5)$to(dtype = torch_float(), device = device)
     self$correct <- self$correct + (p == t)$sum()$item()
     self$total   <- self$total + targets$size(1)
   },

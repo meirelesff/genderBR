@@ -1,7 +1,7 @@
 # genderBR 1.3.0
 
 - Added `get_gender_nn()`, a new exported function that uses a character-level neural network to predict gender from Brazilian first names. Unlike `get_gender()`, this function can generalise to names not present in the IBGE census dataset.
-- The model is a bidirectional GRU (embedding dim = 32, hidden dim = 128, single layer) trained on 107k names from the IBGE dataset using the `luz` framework. On a held-out test set (10% of data), it achieves 95.1% accuracy and 0.141 BCE loss.
+- The model is a 2-layer bidirectional GRU with attention pooling (embedding dim = 64, hidden dim = 192) trained on 142k names from the IBGE dataset using the `luz` framework. On a held-out test set (10% of data), it achieves 96.5% accuracy and 0.110 BCE loss.
 - Added `clear_nn_cache()` to manage the in-memory model cache.
 - Model weights and vocabulary are hosted on Hugging Face and downloaded on first use; subsequent calls within the same session are served from an in-memory cache.
 - Replaced `iconv()` with `chartr()` for stripping accents in name cleaning. The previous approach relied on `iconv(name, to = "ASCII//TRANSLIT")`, which is platform-dependent and returns `NA` on macOS for accented names (e.g., "joão"). The `encoding` argument in `get_gender`, `get_gender_nn`, and `map_gender` is now deprecated and will be removed in a future version.

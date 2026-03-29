@@ -36,9 +36,10 @@ this argument is ignored. It will be removed in a future version.}
   returns the proportion of females uses of the provided name.
 }
 \description{
-\code{get_gender_nn} uses a character-level GRU neural network to predict
-gender from Brazilian first names. Unlike \code{\link{get_gender}}, this
-function can generalise to names not present in the IBGE census dataset.
+\code{get_gender_nn} uses a 2-layer bidirectional GRU neural network with
+attention pooling to predict gender from Brazilian first names. Unlike
+\code{\link{get_gender}}, this function can generalise to names not present
+in the IBGE census dataset.
 }
 \details{
 Model weights and vocabulary must be downloaded before first use with

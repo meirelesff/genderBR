@@ -10,10 +10,9 @@ coverage](https://codecov.io/gh/meirelesff/genderBR/graph/badge.svg)](https://ap
 
 `genderBR` predicts gender from Brazilian first names using data from
 the Instituto Brasileiro de Geografia e Estatistica’s Census (2010 and
-2022), covering over 100 thousand unique names. For names that are not
-present in the IBGE’s Census, the package now also allows users to
-predict gender with a character-level neural network model that
-generalise to unseen names.
+2022), covering over 142 thousand unique names. For names absent from
+the IBGE Censuses, the package offers a character-level neural network
+model backend to predict the gender of rare or unknown names.
 
 ## Installing
 
@@ -30,6 +29,17 @@ if (!require("devtools")) install.packages("devtools")
 devtools::install_github("meirelesff/genderBR")
 ```
 
+To use the neural network model, `genderBR` relies on [R
+torch](https://torch.mlverse.org/packages/) that can be installed with:
+
+``` r
+install.packages("torch")
+```
+
+Please, check the [R torch installation
+guide](https://torch.mlverse.org/docs/articles/installation) for more
+details on how to install it.
+
 ## How does it work?
 
 `genderBR`’s main function is `get_gender`, which takes a string with a
@@ -37,8 +47,8 @@ Brazilian first name and predicts its gender using data from the IBGE’s
 Census (2010 or 2022) – specifically, from its API and from an internal
 dataset.
 
-By default, `get_gender` uses 2010 data, but you can now specify the
-`year` argument to use 2022 data:
+By default, `get_gender` uses 2022 data, but the `year` argument can be
+used to specify a different year:
 
 ``` r
 library(genderBR)
@@ -46,25 +56,24 @@ library(genderBR)
 #> If you find this package useful, please consider acknowledging it.
 #> Use: citation('genderBR')
 
+get_gender("joão", year = 2010)
+#> [1] "Male"
 get_gender("joão", year = 2022)
 #> [1] "Male"
-get_gender("ana", year = 2022)
-#> [1] "Female"
 ```
 
-The function uses data on the number of females and males with the same
-name in Brazil, or in a given Brazilian state, and calculates the
-proportion of female uses of it. The function then classifies a name as
-male or female only when that proportion is higher than a given
+The function calculates the proportion of females with a given name in
+Brazil or a specific state using IBGE Census data. It classifies a name
+as female or male only when this proportion exceeds a specified
 threshold (e.g., `female if proportion > 0.9`, or
 `male if proportion <= 0.1`); proportions below those thresholds are
-classified as missing (`NA`). An example:
+classified as missing (`NA`, or `Unkown`). An example:
 
 ``` r
-get_gender("joão")
-#> [1] "Male"
-get_gender("ana")
+get_gender("Ana")
 #> [1] "Female"
+get_gender("Darcy")
+#> [1] "Unknown"
 ```
 
 Multiple names can be passed at the same function call:
@@ -85,8 +94,8 @@ get_gender("ANA MARIA")
 ```
 
 Additionally, one can filter results by state with the argument `state`;
-or get the probability that a given first name belongs to a female
-person by setting the `prob` argument to `TRUE` (defaults to `FALSE`).
+or obtain the probability that a name is female by setting `prob = TRUE`
+(defaults to `FALSE`).
 
 The `year` argument is available for both API and internal data. When
 `internal = TRUE` (the default and fastest option for national-level
@@ -173,7 +182,7 @@ get_gender_nn(c("Maria", "Joao"), prob = TRUE)
 The `genderBR` package relies on Brazilian state abbreviations
 (acronyms) to filter results. To get a complete dataset with the full
 name, IBGE code, and abbreviations of all 27 Brazilian states, use the
-`get_states` functions:
+`get_states` function:
 
 ``` r
 get_states()
@@ -217,11 +226,12 @@ map_gender("iris", gender = "m")
 
 ## Backend and performance
 
-Internally, `genderBR` now uses the `data.table` backend for joins and
-merges. This keeps user-facing outputs as base data.frames while
-speeding up repeated lookups for large vectors of names (mainly when
-aggregating duplicates before querying the IBGE API or matching against
-the internal dataset).
+Internally, `genderBR` uses the
+[data.table](https://cran.r-project.org/web/packages/data.table/index.html)
+backend for joins and merges. This keeps user-facing outputs as base
+data.frames while speeding up repeated lookups for large vectors of
+names (mainly when aggregating duplicates before querying the IBGE API
+or matching against the internal dataset).
 
 ## Data
 
@@ -256,10 +266,12 @@ For more information on the IBGE’s data, please check (in Portuguese):
 The neural network model used to predict gender from Brazilian first
 names is a bidirectional GRU (embedding dim = 32, hidden dim = 128,
 single layer) that operates at the character level. It was trained on
-107k names from the IBGE dataset using the `luz` framework with an
-80/10/10 train/validation/test split and early stopping. On the held-out
-test set, it achieves 95.1% accuracy and 0.141 BCE loss. Model weights
-and vocabulary are hosted on [Hugging
+all 141742 names from the IBGE dataset with targets defined as the
+probability of a name being female in the 2022 Census (or 2010 when the
+name is absent from the 2022 Census). The model was trained using the
+`luz` framework with an 80/10/10 train/validation/test split and early
+stopping. On the held-out test set, it achieves 95.1% accuracy and 0.141
+BCE loss. Model weights and vocabulary are hosted on [Hugging
 Face](https://huggingface.co/fmeireles/genderBR) and downloaded on first
 use via `download_gender_model()`.
 
@@ -268,18 +280,18 @@ use via `download_gender_model()`.
 As the description of the package states, `genderBR` infers gender from
 Brazilian first names based on data from the IBGE’s Census. In this
 sense, the package uses a binary classification derived from state
-imposed naming conventions recorded at birth. The packages’
+imposed naming conventions recorded at birth. The package’s
 functionality, therefore, is unable to differentiate between non-binary
 gender identities or changes in gender identity over time. Because of
 that, and in line with recommendations from similar packages (e.g.,
 [`gender`](https://github.com/lmullen/gender)), users should avoid using
-`genderBR` to impose binary classifications to individuals or in
+`genderBR` to impose binary classifications on individuals or in
 contexts where misclassification may lead to harm or discrimination
 against groups. Instead, the package works better as an estimator for
-aggregate, large populations – such the proportion of female partisan
+aggregate, large populations – such as the proportion of female partisan
 affiliates in the whole country. Even then, `genderBR` should be
 considered a last resort tool to be used only when self-identified
-gender data is lacking and infering it from first names does not pose
+gender data is lacking and inferring it from first names does not pose
 risks to groups under study.
 
 ## Author
