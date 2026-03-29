@@ -52,3 +52,7 @@ cran-comments.md
 raw-data
 
 /.quarto/
+
+# Neural network model artifacts (hosted on Hugging Face)
+inst/model/*.pt
+inst/model/*.rds

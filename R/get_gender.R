@@ -32,6 +32,12 @@
 #' Defaults to \code{ASCII//TRANSLIT}.
 #' @param year Census year used in the prediction. Supported values are \code{2010}
 #' and \code{2022} (default).
+#' @param nn Logical. If \code{TRUE}, use a character-level neural network model
+#' to predict gender instead of the IBGE Census data. This allows the function to
+#' generalise to names not present in the IBGE dataset. When \code{nn = TRUE}, the
+#' \code{state}, \code{internal}, and \code{year} arguments are ignored. Model files
+#' must be downloaded first with \code{\link{download_gender_model}}. Defaults to
+#' \code{FALSE}.
 #'
 #' @section Data:
 #'
@@ -89,7 +95,7 @@
 
 get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
                        internal = TRUE, encoding = "ASCII//TRANSLIT",
-                       year = 2022){
+                       year = 2022, nn = FALSE){
 
 
   # Inputs
@@ -99,6 +105,11 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
   if(!is.logical(internal)) stop("'internal' must be logical.")
   if(!is.character(names)) stop("'names' must be character.")
   if(!is.logical(prob)) stop("'Prob' must be logical.")
+  if(!is.logical(nn)) stop("'nn' must be logical.")
+
+  # Neural network prediction
+  if(nn) return(get_gender_nn(names, prob = prob, threshold = threshold, encoding = encoding))
+
   if(!is.numeric(year)) stop("'year' must be numeric, either 2010 or 2022.")
   year <- as.integer(year)
   if(!year %in% c(2010, 2022)) stop("'year' must be either 2010 or 2022.")

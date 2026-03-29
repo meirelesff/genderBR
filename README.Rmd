@@ -21,7 +21,7 @@ options(max.print = 20)
 [![Package-License](https://img.shields.io/badge/License-GPL-brightgreen.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![R-CMD-check](https://github.com/meirelesff/genderBR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/meirelesff/genderBR/actions/workflows/R-CMD-check.yaml)
 
-`genderBR` predicts gender from Brazilian first names using data from the Instituto Brasileiro de Geografia e Estatistica's Census (2010 and 2022).
+`genderBR` predicts gender from Brazilian first names using data from the Instituto Brasileiro de Geografia e Estatistica's Census (2010 and 2022), covering over 100 thousand unique names. For names that are not present in the IBGE's Census, the package now also allows users to predict gender with a character-level neural network model that generalise to unseen names. 
 
 ## Installing
 
@@ -110,6 +110,30 @@ df
 ```
 
 
+### Classifying uncommon Brazilian first names
+
+For names that are not present in the IBGE's Census, the package now also allows users to predict gender with a character-level neural network model that generalises to unseen names. This model was trained on the IBGE's Census data and is available on [Hugging Face](https://huggingface.co/fmeireles/genderBR). Download it with:
+
+```{r, eval = FALSE}
+download_gender_model()
+```
+
+To use this feature, set the `nn` argument to `TRUE` in the `get_gender` function (defaults to `FALSE`):
+
+```{r, eval = FALSE}
+get_gender("Zusjane", nn = TRUE)
+get_gender(c("Lusjane", "Joao"), nn = TRUE, prob = TRUE)
+```
+
+Or use the `get_gender_nn` function directly:
+
+```{r, eval = FALSE}
+get_gender_nn("Zusjane")
+get_gender_nn(c("Maria", "Joao"), prob = TRUE)
+```
+
+
+
 ### Brazilian state abbreviations
 
 The `genderBR` package relies on Brazilian state abbreviations (acronyms) to filter results. To get a complete dataset with the full name, IBGE code, and abbreviations of all 27 Brazilian states, use the `get_states` functions:
@@ -161,6 +185,11 @@ The Census recorded the first names of all individuals, along with their self-de
 
 For more information on the IBGE's data, please check (in Portuguese): 
 https://censo2022.ibge.gov.br/nomes/
+
+
+## Neural network model
+
+The neural network model used to predict gender from Brazilian first names is a bidirectional GRU (embedding dim = 32, hidden dim = 128, single layer) that operates at the character level. It was trained on 107k names from the IBGE dataset using the `luz` framework with an 80/10/10 train/validation/test split and early stopping. On the held-out test set, it achieves 95.1% accuracy and 0.141 BCE loss. Model weights and vocabulary are hosted on [Hugging Face](https://huggingface.co/fmeireles/genderBR) and downloaded on first use via `download_gender_model()`.
 
 
 ## Ethical considerations

@@ -11,7 +11,8 @@ get_gender(
   threshold = 0.9,
   internal = TRUE,
   encoding = "ASCII//TRANSLIT",
-  year = 2022
+  year = 2022,
+  nn = FALSE
 )
 }
 \arguments{
@@ -36,6 +37,13 @@ Defaults to \code{ASCII//TRANSLIT}.}
 
 \item{year}{Census year used in the prediction. Supported values are \code{2010}
 and \code{2022} (default).}
+
+\item{nn}{Logical. If \code{TRUE}, use a character-level neural network model
+to predict gender instead of the IBGE Census data. This allows the function to
+generalise to names not present in the IBGE dataset. When \code{nn = TRUE}, the
+\code{state}, \code{internal}, and \code{year} arguments are ignored. Model files
+must be downloaded first with \code{\link{download_gender_model}}. Defaults to
+\code{FALSE}.}
 }
 \value{
 \code{get_gender} may returns three different values: \code{Female},
