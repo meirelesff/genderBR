@@ -32,7 +32,7 @@ from \code{NULL}, the \code{internal} argument is ignored.}
 the function faster, but it does not support getting results by State.
 Defaults to \code{TRUE}.}
 
-\item{encoding}{\lifecycle{deprecated} Previously used to strip accents via
+\item{encoding}{(Deprecated) Previously used to strip accents via
 \code{iconv}. Accents are now removed with a platform-independent method and
 this argument is ignored. It will be removed in a future version.}
 

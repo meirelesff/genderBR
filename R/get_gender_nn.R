@@ -22,7 +22,7 @@
 #'   \code{FALSE}.
 #' @param threshold Numeric indicating the threshold used in predictions.
 #'   Defaults to 0.9.
-#' @param encoding \lifecycle{deprecated} Previously used to strip accents via
+#' @param encoding (Deprecated) Previously used to strip accents via
 #'   \code{iconv}. Accents are now removed with a platform-independent method and
 #'   this argument is ignored. It will be removed in a future version.
 #'

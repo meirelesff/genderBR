@@ -28,7 +28,7 @@
 #' @param internal Use internal data to predict gender? Allowing this option makes
 #' the function faster, but it does not support getting results by State.
 #' Defaults to \code{TRUE}.
-#' @param encoding \lifecycle{deprecated} Previously used to strip accents via
+#' @param encoding (Deprecated) Previously used to strip accents via
 #'   \code{iconv}. Accents are now removed with a platform-independent method and
 #'   this argument is ignored. It will be removed in a future version.
 #' @param year Census year used in the prediction. Supported values are \code{2010}

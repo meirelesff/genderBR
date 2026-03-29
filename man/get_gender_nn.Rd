@@ -22,7 +22,7 @@ also be passed to the function as a full name (e.g., Ana Maria de Souza).
 \item{threshold}{Numeric indicating the threshold used in predictions.
 Defaults to 0.9.}
 
-\item{encoding}{\lifecycle{deprecated} Previously used to strip accents via
+\item{encoding}{(Deprecated) Previously used to strip accents via
 \code{iconv}. Accents are now removed with a platform-independent method and
 this argument is ignored. It will be removed in a future version.}
 }

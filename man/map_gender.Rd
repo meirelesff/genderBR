@@ -13,7 +13,7 @@ as a full name (e.g., Ana Maria de Souza). \code{get_gender} is case insensitive
 \item{gender}{A string with the gender to look for. Valid inputs are \code{m}, for males, \code{f},
 for females, and \code{NULL}, in which case the function returns results for all persons with a given name.}
 
-\item{encoding}{\lifecycle{deprecated} Previously used to strip accents via
+\item{encoding}{(Deprecated) Previously used to strip accents via
 \code{iconv}. Accents are now removed with a platform-independent method and
 this argument is ignored. It will be removed in a future version.}
 }
