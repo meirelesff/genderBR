@@ -7,6 +7,7 @@ This is a new version of the package that introduces a new method for predicting
 * GitHub Actions - (ubuntu): release, devel, oldrel-1
 * GitHub Actions - (windows-latest): release
 * GitHub Actions - (macOS-latest): release
+* Winbuilder - (windows server 2022): release, devel
 
 ## R CMD check results
 

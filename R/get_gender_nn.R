@@ -160,7 +160,9 @@ download_gender_model <- function() {
     dest <- file.path(.cache_dir(), f)
     if (!file.exists(dest)) {
       url <- .hf_resolve_url(f)
+      message("Downloading model from Hugging Face...")
       utils::download.file(url, dest, mode = "wb", quiet = TRUE)
+      message("Model downloaded to: ", dest)
     }
     dest
   }, character(1), USE.NAMES = FALSE)

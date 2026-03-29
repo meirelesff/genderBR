@@ -5,7 +5,7 @@
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/genderBR)](https://cran.r-project.org/package=genderBR)
 [![Codecov test
 coverage](https://codecov.io/gh/meirelesff/genderBR/graph/badge.svg)](https://app.codecov.io/gh/meirelesff/genderBR)
-[![Package-License](https://img.shields.io/badge/License-GPL-brightgreen.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
+[![Package-License](https://img.shields.io/badge/License-GPL-brightgreen.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 [![R-CMD-check](https://github.com/meirelesff/genderBR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/meirelesff/genderBR/actions/workflows/R-CMD-check.yaml)
 
 `genderBR` predicts gender from Brazilian first names using data from
@@ -227,16 +227,16 @@ map_gender("iris", gender = "m")
 ## Backend and performance
 
 Internally, `genderBR` uses the
-[data.table](https://cran.r-project.org/web/packages/data.table/index.html)
-backend for joins and merges. This keeps user-facing outputs as base
-data.frames while speeding up repeated lookups for large vectors of
-names (mainly when aggregating duplicates before querying the IBGE API
-or matching against the internal dataset).
+[data.table](https://cran.r-project.org/package=data.table) backend for
+joins and merges. This keeps user-facing outputs as base data.frames
+while speeding up repeated lookups for large vectors of names (mainly
+when aggregating duplicates before querying the IBGE API or matching
+against the internal dataset).
 
 ### Benchmarks
 
 The three backends (internal dataset, IBGE API, and neural network)
-differ ostly in speed. Here is a comparison using 20 common names:
+differ in speed. Here is a comparison using 20 common names:
 
 ``` r
 nomes <- c(
@@ -247,7 +247,7 @@ nomes <- c(
 )
 
 bench <- data.frame(
-  Method = c("Internal dataset", "IBGE API", "Neural network"),
+  Method = c("Internal dataset", "Neural network", "IBGE API"),
   Time = c(
     format(system.time(get_gender(nomes))["elapsed"], digits = 3),
     format(system.time(get_gender_nn(nomes))["elapsed"], digits = 3),
@@ -262,8 +262,8 @@ knitr::kable(bench, align = "lr")
 | Method           | Time (seconds) |
 |:-----------------|---------------:|
 | Internal dataset |          0.002 |
-| IBGE API         |          0.009 |
-| Neural network   |           1.24 |
+| Neural network   |          0.009 |
+| IBGE API         |            1.2 |
 
 For classification tasks with a large number of names, the internal
 dataset is the fastest option, followed by the neural network model –
