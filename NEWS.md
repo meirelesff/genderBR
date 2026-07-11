@@ -1,3 +1,9 @@
+# genderBR 1.3.1
+
+- Added an `nn_size` argument to `get_gender_nn()` and `get_gender(nn = TRUE)` that splits a large input vector of names into batches. This keeps avoids out-of-memory crashes on big vectors. Defaults to `NULL` (all names classified in a single pass).
+- Added a `device` argument to `get_gender_nn()` and `get_gender(nn = TRUE)` to run neural network inference on a GPU (`"cuda"` or `"mps"`) instead of the default CPU for faster predictions.
+
+
 # genderBR 1.3.0
 
 This is a new version of the genderBR package that includes a new function: `get_gender_nn()`, which uses a character-level neural network to predict gender from Brazilian first names. This model can generalise to names not present in the IBGE census dataset, so it can be used as a complement to the existing functionality in the package. The release also includes some improvements, tests, and documentation updates.

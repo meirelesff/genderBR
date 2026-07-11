@@ -39,6 +39,13 @@
 #' \code{state}, \code{internal}, and \code{year} arguments are ignored. Model files
 #' must be downloaded first with \code{\link{download_gender_model}}. Defaults to
 #' \code{FALSE}.
+#' @param nn_size Batch size for neural network inference, used only when
+#' \code{nn = TRUE}. When \code{NULL} (the default), all names are classified in a
+#' single pass; set it to a positive integer to split a large input vector into
+#' batches and avoid out-of-memory crashes. See \code{\link{get_gender_nn}}.
+#' @param device Device used for neural network inference, used only when
+#' \code{nn = TRUE}. When \code{NULL} (the default), the CPU is used; set it to
+#' \code{"cuda"} or \code{"mps"} to run on a GPU. See \code{\link{get_gender_nn}}.
 #'
 #' @section Data:
 #'
@@ -96,7 +103,7 @@
 
 get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
                        internal = TRUE, encoding = "ASCII//TRANSLIT",
-                       year = 2022, nn = FALSE){
+                       year = 2022, nn = FALSE, nn_size = NULL, device = NULL){
 
 
   # Inputs
@@ -109,7 +116,9 @@ get_gender <- function(names, state = NULL, prob = FALSE, threshold = 0.9,
   if(!is.logical(nn)) stop("'nn' must be logical.")
 
   # Neural network prediction
-  if(nn) return(get_gender_nn(names, prob = prob, threshold = threshold, encoding = encoding))
+  if(nn) return(get_gender_nn(names, prob = prob, threshold = threshold,
+                              nn_size = nn_size, device = device,
+                              encoding = encoding))
 
   if(!is.numeric(year)) stop("'year' must be numeric, either 2010 or 2022.")
   year <- as.integer(year)

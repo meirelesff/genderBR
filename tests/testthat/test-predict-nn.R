@@ -81,3 +81,20 @@ test_that("full names use only the first token", {
     get_gender_nn("Maria")
   )
 })
+
+test_that("nn_size batching matches single-pass probabilities", {
+  skip_on_cran()
+  skip_if_no_nn_model()
+  nms <- c("maria", "joao", "ana", "pedro", "julia",
+           "carlos", "fernanda", "lucas", "rafael", "beatriz")
+  full <- get_gender_nn(nms, prob = TRUE)
+  batched <- get_gender_nn(nms, prob = TRUE, nn_size = 3)
+  expect_equal(batched, full, tolerance = 1e-5)
+})
+
+test_that("nn_size batching matches single-pass labels", {
+  skip_on_cran()
+  skip_if_no_nn_model()
+  nms <- c("maria", "joao", "ana", "pedro", "julia")
+  expect_equal(get_gender_nn(nms, nn_size = 2), get_gender_nn(nms))
+})

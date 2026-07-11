@@ -24,3 +24,15 @@ test_that("get_gender_nn rejects threshold outside [0, 1]", {
   expect_error(get_gender_nn("Ana", threshold = -0.1), "'threshold' must be between 0 and 1")
   expect_error(get_gender_nn("Ana", threshold = 1.5), "'threshold' must be between 0 and 1")
 })
+
+test_that("get_gender_nn rejects invalid nn_size", {
+  skip_if_not_installed("torch")
+  expect_error(get_gender_nn("Ana", nn_size = 0), "positive integer")
+  expect_error(get_gender_nn("Ana", nn_size = -1), "positive integer")
+  expect_error(get_gender_nn("Ana", nn_size = 2.5), "positive integer")
+})
+
+test_that("get_gender_nn rejects invalid device", {
+  skip_if_not_installed("torch")
+  expect_error(get_gender_nn("Ana", device = "gpu"), "must be NULL")
+})

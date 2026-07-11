@@ -8,6 +8,8 @@ get_gender_nn(
   names,
   prob = FALSE,
   threshold = 0.9,
+  nn_size = NULL,
+  device = NULL,
   encoding = "ASCII//TRANSLIT"
 )
 }
@@ -21,6 +23,16 @@ also be passed to the function as a full name (e.g., Ana Maria de Souza).
 
 \item{threshold}{Numeric indicating the threshold used in predictions.
 Defaults to 0.9.}
+
+\item{nn_size}{Batch size for neural network inference. When \code{NULL}
+(the default), all names are classified at once. Set it to an
+integer to split a large input vector of first names into batches of that size,
+which avoids out-of-memory crashes when analyzing large datasets.}
+
+\item{device}{Device used for inference. When \code{NULL} (the default), the
+CPU is used. Set it to \code{"cuda"} or \code{"mps"} to run on a GPU (note
+that Apple Silicon's MPS shares system memory, so \code{nn_size} is what
+prevents memory crashes there).}
 
 \item{encoding}{(Deprecated) Previously used to strip accents via
 \code{iconv}. Accents are now removed with a platform-independent method and

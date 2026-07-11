@@ -23,6 +23,14 @@
 #'   \code{FALSE}.
 #' @param threshold Numeric indicating the threshold used in predictions.
 #'   Defaults to 0.9.
+#' @param nn_size Batch size for neural network inference. When \code{NULL}
+#'   (the default), all names are classified at once. Set it to an
+#'   integer to split a large input vector of first names into batches of that size,
+#'   which avoids out-of-memory crashes when analyzing large datasets.
+#' @param device Device used for inference. When \code{NULL} (the default), the
+#'   CPU is used. Set it to \code{"cuda"} or \code{"mps"} to run on a GPU (note
+#'   that Apple Silicon's MPS shares system memory, so \code{nn_size} is what
+#'   prevents memory crashes there).
 #' @param encoding (Deprecated) Previously used to strip accents via
 #'   \code{iconv}. Accents are now removed with a platform-independent method and
 #'   this argument is ignored. It will be removed in a future version.
@@ -47,6 +55,7 @@
 #' @export
 
 get_gender_nn <- function(names, prob = FALSE, threshold = 0.9,
+                          nn_size = NULL, device = NULL,
                           encoding = "ASCII//TRANSLIT") {
 
   if (!is.character(names)) {
@@ -55,6 +64,14 @@ get_gender_nn <- function(names, prob = FALSE, threshold = 0.9,
   if (!is.logical(prob)) stop("'prob' must be logical.", call. = FALSE)
   if (!is.numeric(threshold)) stop("'threshold' must be numeric, between 0 and 1.", call. = FALSE)
   if (threshold < 0 || threshold > 1) stop("'threshold' must be between 0 and 1.", call. = FALSE)
+  if (!is.null(nn_size)) {
+    if (!is.numeric(nn_size) || length(nn_size) != 1L || is.na(nn_size) ||
+        nn_size < 1 || nn_size != as.integer(nn_size)) {
+      stop("'nn_size' must be NULL or a single positive integer.", call. = FALSE)
+    }
+    nn_size <- as.integer(nn_size)
+  }
+  dev <- .resolve_device(device)
 
   .load_nn_model()
   meta <- .gbr_cache$meta
@@ -70,21 +87,32 @@ get_gender_nn <- function(names, prob = FALSE, threshold = 0.9,
   # Identify valid (non-NA, non-empty) entries
   valid <- !is.na(cleaned) & nchar(cleaned) > 0
   if (any(valid)) {
-    encoded <- vapply(
-      cleaned[valid],
-      .encode_name,
-      integer(meta$max_len),
-      meta = meta,
-      USE.NAMES = FALSE
-    )
-    # encoded is (max_len, n_valid) matrix; transpose to (n_valid, max_len)
-    x <- torch::torch_tensor(t(encoded), dtype = torch::torch_long())
+    valid_names <- cleaned[valid]
+    n_valid <- length(valid_names)
+    batch_size <- if (is.null(nn_size)) n_valid else min(nn_size, n_valid)
 
+    model$to(device = dev)
     model$eval()
-    torch::with_no_grad({
-      logits <- model(x)
-    })
-    probs[valid] <- as.numeric(torch::torch_sigmoid(logits)$squeeze(2L))
+
+    # Classify in batches to keep memory bounded on large inputs
+    out <- numeric(n_valid)
+    for (start in seq(1L, n_valid, by = batch_size)) {
+      end <- min(start + batch_size - 1L, n_valid)
+      encoded <- vapply(
+        valid_names[start:end],
+        .encode_name,
+        integer(meta$max_len),
+        meta = meta,
+        USE.NAMES = FALSE
+      )
+      # encoded is (max_len, k) matrix; transpose to (k, max_len)
+      x <- torch::torch_tensor(t(encoded), dtype = torch::torch_long())$to(device = dev)
+      torch::with_no_grad({
+        logits <- model(x)
+      })
+      out[start:end] <- as.numeric(torch::torch_sigmoid(logits)$squeeze(2L)$cpu())
+    }
+    probs[valid] <- out
   }
 
   if (prob) {
@@ -122,6 +150,24 @@ clear_nn_cache <- function() {
 
 
 # --- Private helpers --------------------------------------------------------
+
+# Resolve a user-supplied device string to a torch device object
+.resolve_device <- function(device) {
+  if (is.null(device)) return(torch::torch_device("cpu"))
+  if (!is.character(device) || length(device) != 1L ||
+      !device %in% c("cpu", "cuda", "mps")) {
+    stop("'device' must be NULL, 'cpu', 'cuda', or 'mps'.", call. = FALSE)
+  }
+  if (device == "cuda" && !torch::cuda_is_available()) {
+    stop("device = 'cuda' requested but CUDA is not available.", call. = FALSE)
+  }
+  mps_ok <- isTRUE(tryCatch(torch::backends_mps_is_available(),
+                            error = function(e) FALSE))
+  if (device == "mps" && !mps_ok) {
+    stop("device = 'mps' requested but MPS is not available.", call. = FALSE)
+  }
+  torch::torch_device(device)
+}
 
 .hf_resolve_url <- function(filename) {
   paste0(
