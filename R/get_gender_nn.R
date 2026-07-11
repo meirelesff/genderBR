@@ -71,6 +71,7 @@ get_gender_nn <- function(names, prob = FALSE, threshold = 0.9,
     }
     nn_size <- as.integer(nn_size)
   }
+  .check_torch()
   dev <- .resolve_device(device)
 
   .load_nn_model()
@@ -150,6 +151,21 @@ clear_nn_cache <- function() {
 
 
 # --- Private helpers --------------------------------------------------------
+
+# Is the (suggested) torch package installed? Kept as a separate seam so tests
+# can mock it to exercise the missing-torch path.
+.torch_available <- function() {
+  requireNamespace("torch", quietly = TRUE)
+}
+
+# Stop with an install message when torch is not available
+.check_torch <- function() {
+  if (!.torch_available()) {
+    stop("The 'torch' package is required for neural network predictions but ",
+         "is not installed. Install it with install.packages(\"torch\").",
+         call. = FALSE)
+  }
+}
 
 # Resolve a user-supplied device string to a torch device object
 .resolve_device <- function(device) {

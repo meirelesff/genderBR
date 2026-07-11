@@ -3,6 +3,7 @@
 - Added an `nn_size` argument to `get_gender_nn()` and `get_gender(nn = TRUE)` that splits a large input vector of names into batches. This keeps avoids out-of-memory crashes on big vectors. Defaults to `NULL` (all names classified in a single pass).
 - Added a `device` argument to `get_gender_nn()` and `get_gender(nn = TRUE)` to run neural network inference on a GPU (`"cuda"` or `"mps"`) instead of the default CPU for faster predictions.
 - Fixed a vocabulary mismatch in the neural network encoder: characters not in the model vocabulary were mapped to `<PAD>` instead of the `<UNK>`. Names containing rare characters are now handled correctly.
+- Moved `torch` from `Imports` to `Suggests`. The neural network model is now built only when the NN backend (`get_gender_nn()` or `get_gender(nn = TRUE)`) is used. A clear message tells users to install `torch` when it is not available. The default methods no longer require `torch`.
 
 
 # genderBR 1.3.0

@@ -36,3 +36,9 @@ test_that("get_gender_nn rejects invalid device", {
   skip_if_not_installed("torch")
   expect_error(get_gender_nn("Ana", device = "gpu"), "must be NULL")
 })
+
+test_that("get_gender_nn errors clearly when torch is unavailable", {
+  testthat::local_mocked_bindings(.torch_available = function() FALSE)
+  expect_error(get_gender_nn("Ana"), "torch")
+  expect_error(get_gender_nn("Ana"), "install.packages")
+})
