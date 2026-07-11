@@ -258,13 +258,12 @@ download_gender_model <- function() {
     chars <- chars[seq_len(meta$max_len)]
   }
 
-  idx <- vapply(chars, function(ch) {
-    if (ch %in% names(meta$char2idx)) meta$char2idx[[ch]] else 1L
-  }, integer(1), USE.NAMES = FALSE)
+  # Map characters to indices; unseen characters use the <UNK> index
+  idx <- unname(meta$char2idx[chars])
+  idx[is.na(idx)] <- meta$char2idx[["<UNK>"]]
 
-  # Right-pad with PAD index (1L in 1-based R torch)
-  pad_idx <- meta$char2idx[["<PAD>"]]
-  out <- rep(pad_idx, meta$max_len)
+  # Right-pad trailing positions with the <PAD> index
+  out <- rep(meta$char2idx[["<PAD>"]], meta$max_len)
   out[seq_along(idx)] <- idx
   out
 }
