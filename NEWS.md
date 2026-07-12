@@ -1,6 +1,6 @@
 # genderBR 1.4.0
 
-This is a new version that introduces one important new feature: asymmetrical thresholds for gender classification. In the previous versions, users could set a single threshold to classify names as female or male -- and they could overlap if the threshold was too low. Now, users can set a different threshold for each sex, and there is a new check to prevent overlapping thresholds. The release also includes other improvements and bug fixes.
+This is a new version that introduces a new feature: asymmetrical thresholds for gender classification. In the previous versions, users could set a single threshold to classify names as female or male -- and they could overlap if the threshold was too low. Now, users can set a different threshold for each sex, and there is a new check to prevent overlapping thresholds. The release also includes other improvements and bug fixes.
 
 - The `threshold` argument of `get_gender()` and `get_gender_nn()` now accepts a vector with two values, allowing users to set a different threshold for each sex: the first value is used to classify females and the second, males (e.g., `threshold = c(0.9, 0.8)`). The two values can also be named, in any order (`c(Female = 0.9, Male = 0.8)` or `c(F = 0.9, M = 0.8)`). A single value keeps setting a symmetrical threshold, as before.
 - Thresholds that sum to less than 1 are now rejected with an informative error. These values make the female and male bands overlap, so a name could be classified as both. This also applies to a single `threshold` below 0.5, which was silently accepted before and gave inconsistent results between `get_gender()` and `get_gender_nn()`.
@@ -50,7 +50,7 @@ In this minor release, the genderBR package was improved in two ways. First, bug
 * Added a `NEWS.md` file to track changes to the package.
 * Added input checks to the `get_gender` function.
 * Reduce the time between requests to the IBGE's Census API.
-* Fixed a problem on vectorization in the internal `round_guess` funcion.
+* Fixed a problem on vectorization in the internal `round_guess` function.
 * Included an internal dataset with all Brazilian first names and their predicted gender extracted from the IBGE.
 * Update the `get_gender` function to work with internal data.
 
