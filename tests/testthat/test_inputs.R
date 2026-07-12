@@ -8,6 +8,8 @@ test_that("Inputs have valid types", {
   # Test invalid input 'threshold'
   expect_error(get_gender("Ana", threshold = "0.8"))
   expect_error(get_gender("Ana", threshold = 2))
+  expect_error(get_gender("Ana", threshold = c(0.9, 0.8, 0.7)))
+  expect_error(get_gender("Ana", threshold = c(0.3, 0.4)))
 
   # Test invalid input 'prob'
   expect_error(get_gender("Ana", prob = "true"))

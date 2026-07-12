@@ -48,11 +48,38 @@ test_responses <- function(response1, response2, prob){
 }
 
 
+# Internal function to validate the threshold argument and return one value per sex
+check_threshold <- function(threshold){
+
+  if(!is.numeric(threshold)) stop("'threshold' must be numeric, between 0 and 1.", call. = FALSE)
+  if(!length(threshold) %in% 1:2 || anyNA(threshold))
+    stop("'threshold' must be a vector of length 1 or 2, without missing values.", call. = FALSE)
+  if(any(threshold < 0 | threshold > 1)) stop("'threshold' must be between 0 and 1.", call. = FALSE)
+
+  # A single value sets a symmetrical threshold
+  if(length(threshold) == 1) threshold <- rep(unname(threshold), 2)
+
+  # Named values ('Female'/'Male', or 'F'/'M') may come in any order
+  sexes <- substr(toupper(names(threshold)), 1, 1)
+  if(length(sexes) == 2){
+    if(!setequal(sexes, c("F", "M")))
+      stop("'threshold' must be named 'Female' and 'Male' (or 'F' and 'M').", call. = FALSE)
+    threshold <- c(threshold[sexes == "F"], threshold[sexes == "M"])
+  }
+
+  # Overlapping thresholds would make a name both female and male
+  if(sum(threshold) < 1)
+    stop("'threshold' values are ambiguous: the female and male thresholds must sum to at least 1.", call. = FALSE)
+
+  c(female = threshold[[1]], male = threshold[[2]])
+}
+
+
 # Internal function to round numeric guess
 round_guess <- function(prob, threshold){
 
-  res <- ifelse(prob > threshold, "Female",
-                ifelse(prob < (1 - threshold), "Male", "Unknown"))
+  res <- ifelse(prob > threshold[["female"]], "Female",
+                ifelse(prob < (1 - threshold[["male"]]), "Male", "Unknown"))
   as.character(res)
 }
 

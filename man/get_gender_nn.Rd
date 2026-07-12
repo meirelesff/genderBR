@@ -22,7 +22,12 @@ also be passed to the function as a full name (e.g., Ana Maria de Souza).
 \code{FALSE}.}
 
 \item{threshold}{Numeric indicating the threshold used in predictions.
-Defaults to 0.9.}
+Defaults to 0.9. A single value sets the same threshold for both sexes; a
+vector with two values sets one threshold per sex, the first for females and
+the second for males (e.g., \code{c(0.9, 0.8)}). The two values can also be
+named, in any order (e.g., \code{c(Female = 0.9, Male = 0.8)} or
+\code{c(F = 0.9, M = 0.8)}). Because a name cannot be female and male at the
+same time, the two thresholds must sum to at least 1.}
 
 \item{nn_size}{Batch size for neural network inference. When \code{NULL}
 (the default), all names are classified at once. Set it to an

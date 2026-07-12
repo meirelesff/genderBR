@@ -28,7 +28,12 @@ from \code{NULL}, the \code{internal} argument is ignored.}
 
 \item{prob}{Report the proportion of female uses of the name? Defaults to \code{FALSE}.}
 
-\item{threshold}{Numeric indicating the threshold used in predictions. Defaults to 0.9.}
+\item{threshold}{Numeric indicating the threshold used in predictions. Defaults to 0.9.
+A single value sets the same threshold for both sexes; a vector with two values sets one
+threshold per sex, the first for females and the second for males (e.g., \code{c(0.9, 0.8)}).
+The two values can also be named, in any order (e.g., \code{c(Female = 0.9, Male = 0.8)} or
+\code{c(F = 0.9, M = 0.8)}). Because a name cannot be female and male at the same time,
+the two thresholds must sum to at least 1.}
 
 \item{internal}{Use internal data to predict gender? Allowing this option makes
 the function faster, but it does not support getting results by State.
@@ -71,9 +76,11 @@ optionally 2022).
 In particular, the function exploits data on the number of females and males with the same name
 in Brazil, or in a given Brazilian state, to calculate the proportion of females using it.
 
-The function classifies a name as *male* or *female* only when that proportion is higher than
-a given threshold (e.g., \code{female if proportion > 0.9, the default}, or \code{male if proportion < 0.1});
-proportions below this threshold are classified as missings (\code{NA}). The method is based on the \code{gender}
+The function classifies a name as *female* when that proportion is higher than the female
+threshold (\code{proportion > 0.9}, by default), and as *male* when it is lower than one minus
+the male threshold (\code{proportion < 0.1}, by default); proportions in between are classified
+as \code{Unknown}. The two thresholds can be set independently (see the \code{threshold} argument).
+The method is based on the \code{gender}
 functionality developed by Lincon Mullen in:
 Mullen (2016). gender: Predict Gender from Names Using Historical Data.
 
@@ -110,6 +117,10 @@ get_gender('joao')
 
 # To change the employed threshold
 get_gender('ariel', threshold = 0.8)
+
+# Or to set a different threshold for each sex (female first)
+get_gender('marion', threshold = c(0.7, 0.9))
+get_gender('marion', threshold = c(Female = 0.7, Male = 0.9))
 
 # Or to get the proportion of females
 # with the name provided

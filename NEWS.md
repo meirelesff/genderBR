@@ -1,9 +1,14 @@
-# genderBR 1.3.1
+# genderBR 1.4.0
 
+This is a new version that introduces one important new feature: asymmetrical thresholds for gender classification. In the previous versions, users could set a single threshold to classify names as female or male -- and they could overlap if the threshold was too low. Now, users can set a different threshold for each sex, and there is a new check to prevent overlapping thresholds. The release also includes other improvements and bug fixes.
+
+- The `threshold` argument of `get_gender()` and `get_gender_nn()` now accepts a vector with two values, allowing users to set a different threshold for each sex: the first value is used to classify females and the second, males (e.g., `threshold = c(0.9, 0.8)`). The two values can also be named, in any order (`c(Female = 0.9, Male = 0.8)` or `c(F = 0.9, M = 0.8)`). A single value keeps setting a symmetrical threshold, as before.
+- Thresholds that sum to less than 1 are now rejected with an informative error. These values make the female and male bands overlap, so a name could be classified as both. This also applies to a single `threshold` below 0.5, which was silently accepted before and gave inconsistent results between `get_gender()` and `get_gender_nn()`.
 - Added an `nn_size` argument to `get_gender_nn()` and `get_gender(nn = TRUE)` that splits a large input vector of names into batches. This keeps avoids out-of-memory crashes on big vectors. Defaults to `NULL` (all names classified in a single pass).
 - Added a `device` argument to `get_gender_nn()` and `get_gender(nn = TRUE)` to run neural network inference on a GPU (`"cuda"` or `"mps"`) instead of the default CPU for faster predictions.
 - Fixed a vocabulary mismatch in the neural network encoder: characters not in the model vocabulary were mapped to `<PAD>` instead of the `<UNK>`. Names containing rare characters are now handled correctly.
 - Moved `torch` from `Imports` to `Suggests`. The neural network model is now built only when the NN backend (`get_gender_nn()` or `get_gender(nn = TRUE)`) is used. A clear message tells users to install `torch` when it is not available. The default methods no longer require `torch`.
+- Added new tests for the new features and fixes.
 
 
 # genderBR 1.3.0

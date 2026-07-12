@@ -22,7 +22,12 @@
 #' @param prob Report the proportion of female uses of the name? Defaults to
 #'   \code{FALSE}.
 #' @param threshold Numeric indicating the threshold used in predictions.
-#'   Defaults to 0.9.
+#'   Defaults to 0.9. A single value sets the same threshold for both sexes; a
+#'   vector with two values sets one threshold per sex, the first for females and
+#'   the second for males (e.g., \code{c(0.9, 0.8)}). The two values can also be
+#'   named, in any order (e.g., \code{c(Female = 0.9, Male = 0.8)} or
+#'   \code{c(F = 0.9, M = 0.8)}). Because a name cannot be female and male at the
+#'   same time, the two thresholds must sum to at least 1.
 #' @param nn_size Batch size for neural network inference. When \code{NULL}
 #'   (the default), all names are classified at once. Set it to an
 #'   integer to split a large input vector of first names into batches of that size,
@@ -62,8 +67,7 @@ get_gender_nn <- function(names, prob = FALSE, threshold = 0.9,
     stop("'names' must be character.", call. = FALSE)
   }
   if (!is.logical(prob)) stop("'prob' must be logical.", call. = FALSE)
-  if (!is.numeric(threshold)) stop("'threshold' must be numeric, between 0 and 1.", call. = FALSE)
-  if (threshold < 0 || threshold > 1) stop("'threshold' must be between 0 and 1.", call. = FALSE)
+  threshold <- check_threshold(threshold)
   if (!is.null(nn_size)) {
     if (!is.numeric(nn_size) || length(nn_size) != 1L || is.na(nn_size) ||
         nn_size < 1 || nn_size != as.integer(nn_size)) {
@@ -122,8 +126,8 @@ get_gender_nn <- function(names, prob = FALSE, threshold = 0.9,
 
   # Apply threshold
   result <- rep(NA_character_, n)
-  female <- !is.na(probs) & probs >= threshold
-  male   <- !is.na(probs) & probs <= (1 - threshold)
+  female <- !is.na(probs) & probs >= threshold[["female"]]
+  male   <- !is.na(probs) & probs <= (1 - threshold[["male"]])
   result[female] <- "Female"
   result[male]   <- "Male"
   result

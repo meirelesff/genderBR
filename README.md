@@ -67,7 +67,11 @@ Brazil or a specific state using IBGE Census data. It classifies a name
 as female or male only when this proportion exceeds a specified
 threshold (e.g., `female if proportion > 0.9`, or
 `male if proportion <= 0.1`); proportions below those thresholds are
-classified as missing (`NA`, or `Unkown`). An example:
+classified as missing (`NA`, or `Unkown`). The `threshold` argument also
+takes two values, the first for females and the second for males (e.g.,
+`threshold = c(0.9, 0.8)`, or `threshold = c(Female = 0.9, Male = 0.8)`),
+which is useful to calibrate each side of the classification separately.
+An example:
 
 ``` r
 get_gender("Ana")
