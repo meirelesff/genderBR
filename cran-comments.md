@@ -19,7 +19,7 @@ does not trigger it.
 
 ## Test environments
 
-* macOS Tahoe 26.5.1 (personal computer), R 4.5.3
+* macOS Tahoe 26.5.1 (personal computer), R 4.6.1
 * Fedora 44 (personal computer), R 4.6.1
 * GitHub Actions - (ubuntu): release, devel, oldrel-1
 * GitHub Actions - (windows-latest): release
